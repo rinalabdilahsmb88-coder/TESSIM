@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Gemini Transformers Mode | AI Chat Dashboard</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        .transformers-mode {
+            --accent-glow: 0 0 15px rgba(245, 158, 11, 0.6);
+            --border-glow: 1px solid rgba(245, 158, 11, 0.4);
+        }
+        .chat-messages {
+            scroll-behavior: smooth;
+        }
+        .chat-messages::-webkit-scrollbar { width: 5px; }
+        .chat-messages::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+        .glass-panel {
+            background: rgba(15, 25, 45, 0.65);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        .transformers-mode .glass-panel {
+            background: rgba(10, 10, 20, 0.75);
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+        }
+        .message-bubble-user {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-radius: 24px 24px 8px 24px;
+        }
+        .message-bubble-ai {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px 24px 24px 8px;
+        }
+        .transformers-mode .message-bubble-ai {
+            background: rgba(20, 15, 35, 0.9);
+            border-left: 3px solid #f59e0b;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+        }
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: #94a3b8;
+            border-radius: 50%;
+            display: inline-block;
+            animation: wave 1.2s infinite ease-in-out;
+        }
+        .transformers-mode .typing-indicator span {
+            background: #f59e0b;
+        }
+        @keyframes wave {
+            0%,60%,100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+        .glow-on-hover:hover {
+            box-shadow: 0 0 12px rgba(59,130,246,0.5);
+        }
+        .transformers-mode .glow-on-hover:hover {
+            box-shadow: 0 0 12px rgba(245,158,11,0.6);
+        }
+        .bg-gradient-custom {
+            background: radial-gradient(circle at 10% 20%, rgba(2, 10, 25, 0.95), rgba(5, 15, 35, 0.98));
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #334155;
+            transition: 0.3s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #f59e0b;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .transformers-badge {
+            background: linear-gradient(135deg, #f59e0b, #b45309);
+        }
+    </style>
+</head>
+<body class="bg-gradient-custom min-h-screen flex items-center justify-center p-4 md:p-6">
+
+    <div class="w-full max-w-5xl h-[90vh] md:h-[85vh] glass-panel rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300" id="mainPanel">
+        
+        <!-- HEADER dengan Mode Transformers Toggle -->
+        <div class="px-6 py-4 border-b border-white/10 flex flex-wrap items-center justify-between gap-3 backdrop-blur-sm bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-11 w-11 rounded-2xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg transition-all" id="logoIcon">
+                    <i class="fas fa-robot text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-white tracking-tight">Gemini<span class="text-blue-400" id="modeName">Chat</span><span id="modeSuffix" class="text-xs ml-1"></span></h1>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-gray-300" id="statusText">AI aktif • Model Gemini 1.5 Flash</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- Mode Transformers Toggle -->
+                <div class="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 backdrop-blur-sm">
+                    <i class="fas fa-microchip text-gray-300 text-sm"></i>
+                    <span class="text-white text-sm font-medium">Mode Transformers</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="transformersToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="hidden sm:flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 backdrop-blur-sm">
+                    <i class="fas fa-comment-dots text-blue-300 text-sm"></i>
+                    <span class="text-white text-sm font-medium" id="messageCount">0</span>
+                    <span class="text-gray-300 text-xs">pesan</span>
+                </div>
+                
+                <button id="clearChatBtn" class="bg-white/10 hover:bg-red-500/80 transition-all duration-200 text-white px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium backdrop-blur-sm border border-white/20">
+                    <i class="fas fa-trash-alt"></i>
+                    <span class="hidden sm:inline">Reset Chat</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- CHAT AREA -->
+        <div id="chatMessages" class="chat-messages flex-1 overflow-y-auto p-5 space-y-4">
+            <!-- Welcome message di inject JS -->
+        </div>
+        
+        <!-- TYPING INDICATOR -->
+        <div id="typingIndicator" class="px-5 pb-2 hidden">
+            <div class="flex items-center gap-3 w-fit">
+                <div class="w-8 h-8 rounded-full bg-indigo-500/30 flex items-center justify-center" id="typingIcon">
+                    <i class="fas fa-brain text-indigo-200 text-xs"></i>
+                </div>
+                <div class="typing-indicator bg-white/10 backdrop-blur-sm px-4 py-2 rounded-2xl rounded-bl-md">
+                    <span></span><span></span><span></span>
+                    <span class="ml-1 text-gray-300 text-xs" id="typingText">AI sedang menulis...</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- INPUT AREA -->
+        <div class="p-4 border-t border-white/10 bg-black/20 backdrop-blur-sm">
+            <div class="flex items-center gap-3">
+                <div class="flex-1 relative">
+                    <i class="fas fa-pen-alt absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input type="text" id="messageInput" placeholder="Tanyakan sesuatu... (Enter untuk kirim)" 
+                           class="w-full bg-white/10 border border-white/20 rounded-2xl py-3.5 pl-11 pr-4 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/60 transition-all outline-none text-base">
+                </div>
+                <button id="sendBtn" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl px-5 py-3.5 transition-all duration-200 shadow-lg flex items-center gap-2 font-medium">
+                    <i class="fas fa-paper-plane"></i>
+                    <span class="hidden sm:inline">Kirim</span>
+                </button>
+            </div>
+            <div class="text-xs text-gray-400 mt-2 text-center flex items-center justify-center gap-2">
+                <i class="fas fa-shield-alt text-emerald-400/70"></i>
+                <span>⚡ Mode Transformers: aktifkan untuk respons bergaya arsitektur Transformer & self-attention</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ======================= KONFIGURASI API =======================
+        const API_KEY = "AIzaSyBarAQanOdzagjSVZk_oYxw1_kDuj88AAY";
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        
+        // Mode state
+        let transformersMode = false;  // default false
+        
+        // System prompts
+        const NORMAL_SYSTEM = `Anda adalah asisten AI modern, cerdas, dan sangat membantu. Nama Anda adalah GeminiChat. Anda berkomunikasi dengan gaya yang ramah, hangat, dan informatif. Gunakan bahasa Indonesia secara alami, namun jika pengguna menggunakan bahasa Inggris, balas dengan bahasa yang sama. Jawab dengan jelas, ringkas, dan akurat. Berikan sentuhan kreatif.`;
+        
+        const TRANSFORMERS_SYSTEM = `Anda adalah "Transformer Oracle" — seorang ahli mendalam tentang arsitektur Transformer, self-attention, multi-head attention, encoder-decoder, BERT, GPT, dan semua varian modern. Saat menjawab, Anda harus menyelipkan analogi atau penjelasan teknis tentang cara kerja Transformer, tetapi tetap menjawab pertanyaan pengguna dengan akurat. Gunakan gaya bicara yang antusias, sedikit teatrikal, dan penuh wawasan. Contoh: "Dari perspektif self-attention layer, pertanyaan Anda mengingatkan saya pada query-key alignment..." atau "Seperti positional encoding yang memberi urutan, saya akan menjawab langkah demi langkah." Pastikan jawaban tetap membantu dan tidak terlalu membingungkan. Gunakan bahasa Indonesia atau Inggris sesuai pengguna. Sertakan metafora transformer (attention, feed-forward, residual connections) secara natural.`;
+        
+        let currentSystemInstruction = NORMAL_SYSTEM;
+        
+        let conversationHistory = [];  // { role: "user" atau "assistant", text: "..." }
+        
+        // DOM Elements
+        const chatContainer = document.getElementById("chatMessages");
+        const messageInput = document.getElementById("messageInput");
+        const sendBtn = document.getElementById("sendBtn");
+        const clearBtn = document.getElementById("clearChatBtn");
+        const typingIndicatorDiv = document.getElementById("typingIndicator");
+        const messageCountSpan = document.getElementById("messageCount");
+        const transformersToggle = document.getElementById("transformersToggle");
+        const modeNameSpan = document.getElementById("modeName");
+        const modeSuffixSpan = document.getElementById("modeSuffix");
+        const statusTextSpan = document.getElementById("statusText");
+        const mainPanel = document.getElementById("mainPanel");
+        const logoIcon = document.getElementById("logoIcon");
+        const typingIcon = document.getElementById("typingIcon");
+        const typingTextSpan = document.getElementById("typingText");
+        
+        // Helper update UI mode
+        function updateUIMode() {
+            if (transformersMode) {
+                modeNameSpan.innerText = "Transformers";
+                modeSuffixSpan.innerHTML = '<span class="ml-1 text-amber-400 font-bold">⚡</span>';
+                statusTextSpan.innerHTML = '🧠 Mode Transformers aktif • Self-Attention engaged';
+                mainPanel.classList.add("transformers-mode");
+                logoIcon.classList.remove("bg-gradient-to-tr", "from-blue-500", "to-indigo-600");
+                logoIcon.classList.add("transformers-badge", "bg-gradient-to-r", "from-amber-500", "to-orange-600");
+                logoIcon.innerHTML = '<i class="fas fa-microchip text-white text-xl"></i>';
+                typingIcon.innerHTML = '<i class="fas fa-arrow-rotate-right text-amber-300 text-xs"></i>';
+                typingTextSpan.innerText = "Transformer sedang memproses attention...";
+                // ubah warna tombol kirim sedikit (optional)
+                sendBtn.classList.add("from-amber-600", "to-orange-600", "hover:from-amber-500", "hover:to-orange-500");
+                sendBtn.classList.remove("from-blue-600", "to-indigo-600", "hover:from-blue-500", "hover:to-indigo-500");
+            } else {
+                modeNameSpan.innerText = "Chat";
+                modeSuffixSpan.innerHTML = '';
+                statusTextSpan.innerHTML = 'AI aktif • Model Gemini 1.5 Flash';
+                mainPanel.classList.remove("transformers-mode");
+                logoIcon.classList.add("bg-gradient-to-tr", "from-blue-500", "to-indigo-600");
+                logoIcon.classList.remove("transformers-badge", "bg-gradient-to-r", "from-amber-500", "to-orange-600");
+                logoIcon.innerHTML = '<i class="fas fa-robot text-white text-xl"></i>';
+                typingIcon.innerHTML = '<i class="fas fa-brain text-indigo-200 text-xs"></i>';
+                typingTextSpan.innerText = "AI sedang menulis...";
+                sendBtn.classList.remove("from-amber-600", "to-orange-600", "hover:from-amber-500", "hover:to-orange-500");
+                sendBtn.classList.add("from-blue-600", "to-indigo-600", "hover:from-blue-500", "hover:to-indigo-500");
+            }
+        }
+        
+        // Update system instruction berdasarkan mode
+        function updateSystemInstruction() {
+            currentSystemInstruction = transformersMode ? TRANSFORMERS_SYSTEM : NORMAL_SYSTEM;
+        }
+        
+        // Helper jumlah pesan
+        function updateMessageCount() {
+            messageCountSpan.innerText = conversationHistory.length;
+        }
+        
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        function addMessageToUI(role, text, isError = false) {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`;
+            const bubbleClass = role === 'user' ? 'message-bubble-user text-white' : 'message-bubble-ai text-gray-100';
+            const icon = role === 'user' ? '<i class="fas fa-user-circle text-blue-200"></i>' : (transformersMode ? '<i class="fas fa-microchip text-amber-300"></i>' : '<i class="fas fa-robot text-indigo-300"></i>');
+            const alignStyle = role === 'user' ? 'flex-row-reverse' : 'flex-row';
+            messageDiv.innerHTML = `
+                <div class="max-w-[85%] md:max-w-[75%] flex ${alignStyle} items-end gap-2">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm">
+                        ${icon}
+                    </div>
+                    <div class="${bubbleClass} px-4 py-2.5 shadow-md ${isError ? 'border border-red-400/50 bg-red-900/40' : ''}">
+                        <p class="text-sm leading-relaxed whitespace-pre-wrap break-words">${escapeHtml(text)}</p>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+        
+        function showErrorMessage(errorText) {
+            addMessageToUI('assistant', `⚠️ ${errorText}. Silakan coba lagi.`, true);
+        }
+        
+        function clearUIMessages() {
+            while (chatContainer.firstChild) {
+                chatContainer.removeChild(chatContainer.firstChild);
+            }
+        }
+        
+        function showWelcomeMessage() {
+            let welcomeText = transformersMode 
+                ? "✨ **Mode Transformers aktif!** Saya adalah Transformer Oracle. Dari posisi multi-head attention, saya siap membantu pertanyaan Anda dengan perspektif arsitektur self-attention, positional encoding, dan feed-forward networks. Tanyakan apa saja — saya akan menyisipkan wawasan transformer di setiap jawaban! 🤖⚡" 
+                : "✨ Halo! Saya **GeminiChat**, asisten AI modern Anda. Ada yang bisa saya bantu hari ini? Tanya apa saja, mulai dari ide, informasi, hingga solusi kreatif! 😊";
+            const welcomeDiv = document.createElement("div");
+            welcomeDiv.className = "flex justify-start animate-fade-in";
+            welcomeDiv.innerHTML = `
+                <div class="max-w-[85%] md:max-w-[75%] flex flex-row items-end gap-2">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full ${transformersMode ? 'bg-amber-500/30' : 'bg-indigo-500/30'} flex items-center justify-center">
+                        <i class="${transformersMode ? 'fas fa-microchip text-amber-200' : 'fas fa-sparkle text-indigo-200'} text-xs"></i>
+                    </div>
+                    <div class="message-bubble-ai px-4 py-2.5 shadow-md">
+                        <p class="text-sm leading-relaxed">${escapeHtml(welcomeText)}</p>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(welcomeDiv);
+            scrollToBottom();
+        }
+        
+        function resetChat() {
+            conversationHistory = [];
+            updateMessageCount();
+            clearUIMessages();
+            showWelcomeMessage();
+            typingIndicatorDiv.classList.add("hidden");
+            toggleInputState(false);
+        }
+        
+        function toggleInputState(loading) {
+            sendBtn.disabled = loading;
+            messageInput.disabled = loading;
+            if (loading) {
+                sendBtn.classList.add("opacity-60", "cursor-not-allowed");
+                messageInput.classList.add("opacity-60", "cursor-not-allowed");
+            } else {
+                sendBtn.classList.remove("opacity-60", "cursor-not-allowed");
+                messageInput.classList.remove("opacity-60", "cursor-not-allowed");
+                messageInput.focus();
+            }
+        }
+        
+        async function sendMessageToAI(userMessage) {
+            if (!userMessage.trim()) return;
+            const userMsgText = userMessage.trim();
+            conversationHistory.push({ role: "user", text: userMsgText });
+            addMessageToUI("user", userMsgText);
+            updateMessageCount();
+            messageInput.value = "";
+            typingIndicatorDiv.classList.remove("hidden");
+            toggleInputState(true);
+            
+            // Build contents untuk Gemini
+            const contents = [];
+            for (const msg of conversationHistory) {
+                if (msg.role === "user") {
+                    contents.push({ role: "user", parts: [{ text: msg.text }] });
+                } else if (msg.role === "assistant") {
+                    contents.push({ role: "model", parts: [{ text: msg.text }] });
+                }
+            }
+            
+            const requestBody = {
+                system_instruction: { parts: { text: currentSystemInstruction } },
+                contents: contents,
+                generationConfig: { temperature: 0.75, maxOutputTokens: 1024, topP: 0.95 }
+            };
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(requestBody)
+                });
+                if (!response.ok) {
+                    let errMsg = `HTTP ${response.status}`;
+                    try { const errData = await response.json(); errMsg = errData.error?.message || errMsg; } catch(e) {}
+                    throw new Error(errMsg);
+                }
+                const data = await response.json();
+                const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!aiText) throw new Error("Respons AI kosong.");
+                conversationHistory.push({ role: "assistant", text: aiText });
+                addMessageToUI("assistant", aiText);
+                updateMessageCount();
+            } catch (error) {
+                console.error("API Error:", error);
+                let friendly = error.message || "Gagal mendapat respons.";
+                if (friendly.includes("API key")) friendly = "Kunci API tidak valid atau quota habis.";
+                else if (friendly.includes("fetch")) friendly = "Koneksi gagal. Periksa jaringan.";
+                showErrorMessage(friendly);
+                if (conversationHistory.length > 0 && conversationHistory[conversationHistory.length-1].role === "user") {
+                    conversationHistory.pop();
+                    updateMessageCount();
+                    if (chatContainer.lastChild && chatContainer.lastChild.querySelector('.message-bubble-user')) {
+                        chatContainer.removeChild(chatContainer.lastChild);
+                    }
+                    showErrorMessage(`Gagal mengirim: ${friendly}. Kirim ulang pesan Anda.`);
+                }
+            } finally {
+                typingIndicatorDiv.classList.add("hidden");
+                toggleInputState(false);
+                scrollToBottom();
+            }
+        }
+        
+        function handleSendMessage() {
+            if (!messageInput.value.trim()) return;
+            sendMessageToAI(messageInput.value);
+        }
+        
+        function onEnterKey(e) {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                if (!sendBtn.disabled && messageInput.value.trim()) handleSendMessage();
+            }
+        }
+        
+        // Toggle mode transformers
+        function toggleTransformersMode() {
+            transformersMode = transformersToggle.checked;
+            updateSystemInstruction();
+            updateUIMode();
+            // Reset chat untuk memulai dengan system prompt baru (bersihkan history dan tampilkan welcome sesuai mode)
+            resetChat();
+            // Beri notifikasi subtle
+            const notif = document.createElement("div");
+            notif.className = `fixed bottom-24 left-1/2 transform -translate-x-1/2 text-white px-4 py-2 rounded-full text-sm z-50 shadow-lg backdrop-blur ${transformersMode ? 'bg-amber-800/80' : 'bg-gray-800/80'}`;
+            notif.innerText = transformersMode ? "⚡ Mode Transformers diaktifkan! Respons penuh analogi self-attention." : "✨ Mode Normal kembali. Asisten AI standar aktif.";
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 2500);
+        }
+        
+        // Inisialisasi dashboard
+        function initDashboard() {
+            transformersToggle.addEventListener("change", toggleTransformersMode);
+            sendBtn.addEventListener("click", handleSendMessage);
+            clearBtn.addEventListener("click", () => {
+                resetChat();
+                const notif = document.createElement("div");
+                notif.className = "fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-gray-800/90 backdrop-blur text-white px-4 py-2 rounded-full text-sm z-50";
+                notif.innerText = "🧹 Chat direset, percakapan baru dimulai";
+                document.body.appendChild(notif);
+                setTimeout(() => notif.remove(), 2000);
+            });
+            messageInput.addEventListener("keydown", onEnterKey);
+            // Set default mode normal
+            transformersMode = false;
+            transformersToggle.checked = false;
+            updateSystemInstruction();
+            updateUIMode();
+            resetChat();
+        }
+        
+        document.addEventListener("DOMContentLoaded", initDashboard);
+    </script>
+</body>
+</html>
