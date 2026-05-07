@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Transaksi Dashboard | Urutan Terbaru di Atas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+            min-height: 100vh;
+            padding: 32px 24px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.02);
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .header {
+            background: linear-gradient(120deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 32px;
+            padding: 28px 32px;
+            margin-bottom: 28px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, rgba(59,130,246,0) 70%);
+            border-radius: 50%;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 i {
+            background: #3b82f6;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(59,130,246,0.3);
+        }
+
+        .header p {
+            color: #94a3b8;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+        
+        .header .auto-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .input-section {
+            padding: 28px 32px;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid #3b82f6;
+            padding-left: 16px;
+        }
+
+        .example-box {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: #334155;
+            word-break: break-all;
+            line-height: 1.5;
+        }
+
+        .example-text {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 12px;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: #1e293b;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .example-text-kosong {
+            background: #fef3c7;
+            padding: 8px 12px;
+            border-radius: 12px;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: #92400e;
+            border-left: 3px solid #f59e0b;
+        }
+
+        .auto-info {
+            background: #e0e7ff;
+            padding: 10px 16px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            font-size: 0.8rem;
+            color: #1e40af;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 24px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: all 0.2s;
+            background: #ffffff;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .filter-card {
+            padding: 20px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8fafc;
+            padding: 4px 16px;
+            border-radius: 48px;
+            border: 1px solid #e2e8f0;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box i {
+            color: #94a3b8;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 12px 0;
+            width: 100%;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .stats-badge {
+            background: linear-gradient(120deg, #eef2ff, #e0e7ff);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #1e40af;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0 4px 8px 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 18px 16px;
+            background: #f8fafc;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #f0f2f5;
+            font-size: 0.85rem;
+            color: #1e293b;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: #fefce8;
+        }
+
+        .badge-method {
+            background: #4c1d95;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-dana {
+            background: #00897b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .ref-id {
+            font-family: 'SF Mono', monospace;
+            font-size: 0.75rem;
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .nominal-minus {
+            color: #dc2626;
+            font-weight: 700;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .nama-kosong {
+            color: #94a3b8;
+            font-style: italic;
+            background: #f8fafc;
+            padding: 4px 8px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .delete-icon {
+            color: #cbd5e1;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.2s;
+        }
+
+        .delete-icon:hover {
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 64px 24px;
+            color: #94a3b8;
+        }
+
+        .copy-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #10b981;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 48px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .copy-toast.error {
+            background: #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .footer-info {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .format-info {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-top: 16px;
+            font-size: 0.75rem;
+            font-family: monospace;
+        }
+
+        .order-badge {
+            background: #f59e0b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>
+            <i class="fas fa-chalkboard-user"></i> 
+            Dashboard Transaksi
+        </h1>
+        <p>Unlimited input · Auto parsing · Urutan data: TERBARU di ATAS (dari bawah ke atas)</p>
+        <div class="auto-badge">
+            <i class="fas fa-magic"></i> AUTO PARSE - Langsung tampil saat input/paste
+            <span class="order-badge"><i class="fas fa-arrow-down"></i> Urutan: Baris paling bawah jadi paling atas</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="input-section">
+            <div class="section-title">
+                <i class="fas fa-pen-ruler"></i>
+                <span>Input Data Log (Otomatis Terproses)</span>
+            </div>
+            <div class="auto-info">
+                <i class="fas fa-sync-alt"></i> 
+                <span>✨ FITUR AUTO: Setiap kali Anda paste, data akan otomatis diproses dan ditampilkan dengan urutan TERBARU di ATAS.</span>
+            </div>
+            <div class="example-box">
+                <i class="fas fa-copy"></i> Format contoh (urutan input dari atas ke bawah):
+                <div class="example-text">
+                    📌 Baris 1 (paling lama): 07/05/2026 17:59:15 ... OVO 085138744339 INDRA SAHPIRI Rp4,000,000<br>
+                    📌 Baris 2 (tengah): 07/05/2026 17:59:24 ... OVO 081392818184 HENXXXX MARXXXXXX MARXXX Rp2,650,000<br>
+                    📌 Baris 3 (paling baru): 07/05/2026 18:39:08 ... Dana 082224256471 - Rp60,000<br><br>
+                    <strong>→ Hasil tampilan: Baris 3 (Dana) di atas, lalu baris 2, lalu baris 1</strong>
+                </div>
+                <div class="example-text-kosong">
+                    📌 Hasil ekstrak yang diharapkan (urutan dari bawah ke atas):<br>
+                    Dana	LIT-851167bc-e668-415c-ab6d-d41abf9a5123	082224256471	-	-60000<br>
+                    OVO	LIT-f3cbf202-6a93-4b08-80d8-0c49e8ce5c1b	081392818184	HENXXXX MARXXXXXX MARXXX	-2650000<br>
+                    OVO	LIT-69338fef-ca5f-42ef-a43f-7f3647bf33a5	085138744339	INDRA SAHPIRI	-4000000
+                </div>
+            </div>
+            <textarea id="rawInput" rows="5" placeholder="Tempelkan baris log di sini...&#10;Urutan: Baris paling bawah akan tampil paling atas"></textarea>
+            <div class="button-group">
+                <button class="btn btn-secondary" id="clearInputBtn">
+                    <i class="fas fa-eraser"></i> Bersihkan Input
+                </button>
+                <button class="btn btn-danger" id="deleteAllBtn">
+                    <i class="fas fa-trash-alt"></i> Hapus Semua Data
+                </button>
+            </div>
+            <div class="format-info">
+                <i class="fas fa-info-circle"></i> <strong>Urutan Data:</strong> Data yang paling baru (paling bawah saat input) akan tampil di Paling Atas tabel.
+                Nominal menggunakan format MINUS (contoh: -60000, -2650000, -4000000)
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="filter-card">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchFilter" placeholder="Filter by ID / No HP / Nama ..." autocomplete="off">
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <div class="stats-badge" id="statsDisplay">
+                    <i class="fas fa-database"></i> Total: 0
+                </div>
+                <button class="btn btn-success" id="copyFilteredBtn">
+                    <i class="fas fa-copy"></i> Copy Hasil Filter
+                </button>
+                <button class="btn btn-success" id="copyAllBtn" style="background:#059669;">
+                    <i class="fas fa-copy"></i> Copy Semua Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="table-wrapper">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Metode</th>
+                        <th>REF ID</th>
+                        <th>No HP</th>
+                        <th>Nama</th>
+                        <th>Nominal (Rp)</th>
+                        <th style="width: 50px"></th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr class="empty-state">
+                        <td colspan="6"><i class="fas fa-inbox"></i><br>Belum ada data. Mulai ketik atau paste di atas!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="footer-info">
+        <i class="fas fa-infinity"></i> Unlimited · Urutan: Data terbaru (paling bawah input) di atas · Nominal MINUS
+    </div>
+</div>
+
+<script>
+    let transactions = [];
+
+    // ======================= FORMAT NOMINAL MINUS =======================
+    function formatNumberMinus(number) {
+        return `-${number.toString()}`;
+    }
+
+    // ======================= PARSER - MENGAMBIL NOMINAL AWAL =======================
+    function parseLogLine(line, index) {
+        if (!line || line.trim() === "") return null;
+        const trimmed = line.trim();
+        const parts = trimmed.split(/\s+/);
+        if (parts.length < 8) return null;
+        
+        let refId = null;
+        let metode = null;
+        let noHp = null;
+        let namaRaw = "";
+        let nominalAwal = 0;
+        
+        // Cari REF ID (LIT-...)
+        for (let i = 0; i < parts.length; i++) {
+            if (parts[i].startsWith("LIT-")) {
+                refId = parts[i];
+                break;
+            }
+        }
+        
+        // Cari metode (OVO, Dana, QRIS, SHOPEEPAY)
+        for (let i = 0; i < parts.length; i++) {
+            const upper = parts[i].toUpperCase();
+            if (upper === "OVO" || upper === "DANA" || upper === "QRIS" || upper === "SHOPEEPAY") {
+                metode = parts[i];
+                break;
+            }
+        }
+        
+        // Cari No HP (mulai 08 atau +62)
+        for (let i = 0; i < parts.length; i++) {
+            if (/^(08|\+62)\d{8,13}$/.test(parts[i])) {
+                noHp = parts[i];
+                break;
+            }
+        }
+        
+        if (!refId || !metode || !noHp) return null;
+        
+        const noHpIndex = parts.findIndex(p => p === noHp);
+        if (noHpIndex === -1) return null;
+        
+        let startNameIdx = noHpIndex + 1;
+        let endNameIdx = -1;
+        let isEmptyName = false;
+        
+        // Cari posisi nominal (Rp...)
+        for (let i = startNameIdx; i < parts.length; i++) {
+            if (parts[i].startsWith("Rp") && !parts[i].startsWith("(-Rp")) {
+                endNameIdx = i;
+                break;
+            }
+        }
+        
+        if (endNameIdx === -1) {
+            for (let i = startNameIdx; i < parts.length; i++) {
+                if (parts[i].startsWith("(-Rp")) {
+                    endNameIdx = i;
+                    break;
+                }
+            }
+        }
+        
+        if (endNameIdx !== -1 && startNameIdx === endNameIdx) {
+            isEmptyName = true;
+            namaRaw = "";
+        } else if (endNameIdx !== -1 && endNameIdx > startNameIdx) {
+            namaRaw = parts.slice(startNameIdx, endNameIdx).join(" ");
+            if (namaRaw.trim() === "") isEmptyName = true;
+        } else if (endNameIdx === -1) {
+            if (startNameIdx < parts.length && parts[startNameIdx].startsWith("Rp")) {
+                isEmptyName = true;
+                namaRaw = "";
+            } else if (parts.length - startNameIdx >= 2) {
+                namaRaw = parts.slice(startNameIdx, parts.length - 2).join(" ");
+                if (namaRaw.trim() === "") isEmptyName = true;
+            }
+        }
+        
+        let namaFinal = (isEmptyName || namaRaw.trim() === "") ? "-" : namaRaw.trim();
+        
+        // Ambil nominal awal
+        let nominalAwalStr = "";
+        for (let i = 0; i < parts.length; i++) {
+            if (parts[i].startsWith("Rp") && !parts[i].startsWith("(-Rp")) {
+                nominalAwalStr = parts[i];
+                break;
+            }
+        }
+        
+        if (nominalAwalStr) {
+            let clean = nominalAwalStr.replace(/Rp/g, "").replace(/\./g, "").replace(/,/g, "");
+            nominalAwal = parseInt(clean, 10);
+        }
+        
+        if (isNaN(nominalAwal)) nominalAwal = 0;
+        
+        const formattedNominal = formatNumberMinus(nominalAwal);
+        
+        return { 
+            metode, 
+            refId, 
+            noHp, 
+            nama: namaFinal, 
+            nominalDisplay: formattedNominal,
+            nominalValue: nominalAwal,
+            originalOrder: index
+        };
+    }
+    
+    // ======================= AUTO PROCESS =======================
+    let autoProcessTimeout = null;
+    
+    function autoProcessFromInput() {
+        const rawText = document.getElementById('rawInput').value;
+        
+        if (autoProcessTimeout) {
+            clearTimeout(autoProcessTimeout);
+        }
+        
+        autoProcessTimeout = setTimeout(() => {
+            if (!rawText.trim()) {
+                if (transactions.length > 0) {
+                    transactions = [];
+                    renderTable();
+                }
+                return;
+            }
+            
+            const lines = rawText.split(/\r?\n/);
+            const newTransactions = [];
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                if (line.trim() === "") continue;
+                const parsed = parseLogLine(line, i);
+                if (parsed) {
+                    newTransactions.push(parsed);
+                }
+            }
+            
+            transactions = newTransactions.reverse();
+            renderTable();
+        }, 300);
+    }
+    
+    function deleteAll() {
+        if (transactions.length > 0 && confirm(`Hapus semua ${transactions.length} data?`)) {
+            transactions = [];
+            document.getElementById('rawInput').value = '';
+            renderTable();
+        } else if (transactions.length === 0) {
+            alert("Tidak ada data untuk dihapus.");
+        }
+    }
+    
+    function clearInput() {
+        document.getElementById('rawInput').value = '';
+        transactions = [];
+        renderTable();
+    }
+    
+    function deleteTransaction(index) {
+        transactions.splice(index, 1);
+        renderTable();
+    }
+    
+    function getFilteredData() {
+        const searchTerm = document.getElementById('searchFilter').value.toLowerCase();
+        if (!searchTerm) return [...transactions];
+        return transactions.filter(t => 
+            t.refId.toLowerCase().includes(searchTerm) ||
+            t.noHp.includes(searchTerm) ||
+            t.nama.toLowerCase().includes(searchTerm) ||
+            t.metode.toLowerCase().includes(searchTerm)
+        );
+    }
+    
+    // ======================= COPY FUNCTION =======================
+    async function copyToClipboard(text, successMessage = "Berhasil disalin!") {
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast(successMessage, false);
+                return true;
+            } catch (err) {
+                return fallbackCopy(text, successMessage);
+            }
+        } else {
+            return fallbackCopy(text, successMessage);
+        }
+    }
+    
+    function fallbackCopy(text, successMessage) {
+        try {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.top = '-9999px';
+            textarea.style.left = '-9999px';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            
+            textarea.select();
+            textarea.setSelectionRange(0, text.length);
+            
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            if (successful) {
+                showToast(successMessage + " ✓", false);
+                return true;
+            } else {
+                showToast("Gagal menyalin. Silakan copy manual.", true);
+                return false;
+            }
+        } catch (err) {
+            showToast("Gagal menyalin. Silakan copy manual.", true);
+            return false;
+        }
+    }
+    
+    function copyData(dataArray, contextName = "data") {
+        if (dataArray.length === 0) {
+            showToast(`Tidak ada ${contextName} untuk disalin.`, true);
+            return;
+        }
+        
+        const lines = dataArray.map(item => {
+            return `${item.metode}\t${item.refId}\t${item.noHp}\t${item.nama}\t${item.nominalDisplay}\t`;
+        });
+        
+        const outputText = lines.join('\n');
+        copyToClipboard(outputText, `✅ ${dataArray.length} baris ${contextName} berhasil disalin! (Urutan terbaru di atas)`);
+    }
+    
+    function copyFilteredData() {
+        const filtered = getFilteredData();
+        copyData(filtered, "hasil filter");
+    }
+    
+    function copyAllData() {
+        copyData(transactions, "semua data");
+    }
+    
+    function showToast(message, isError = false) {
+        let existingToast = document.querySelector('.copy-toast');
+        if (existingToast) existingToast.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = `copy-toast ${isError ? 'error' : ''}`;
+        toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+    
+    function renderTable() {
+        const filtered = getFilteredData();
+        const statsSpan = document.getElementById('statsDisplay');
+        statsSpan.innerHTML = `<i class="fas fa-database"></i> Total: ${transactions.length}${filtered.length !== transactions.length ? ` | Tampil: ${filtered.length}` : ''}`;
+        
+        const tbody = document.getElementById('tableBody');
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr class="empty-state"><td colspan="6"><i class="fas fa-search"></i><br>Tidak ada data cocok atau belum input</td></tr>`;
+            return;
+        }
+        
+        let html = '';
+        filtered.forEach((item) => {
+            const realIndex = transactions.findIndex(t => 
+                t.refId === item.refId && t.noHp === item.noHp && t.nominalDisplay === item.nominalDisplay);
+            const metodeClass = item.metode === "Dana" ? "badge-dana" : "badge-method";
+            const namaDisplay = item.nama === "-" 
+                ? `<span class="nama-kosong"><i class="fas fa-user-slash"></i> -</span>` 
+                : `<strong>${escapeHtml(item.nama)}</strong>`;
+            
+            html += `
+                <tr>
+                    <td><span class="${metodeClass}">${escapeHtml(item.metode)}</span></td>
+                    <td><span class="ref-id">${escapeHtml(item.refId)}</span></td>
+                    <td>${escapeHtml(item.noHp)}</td>
+                    <td>${namaDisplay}</td>
+                    <td class="nominal-minus">${escapeHtml(item.nominalDisplay)}</td>
+                    <td><i class="fas fa-trash-alt delete-icon" data-index="${realIndex}"></i></td>
+                </tr>
+            `;
+        });
+        tbody.innerHTML = html;
+        
+        document.querySelectorAll('.delete-icon').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                const idx = parseInt(icon.getAttribute('data-index'), 10);
+                if (!isNaN(idx)) deleteTransaction(idx);
+                e.stopPropagation();
+            });
+        });
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Event Listeners
+    document.getElementById('rawInput').addEventListener('input', autoProcessFromInput);
+    document.getElementById('rawInput').addEventListener('paste', autoProcessFromInput);
+    document.getElementById('clearInputBtn').addEventListener('click', clearInput);
+    document.getElementById('deleteAllBtn').addEventListener('click', deleteAll);
+    document.getElementById('searchFilter').addEventListener('input', () => renderTable());
+    document.getElementById('copyFilteredBtn').addEventListener('click', copyFilteredData);
+    document.getElementById('copyAllBtn').addEventListener('click', copyAllData);
+    
+    // MENGHAPUS SAMPLE DATA INITIAL — textarea kosong, transactions array kosong
+    // Tidak ada inisialisasi sample lagi. Halaman dimulai dengan data kosong.
+    // Memastikan textarea benar-benar kosong dan tabel menampilkan pesan 'Belum ada data'
+    document.getElementById('rawInput').value = '';
+    transactions = [];
+    renderTable();
+</script>
+</body>
+</html>
