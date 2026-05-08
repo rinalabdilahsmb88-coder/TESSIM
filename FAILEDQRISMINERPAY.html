@@ -476,7 +476,7 @@
             <div class="card">
                 <div class="card-title">▶ INPUT DATA [FAILED]</div>
                 <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">>> Paste tab-separated data | Status: <strong style="color:#00f3ff">FAILED</strong> | Auto-format active</p>
-                <textarea id="inputFailed" placeholder="07/05/2026 19:47:04\tfailed\tSMB5 (...)\tLIT-xxx\tOVO\t..."></textarea>
+                <textarea id="inputFailed" placeholder="08/05/2026 03:22:07\tfailed\tSMB5 (minerapayline@gmail.com)\tLIT-7113e64f-780a-447f-b1ac-9b5d827142ec\tOVO\t081376958104\tDIRGA\tRp800,000\tRp1,600\t(-Rp801,600)"></textarea>
                 <div class="loading-bar" id="barFailed"></div>
                 <div class="btn-group">
                     <button class="btn btn-secondary" onclick="clearTab('failed')"><span>🗑️</span> CLEAR DATA</button>
@@ -559,10 +559,14 @@
                     if (mode === 'failed') {
                         const paymentMethod = cleanPaymentMethod(fields[4]?.trim() || '');
                         const transactionId = fields[3]?.trim() || '';
-                        const amountRaw = fields[7]?.trim() || 'Rp0';
+                        // === PERUBAHAN: Nomor Telepon (field index 5) menggantikan nominal ===
+                        const phoneNumber = fields[5]?.trim() || '';
                         const name = fields[6]?.trim() || '';
+                        // Kolom D (Amount) diisi dengan nomor telepon, bukan nominal
+                        // Kolom G tetap menggunakan nominal negatif dari field 7
+                        const amountRaw = fields[7]?.trim() || 'Rp0';
                         const amountClean = cleanAmount(amountRaw);
-                        results.push({ index, line: [paymentMethod, '', transactionId, amountClean, name, '', '-' + amountClean].join('\t') });
+                        results.push({ index, line: [paymentMethod, '', transactionId, phoneNumber, name, '', '-' + amountClean].join('\t') });
                     } else if (mode === 'pending') {
                         const timestamp = fields[0]?.trim() || '';
                         const transactionId = fields[3]?.trim() || '';
