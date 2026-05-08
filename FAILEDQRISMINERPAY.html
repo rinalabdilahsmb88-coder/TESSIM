@@ -2,864 +2,720 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Transaksi Dashboard | Urutan Terbaru di Atas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 TRANSFORMATTER X - Withdraw Data Processor ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        :root {
+            --primary-cyber: #00f3ff;
+            --primary-neon: #0aefff;
+            --secondary-cyber: #ff00e6;
+            --secondary-neon: #ff2dff;
+            --success-cyber: #00ff88;
+            --warning-cyber: #ffaa00;
+            --danger-cyber: #ff0033;
+            --dark-bg: #0a0a1a;
+            --dark-card: #0f0f2a;
+            --dark-panel: #141430;
+            --grid-color: rgba(0, 243, 255, 0.1);
+            --text-cyber: #ccd6f6;
+            --text-dim: #8892b0;
+            --border-glow: 0 0 15px rgba(0, 243, 255, 0.3), inset 0 0 10px rgba(0, 243, 255, 0.05);
         }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+            font-family: 'Inter', 'Share Tech Mono', monospace;
+            background: linear-gradient(135deg, #0a0a1a 0%, #0f0f2a 50%, #0a0a1a 100%);
+            background-attachment: fixed;
+            padding: 20px;
             min-height: 100vh;
-            padding: 32px 24px;
+            color: var(--text-cyber);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Grid Background Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Scanning Line Animation */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary-cyber), transparent);
+            animation: scanLine 4s linear infinite;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        @keyframes scanLine {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+
+        /* Robotic Header */
+        .header { text-align: center; padding: 30px 20px; animation: glitchIn 0.8s ease; position: relative; }
+        @keyframes glitchIn { 
+            0% { opacity: 0; transform: translateY(-30px) scale(0.9); filter: blur(10px); } 
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+        }
+        
+        .logo { display: inline-flex; align-items: center; gap: 15px; margin-bottom: 15px; position: relative; }
+        .logo-icon {
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, var(--dark-panel), var(--dark-card));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 2px solid var(--primary-cyber);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5), inset 0 0 20px rgba(0, 243, 255, 0.1);
+            animation: pulseBorder 2s ease-in-out infinite;
+        }
+        @keyframes pulseBorder {
+            0%, 100% { border-color: var(--primary-cyber); box-shadow: 0 0 20px rgba(0, 243, 255, 0.5); }
+            50% { border-color: var(--secondary-cyber); box-shadow: 0 0 30px rgba(255, 0, 230, 0.5); }
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-cyber), var(--secondary-cyber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .subtitle { 
+            color: var(--text-dim); 
+            font-size: 14px; 
+            margin-top: 8px;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+        }
+        
+        /* Robotic Tabs */
+        .tabs {
+            display: flex; gap: 10px; margin: 25px 0 30px; padding: 8px;
+            background: rgba(15, 15, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            position: relative;
+        }
+        
+        .tab-btn {
+            flex: 1; padding: 16px 20px; border: none; background: transparent;
+            border-radius: 12px; font-weight: 700; font-size: 14px;
+            cursor: pointer; transition: all 0.3s ease;
+            display: flex; align-items: center;
+            justify-content: center; gap: 10px;
+            position: relative;
+            color: var(--text-dim);
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-cyber), var(--secondary-cyber));
+            transition: width 0.3s ease;
+        }
+        .tab-btn:hover::before { width: 50%; }
+        .tab-btn.active {
+            color: var(--primary-cyber);
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2), inset 0 0 15px rgba(0, 243, 255, 0.05);
+        }
+        .tab-btn.active::before { width: 80%; }
+        .tab-btn.pending-mode.active {
+            color: var(--secondary-cyber);
+            background: rgba(255, 0, 230, 0.1);
+            box-shadow: 0 0 20px rgba(255, 0, 230, 0.2), inset 0 0 15px rgba(255, 0, 230, 0.05);
+        }
+        .tab-btn.pending-mode.active::before {
+            background: linear-gradient(90deg, var(--secondary-cyber), var(--primary-cyber));
         }
 
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: roboticFade 0.5s ease; }
+        @keyframes roboticFade { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Robotic Card */
         .card {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 32px;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.02);
-            margin-bottom: 24px;
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-
-        .header {
-            background: linear-gradient(120deg, #0f172a 0%, #1e293b 100%);
-            border-radius: 32px;
-            padding: 28px 32px;
-            margin-bottom: 28px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+            background: rgba(15, 15, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 243, 255, 0.05);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
-
-        .header::before {
+        .card::before {
             content: '';
             position: absolute;
-            top: -30%;
-            right: -10%;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, rgba(59,130,246,0) 70%);
-            border-radius: 50%;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            transition: left 0.5s ease;
         }
-
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
-            letter-spacing: -0.02em;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .header h1 i {
-            background: #3b82f6;
-            padding: 12px;
-            border-radius: 20px;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 10px rgba(59,130,246,0.3);
-        }
-
-        .header p {
-            color: #94a3b8;
-            margin-top: 12px;
-            font-size: 0.9rem;
-            font-weight: 400;
-        }
+        .card:hover::before { left: 100%; }
         
-        .header .auto-badge {
-            display: inline-block;
-            background: #10b981;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            margin-top: 10px;
-            font-weight: 500;
-        }
-
-        .input-section {
-            padding: 28px 32px;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
+        .card-title { 
+            font-weight: 700; 
+            font-size: 16px; 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: center; 
             gap: 10px;
-            border-left: 4px solid #3b82f6;
-            padding-left: 16px;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
         }
-
-        .example-box {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            border: 1px solid #e2e8f0;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 0.8rem;
-            color: #334155;
-            word-break: break-all;
-            line-height: 1.5;
-        }
-
-        .example-text {
-            background: white;
-            padding: 8px 12px;
-            border-radius: 12px;
-            margin-top: 8px;
-            font-size: 0.75rem;
-            color: #1e293b;
-            border-left: 3px solid #3b82f6;
-        }
-
-        .example-text-kosong {
-            background: #fef3c7;
-            padding: 8px 12px;
-            border-radius: 12px;
-            margin-top: 8px;
-            font-size: 0.75rem;
-            color: #92400e;
-            border-left: 3px solid #f59e0b;
-        }
-
-        .auto-info {
-            background: #e0e7ff;
-            padding: 10px 16px;
-            border-radius: 16px;
-            margin-bottom: 16px;
-            font-size: 0.8rem;
-            color: #1e40af;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .card-title::before { 
+            content: '▌'; 
+            font-size: 20px;
+            background: none;
+            color: var(--primary-cyber);
+            text-shadow: 0 0 5px var(--primary-cyber);
         }
 
         textarea {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 24px;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 0.85rem;
-            line-height: 1.5;
+            width: 100%; min-height: 140px; padding: 16px;
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 14px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
             resize: vertical;
-            transition: all 0.2s;
-            background: #ffffff;
+            transition: all 0.3s ease;
+            background: rgba(10, 10, 26, 0.8);
+            color: var(--text-cyber);
+        }
+        textarea:focus { 
+            outline: none; 
+            border-color: var(--primary-cyber); 
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            background: rgba(10, 10, 26, 1);
+        }
+        textarea::placeholder { color: rgba(136, 146, 176, 0.5); }
+
+        /* Loading Bar Robotic */
+        .loading-bar {
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-cyber), var(--secondary-cyber));
+            border-radius: 3px;
+            width: 0%;
+            margin-top: 12px;
+            transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 0 10px var(--primary-cyber);
+        }
+        .loading-bar.active { 
+            width: 100%; 
+            animation: roboticLoader 0.8s ease-out;
+        }
+        @keyframes roboticLoader {
+            0% { width: 0%; opacity: 0; }
+            30% { width: 40%; opacity: 1; }
+            70% { width: 80%; }
+            100% { width: 100%; }
         }
 
-        textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 16px;
-        }
-
+        .btn-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
         .btn {
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            border: none;
+            padding: 14px 26px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
             cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(15, 15, 42, 0.8);
+            color: var(--text-cyber);
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn:hover::before { left: 100%; }
+        .btn:hover {
+            border-color: var(--primary-cyber);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn:active { transform: translateY(0); }
+        
+        .btn-success {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.05));
+            border-color: var(--success-cyber);
+        }
+        .btn-success:hover { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); border-color: var(--success-cyber); }
+        
+        .btn-secondary:hover { border-color: var(--primary-cyber); }
+
+        /* Output Area Robotic */
+        .output-area {
+            background: #0a0a1a;
+            color: var(--primary-cyber);
+            font-family: 'Share Tech Mono', monospace;
+            padding: 18px;
+            border-radius: 14px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 380px;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            line-height: 1.6;
+            font-size: 12px;
+            position: relative;
+            min-height: 140px;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 243, 255, 0.1);
+        }
+        .output-area::-webkit-scrollbar { width: 8px; height: 8px; }
+        .output-area::-webkit-scrollbar-track { background: #0f0f2a; border-radius: 4px; }
+        .output-area::-webkit-scrollbar-thumb { background: var(--primary-cyber); border-radius: 4px; box-shadow: 0 0 10px var(--primary-cyber); }
+
+        .output-area.processing {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .output-area.processing::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.15) 0%, transparent 70%);
+            animation: roboticPulse 1.5s ease-in-out infinite;
+            pointer-events: none;
+            border-radius: 14px;
+        }
+        @keyframes roboticPulse {
+            0%, 100% { opacity: 0.2; transform: scale(0.95); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+
+        .processing-text { 
+            color: var(--primary-cyber); 
+            font-size: 14px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            z-index: 2;
+            text-shadow: 0 0 5px var(--primary-cyber);
+        }
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-top-color: var(--primary-cyber);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: inline-block;
+            flex-shrink: 0;
+            box-shadow: 0 0 5px var(--primary-cyber);
+        }
+
+        /* Stats Robotic */
+        .stats { display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
+        .stat-card {
+            flex: 1; min-width: 110px;
+            background: rgba(15, 15, 42, 0.8);
+            padding: 16px 20px;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            border-color: var(--primary-cyber);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-cyber), var(--secondary-cyber));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .stat-label { 
+            font-size: 11px; 
+            color: var(--text-dim); 
+            margin-top: 4px; 
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .auto-badge {
+            background: rgba(0, 243, 255, 0.15);
+            color: var(--primary-cyber);
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            animation: badgeBlink 2s step-start infinite;
+        }
+        @keyframes badgeBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Toast Robotic */
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.9), rgba(0, 100, 255, 0.9));
+            backdrop-filter: blur(10px);
+            color: #0a0a1a;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 700;
+            display: flex;
             align-items: center;
             gap: 10px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-danger {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: #f1f5f9;
-            color: #334155;
-            border: 1px solid #e2e8f0;
-        }
-
-        .btn-secondary:hover {
-            background: #e2e8f0;
-        }
-
-        .btn-success {
-            background: #10b981;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #059669;
-            transform: translateY(-2px);
-        }
-
-        .filter-card {
-            padding: 20px 28px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #f8fafc;
-            padding: 4px 16px;
-            border-radius: 48px;
-            border: 1px solid #e2e8f0;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .search-box i {
-            color: #94a3b8;
-        }
-
-        .search-box input {
-            border: none;
-            background: transparent;
-            padding: 12px 0;
-            width: 100%;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .stats-badge {
-            background: linear-gradient(120deg, #eef2ff, #e0e7ff);
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            color: #1e40af;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-            padding: 0 4px 8px 4px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            padding: 18px 16px;
-            background: #f8fafc;
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #475569;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        td {
-            padding: 16px;
-            border-bottom: 1px solid #f0f2f5;
-            font-size: 0.85rem;
-            color: #1e293b;
-            vertical-align: middle;
-        }
-
-        tr:hover {
-            background: #fefce8;
-        }
-
-        .badge-method {
-            background: #4c1d95;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            display: inline-block;
-        }
-
-        .badge-dana {
-            background: #00897b;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            display: inline-block;
-        }
-
-        .ref-id {
-            font-family: 'SF Mono', monospace;
-            font-size: 0.75rem;
-            background: #f1f5f9;
-            padding: 4px 8px;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
-        .nominal-minus {
-            color: #dc2626;
-            font-weight: 700;
-            font-family: 'SF Mono', monospace;
-            font-size: 0.9rem;
-        }
-
-        .nama-kosong {
-            color: #94a3b8;
-            font-style: italic;
-            background: #f8fafc;
-            padding: 4px 8px;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
-        .delete-icon {
-            color: #cbd5e1;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: 0.2s;
-        }
-
-        .delete-icon:hover {
-            color: #ef4444;
-            transform: scale(1.1);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 64px 24px;
-            color: #94a3b8;
-        }
-
-        .copy-toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #10b981;
-            color: white;
-            padding: 14px 28px;
-            border-radius: 48px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
             z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            animation: slideIn 0.3s ease;
+            font-family: 'Share Tech Mono', monospace;
+            border: 1px solid var(--primary-cyber);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+            animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        @keyframes toastIn { from { transform: translateX(150px) scale(0.9); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
 
-        .copy-toast.error {
-            background: #ef4444;
-        }
+        .hidden { display: none !important; }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .footer-info {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-
-        .format-info {
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 12px 20px;
-            border-radius: 16px;
-            margin-top: 16px;
-            font-size: 0.75rem;
-            font-family: monospace;
-        }
-
-        .order-badge {
-            background: #f59e0b;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            display: inline-block;
-            margin-left: 10px;
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            h1 { font-size: 20px; }
+            .tabs { flex-direction: column; }
+            .btn-group { flex-direction: column; }
+            .btn { width: 100%; }
+            .logo-icon { width: 45px; height: 45px; font-size: 24px; }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>
-            <i class="fas fa-chalkboard-user"></i> 
-            Dashboard Transaksi
-        </h1>
-        <p>Unlimited input · Auto parsing · Urutan data: TERBARU di ATAS (dari bawah ke atas)</p>
-        <div class="auto-badge">
-            <i class="fas fa-magic"></i> AUTO PARSE - Langsung tampil saat input/paste
-            <span class="order-badge"><i class="fas fa-arrow-down"></i> Urutan: Baris paling bawah jadi paling atas</span>
-        </div>
-    </div>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">⚙️</div>
+                <h1>TRANSFORMATTER X <span class="auto-badge">⚡ AUTO-PROCESS</span></h1>
+            </div>
+            <p class="subtitle">[ ROBO-FORMAT v2.0 ] // REAL-TIME DATA EXTRACTION // STATUS: <span style="color:#00ff88">ONLINE</span></p>
+        </header>
 
-    <div class="card">
-        <div class="input-section">
-            <div class="section-title">
-                <i class="fas fa-pen-ruler"></i>
-                <span>Input Data Log (Otomatis Terproses)</span>
-            </div>
-            <div class="auto-info">
-                <i class="fas fa-sync-alt"></i> 
-                <span>✨ FITUR AUTO: Setiap kali Anda paste, data akan otomatis diproses dan ditampilkan dengan urutan TERBARU di ATAS.</span>
-            </div>
-            <div class="example-box">
-                <i class="fas fa-copy"></i> Format contoh (urutan input dari atas ke bawah):
-                <div class="example-text">
-                    📌 Baris 1 (paling lama): 07/05/2026 17:59:15 ... OVO 085138744339 INDRA SAHPIRI Rp4,000,000<br>
-                    📌 Baris 2 (tengah): 07/05/2026 17:59:24 ... OVO 081392818184 HENXXXX MARXXXXXX MARXXX Rp2,650,000<br>
-                    📌 Baris 3 (paling baru): 07/05/2026 18:39:08 ... Dana 082224256471 - Rp60,000<br><br>
-                    <strong>→ Hasil tampilan: Baris 3 (Dana) di atas, lalu baris 2, lalu baris 1</strong>
-                </div>
-                <div class="example-text-kosong">
-                    📌 Hasil ekstrak yang diharapkan (urutan dari bawah ke atas):<br>
-                    Dana	LIT-851167bc-e668-415c-ab6d-d41abf9a5123	082224256471	-	-60000<br>
-                    OVO	LIT-f3cbf202-6a93-4b08-80d8-0c49e8ce5c1b	081392818184	HENXXXX MARXXXXXX MARXXX	-2650000<br>
-                    OVO	LIT-69338fef-ca5f-42ef-a43f-7f3647bf33a5	085138744339	INDRA SAHPIRI	-4000000
+        <nav class="tabs">
+            <button class="tab-btn failed-mode active" onclick="switchTab('failed')"><span>❌</span> FAILED MODE</button>
+            <button class="tab-btn pending-mode" onclick="switchTab('pending')"><span>⏳</span> PENDING MODE</button>
+        </nav>
+
+        <!-- FAILED MODE -->
+        <div id="tab-failed" class="tab-content active">
+            <div class="card">
+                <div class="card-title">▶ INPUT DATA [FAILED]</div>
+                <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">>> Paste tab-separated data | Status: <strong style="color:#00f3ff">FAILED</strong> | Auto-format active</p>
+                <textarea id="inputFailed" placeholder="07/05/2026 19:47:04\tfailed\tSMB5 (...)\tLIT-xxx\tOVO\t..."></textarea>
+                <div class="loading-bar" id="barFailed"></div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="clearTab('failed')"><span>🗑️</span> CLEAR DATA</button>
                 </div>
             </div>
-            <textarea id="rawInput" rows="5" placeholder="Tempelkan baris log di sini...&#10;Urutan: Baris paling bawah akan tampil paling atas"></textarea>
-            <div class="button-group">
-                <button class="btn btn-secondary" id="clearInputBtn">
-                    <i class="fas fa-eraser"></i> Bersihkan Input
-                </button>
-                <button class="btn btn-danger" id="deleteAllBtn">
-                    <i class="fas fa-trash-alt"></i> Hapus Semua Data
-                </button>
-            </div>
-            <div class="format-info">
-                <i class="fas fa-info-circle"></i> <strong>Urutan Data:</strong> Data yang paling baru (paling bawah saat input) akan tampil di Paling Atas tabel.
-                Nominal menggunakan format MINUS (contoh: -60000, -2650000, -4000000)
-            </div>
-        </div>
-    </div>
 
-    <div class="card">
-        <div class="filter-card">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchFilter" placeholder="Filter by ID / No HP / Nama ..." autocomplete="off">
+            <div class="stats hidden" id="statsFailed">
+                <div class="stat-card"><div class="stat-value" id="failedTotal">0</div><div class="stat-label">TOTAL LINES</div></div>
+                <div class="stat-card"><div class="stat-value" id="failedFiltered">0</div><div class="stat-label">FAILED MATCH</div></div>
+                <div class="stat-card"><div class="stat-value" id="failedProcessed">0</div><div class="stat-label">PROCESSED</div></div>
             </div>
-            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                <div class="stats-badge" id="statsDisplay">
-                    <i class="fas fa-database"></i> Total: 0
+
+            <div class="card">
+                <div class="card-title">▶ OUTPUT [7 COLUMNS]</div>
+                
+                <div class="output-wrapper">
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="copyOutput('failed')"><span>📋</span> COPY OUTPUT</button>
+                    </div>
+                    <div class="output-area" id="outputFailed"><em style="color:#8892b0;">>> STANDING BY... PASTE DATA TO PROCESS</em></div>
                 </div>
-                <button class="btn btn-success" id="copyFilteredBtn">
-                    <i class="fas fa-copy"></i> Copy Hasil Filter
-                </button>
-                <button class="btn btn-success" id="copyAllBtn" style="background:#059669;">
-                    <i class="fas fa-copy"></i> Copy Semua Data
-                </button>
+            </div>
+        </div>
+
+        <!-- PENDING MODE -->
+        <div id="tab-pending" class="tab-content">
+            <div class="card">
+                <div class="card-title">▶ INPUT DATA [PENDING]</div>
+                <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">>> Paste tab-separated data | Status: <strong style="color:#ff00e6">PENDING</strong> | Auto-format active</p>
+                <textarea id="inputPending" placeholder="07/05/2026 22:53:07\tpending\tSMB5 (...)\tLIT-xxx\tBank Mandiri\t..."></textarea>
+                <div class="loading-bar" id="barPending"></div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="clearTab('pending')"><span>🗑️</span> CLEAR DATA</button>
+                </div>
+            </div>
+
+            <div class="stats hidden" id="statsPending">
+                <div class="stat-card"><div class="stat-value" id="pendingTotal">0</div><div class="stat-label">TOTAL LINES</div></div>
+                <div class="stat-card"><div class="stat-value" id="pendingFiltered">0</div><div class="stat-label">PENDING MATCH</div></div>
+                <div class="stat-card"><div class="stat-value" id="pendingProcessed">0</div><div class="stat-label">PROCESSED</div></div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">▶ OUTPUT [4 COLUMNS]</div>
+                
+                <div class="output-wrapper">
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="copyOutput('pending')"><span>📋</span> COPY OUTPUT</button>
+                    </div>
+                    <div class="output-area" id="outputPending"><em style="color:#8892b0;">>> STANDING BY... PASTE DATA TO PROCESS</em></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="table-wrapper">
-            <table id="dataTable">
-                <thead>
-                    <tr>
-                        <th>Metode</th>
-                        <th>REF ID</th>
-                        <th>No HP</th>
-                        <th>Nama</th>
-                        <th>Nominal (Rp)</th>
-                        <th style="width: 50px"></th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <tr class="empty-state">
-                        <td colspan="6"><i class="fas fa-inbox"></i><br>Belum ada data. Mulai ketik atau paste di atas!</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="footer-info">
-        <i class="fas fa-infinity"></i> Unlimited · Urutan: Data terbaru (paling bawah input) di atas · Nominal MINUS
-    </div>
-</div>
+    <script>
+        // Debounce timer untuk auto process
+        let failedTimeout = null;
+        let pendingTimeout = null;
 
-<script>
-    let transactions = [];
+        function switchTab(mode) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.tab-btn.${mode}-mode`).classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`tab-${mode}`).classList.add('active');
+        }
 
-    // ======================= FORMAT NOMINAL MINUS =======================
-    function formatNumberMinus(number) {
-        return `-${number.toString()}`;
-    }
+        function cleanPaymentMethod(method) { if (!method) return ''; return method.replace(/^Bank\s+/i, '').trim(); }
+        function cleanAmount(amount) { if (!amount) return ''; return String(amount).replace('Rp', '').trim(); }
 
-    // ======================= PARSER - MENGAMBIL NOMINAL AWAL =======================
-    function parseLogLine(line, index) {
-        if (!line || line.trim() === "") return null;
-        const trimmed = line.trim();
-        const parts = trimmed.split(/\s+/);
-        if (parts.length < 8) return null;
-        
-        let refId = null;
-        let metode = null;
-        let noHp = null;
-        let namaRaw = "";
-        let nominalAwal = 0;
-        
-        // Cari REF ID (LIT-...)
-        for (let i = 0; i < parts.length; i++) {
-            if (parts[i].startsWith("LIT-")) {
-                refId = parts[i];
-                break;
-            }
-        }
-        
-        // Cari metode (OVO, Dana, QRIS, SHOPEEPAY)
-        for (let i = 0; i < parts.length; i++) {
-            const upper = parts[i].toUpperCase();
-            if (upper === "OVO" || upper === "DANA" || upper === "QRIS" || upper === "SHOPEEPAY") {
-                metode = parts[i];
-                break;
-            }
-        }
-        
-        // Cari No HP (mulai 08 atau +62)
-        for (let i = 0; i < parts.length; i++) {
-            if (/^(08|\+62)\d{8,13}$/.test(parts[i])) {
-                noHp = parts[i];
-                break;
-            }
-        }
-        
-        if (!refId || !metode || !noHp) return null;
-        
-        const noHpIndex = parts.findIndex(p => p === noHp);
-        if (noHpIndex === -1) return null;
-        
-        let startNameIdx = noHpIndex + 1;
-        let endNameIdx = -1;
-        let isEmptyName = false;
-        
-        // Cari posisi nominal (Rp...)
-        for (let i = startNameIdx; i < parts.length; i++) {
-            if (parts[i].startsWith("Rp") && !parts[i].startsWith("(-Rp")) {
-                endNameIdx = i;
-                break;
-            }
-        }
-        
-        if (endNameIdx === -1) {
-            for (let i = startNameIdx; i < parts.length; i++) {
-                if (parts[i].startsWith("(-Rp")) {
-                    endNameIdx = i;
-                    break;
+        function processLines(input, statusFilter, mode) {
+            const lines = input.split('\n').filter(line => line.trim());
+            const results = []; 
+            let filteredCount = 0;
+
+            lines.forEach((line, index) => {
+                const fields = line.split('\t');
+                if (fields.length >= 8 && fields[1]?.toLowerCase().trim() === statusFilter) {
+                    filteredCount++;
+                    if (mode === 'failed') {
+                        const paymentMethod = cleanPaymentMethod(fields[4]?.trim() || '');
+                        const transactionId = fields[3]?.trim() || '';
+                        const amountRaw = fields[7]?.trim() || 'Rp0';
+                        const name = fields[6]?.trim() || '';
+                        const amountClean = cleanAmount(amountRaw);
+                        results.push({ index, line: [paymentMethod, '', transactionId, amountClean, name, '', '-' + amountClean].join('\t') });
+                    } else if (mode === 'pending') {
+                        const timestamp = fields[0]?.trim() || '';
+                        const transactionId = fields[3]?.trim() || '';
+                        const amountClean = cleanAmount(fields[7]?.trim() || 'Rp0');
+                        const feeClean = cleanAmount(fields[8]?.trim() || 'Rp0');
+                        results.push({ index, line: [timestamp, transactionId, amountClean, feeClean].join('\t') });
+                    }
                 }
+            });
+            results.sort((a, b) => b.index - a.index);
+            return { total: lines.length, filtered: filteredCount, output: results.map(r => r.line) };
+        }
+
+        function showStats(mode, total, filtered, processed) {
+            const prefix = mode === 'failed' ? 'failed' : 'pending';
+            const statsDiv = document.getElementById(`stats${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+            
+            document.getElementById(`${prefix}Total`).textContent = total;
+            document.getElementById(`${prefix}Filtered`).textContent = filtered;
+            document.getElementById(`${prefix}Processed`).textContent = processed;
+            
+            if (total > 0) {
+                statsDiv.classList.remove('hidden');
+            } else {
+                statsDiv.classList.add('hidden');
             }
         }
-        
-        if (endNameIdx !== -1 && startNameIdx === endNameIdx) {
-            isEmptyName = true;
-            namaRaw = "";
-        } else if (endNameIdx !== -1 && endNameIdx > startNameIdx) {
-            namaRaw = parts.slice(startNameIdx, endNameIdx).join(" ");
-            if (namaRaw.trim() === "") isEmptyName = true;
-        } else if (endNameIdx === -1) {
-            if (startNameIdx < parts.length && parts[startNameIdx].startsWith("Rp")) {
-                isEmptyName = true;
-                namaRaw = "";
-            } else if (parts.length - startNameIdx >= 2) {
-                namaRaw = parts.slice(startNameIdx, parts.length - 2).join(" ");
-                if (namaRaw.trim() === "") isEmptyName = true;
+
+        function showOutput(mode, outputArray) {
+            const outputEl = document.getElementById(`output${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+            outputEl.classList.remove('processing');
+            
+            if (outputArray.length > 0) {
+                outputEl.textContent = outputArray.join('\n');
+                void outputEl.offsetWidth;
+                outputEl.classList.add('result-animate');
+                setTimeout(() => outputEl.classList.remove('result-animate'), 400);
+            } else {
+                const statusText = mode === 'failed' ? 'failed' : 'pending';
+                outputEl.innerHTML = `<em style="color:#ff0033;">>> ERROR: No data with status "${statusText}" found</em>`;
             }
         }
-        
-        let namaFinal = (isEmptyName || namaRaw.trim() === "") ? "-" : namaRaw.trim();
-        
-        // Ambil nominal awal
-        let nominalAwalStr = "";
-        for (let i = 0; i < parts.length; i++) {
-            if (parts[i].startsWith("Rp") && !parts[i].startsWith("(-Rp")) {
-                nominalAwalStr = parts[i];
-                break;
-            }
-        }
-        
-        if (nominalAwalStr) {
-            let clean = nominalAwalStr.replace(/Rp/g, "").replace(/\./g, "").replace(/,/g, "");
-            nominalAwal = parseInt(clean, 10);
-        }
-        
-        if (isNaN(nominalAwal)) nominalAwal = 0;
-        
-        const formattedNominal = formatNumberMinus(nominalAwal);
-        
-        return { 
-            metode, 
-            refId, 
-            noHp, 
-            nama: namaFinal, 
-            nominalDisplay: formattedNominal,
-            nominalValue: nominalAwal,
-            originalOrder: index
-        };
-    }
-    
-    // ======================= AUTO PROCESS =======================
-    let autoProcessTimeout = null;
-    
-    function autoProcessFromInput() {
-        const rawText = document.getElementById('rawInput').value;
-        
-        if (autoProcessTimeout) {
-            clearTimeout(autoProcessTimeout);
-        }
-        
-        autoProcessTimeout = setTimeout(() => {
-            if (!rawText.trim()) {
-                if (transactions.length > 0) {
-                    transactions = [];
-                    renderTable();
-                }
+
+        function autoProcess(mode) {
+            const inputId = mode === 'failed' ? 'inputFailed' : 'inputPending';
+            const input = document.getElementById(inputId).value;
+            const barId = `bar${mode.charAt(0).toUpperCase() + mode.slice(1)}`;
+            const bar = document.getElementById(barId);
+            const outputEl = document.getElementById(`output${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+            
+            if (!input.trim()) {
+                outputEl.classList.remove('processing');
+                outputEl.innerHTML = '<em style="color:#8892b0;">>> STANDING BY... PASTE DATA TO PROCESS</em>';
+                showStats(mode, 0, 0, 0);
+                bar.classList.remove('active');
                 return;
             }
             
-            const lines = rawText.split(/\r?\n/);
-            const newTransactions = [];
+            bar.classList.add('active');
+            outputEl.classList.add('processing');
+            outputEl.innerHTML = '<div class="processing-text"><span class="spinner"></span> PROCESSING DATA...</div>';
             
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i];
-                if (line.trim() === "") continue;
-                const parsed = parseLogLine(line, i);
-                if (parsed) {
-                    newTransactions.push(parsed);
-                }
-            }
-            
-            transactions = newTransactions.reverse();
-            renderTable();
-        }, 300);
-    }
-    
-    function deleteAll() {
-        if (transactions.length > 0 && confirm(`Hapus semua ${transactions.length} data?`)) {
-            transactions = [];
-            document.getElementById('rawInput').value = '';
-            renderTable();
-        } else if (transactions.length === 0) {
-            alert("Tidak ada data untuk dihapus.");
+            setTimeout(() => {
+                const result = processLines(input, mode, mode);
+                showStats(mode, result.total, result.filtered, result.output.length);
+                showOutput(mode, result.output);
+                bar.classList.remove('active');
+                outputEl.classList.remove('processing');
+            }, 150);
         }
-    }
-    
-    function clearInput() {
-        document.getElementById('rawInput').value = '';
-        transactions = [];
-        renderTable();
-    }
-    
-    function deleteTransaction(index) {
-        transactions.splice(index, 1);
-        renderTable();
-    }
-    
-    function getFilteredData() {
-        const searchTerm = document.getElementById('searchFilter').value.toLowerCase();
-        if (!searchTerm) return [...transactions];
-        return transactions.filter(t => 
-            t.refId.toLowerCase().includes(searchTerm) ||
-            t.noHp.includes(searchTerm) ||
-            t.nama.toLowerCase().includes(searchTerm) ||
-            t.metode.toLowerCase().includes(searchTerm)
-        );
-    }
-    
-    // ======================= COPY FUNCTION =======================
-    async function copyToClipboard(text, successMessage = "Berhasil disalin!") {
-        if (navigator.clipboard && window.isSecureContext) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showToast(successMessage, false);
-                return true;
-            } catch (err) {
-                return fallbackCopy(text, successMessage);
-            }
-        } else {
-            return fallbackCopy(text, successMessage);
-        }
-    }
-    
-    function fallbackCopy(text, successMessage) {
-        try {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.top = '-9999px';
-            textarea.style.left = '-9999px';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            
-            textarea.select();
-            textarea.setSelectionRange(0, text.length);
-            
-            const successful = document.execCommand('copy');
-            document.body.removeChild(textarea);
-            
-            if (successful) {
-                showToast(successMessage + " ✓", false);
-                return true;
+
+        function debounceProcess(mode) {
+            if (mode === 'failed') {
+                if (failedTimeout) clearTimeout(failedTimeout);
+                failedTimeout = setTimeout(() => autoProcess('failed'), 200);
             } else {
-                showToast("Gagal menyalin. Silakan copy manual.", true);
-                return false;
+                if (pendingTimeout) clearTimeout(pendingTimeout);
+                pendingTimeout = setTimeout(() => autoProcess('pending'), 200);
             }
-        } catch (err) {
-            showToast("Gagal menyalin. Silakan copy manual.", true);
-            return false;
         }
-    }
-    
-    function copyData(dataArray, contextName = "data") {
-        if (dataArray.length === 0) {
-            showToast(`Tidak ada ${contextName} untuk disalin.`, true);
-            return;
-        }
-        
-        const lines = dataArray.map(item => {
-            return `${item.metode}\t${item.refId}\t${item.noHp}\t${item.nama}\t${item.nominalDisplay}\t`;
-        });
-        
-        const outputText = lines.join('\n');
-        copyToClipboard(outputText, `✅ ${dataArray.length} baris ${contextName} berhasil disalin! (Urutan terbaru di atas)`);
-    }
-    
-    function copyFilteredData() {
-        const filtered = getFilteredData();
-        copyData(filtered, "hasil filter");
-    }
-    
-    function copyAllData() {
-        copyData(transactions, "semua data");
-    }
-    
-    function showToast(message, isError = false) {
-        let existingToast = document.querySelector('.copy-toast');
-        if (existingToast) existingToast.remove();
-        
-        const toast = document.createElement('div');
-        toast.className = `copy-toast ${isError ? 'error' : ''}`;
-        toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${message}`;
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-    
-    function renderTable() {
-        const filtered = getFilteredData();
-        const statsSpan = document.getElementById('statsDisplay');
-        statsSpan.innerHTML = `<i class="fas fa-database"></i> Total: ${transactions.length}${filtered.length !== transactions.length ? ` | Tampil: ${filtered.length}` : ''}`;
-        
-        const tbody = document.getElementById('tableBody');
-        if (filtered.length === 0) {
-            tbody.innerHTML = `<tr class="empty-state"><td colspan="6"><i class="fas fa-search"></i><br>Tidak ada data cocok atau belum input</td></tr>`;
-            return;
-        }
-        
-        let html = '';
-        filtered.forEach((item) => {
-            const realIndex = transactions.findIndex(t => 
-                t.refId === item.refId && t.noHp === item.noHp && t.nominalDisplay === item.nominalDisplay);
-            const metodeClass = item.metode === "Dana" ? "badge-dana" : "badge-method";
-            const namaDisplay = item.nama === "-" 
-                ? `<span class="nama-kosong"><i class="fas fa-user-slash"></i> -</span>` 
-                : `<strong>${escapeHtml(item.nama)}</strong>`;
-            
-            html += `
-                <tr>
-                    <td><span class="${metodeClass}">${escapeHtml(item.metode)}</span></td>
-                    <td><span class="ref-id">${escapeHtml(item.refId)}</span></td>
-                    <td>${escapeHtml(item.noHp)}</td>
-                    <td>${namaDisplay}</td>
-                    <td class="nominal-minus">${escapeHtml(item.nominalDisplay)}</td>
-                    <td><i class="fas fa-trash-alt delete-icon" data-index="${realIndex}"></i></td>
-                </tr>
-            `;
-        });
-        tbody.innerHTML = html;
-        
-        document.querySelectorAll('.delete-icon').forEach(icon => {
-            icon.addEventListener('click', (e) => {
-                const idx = parseInt(icon.getAttribute('data-index'), 10);
-                if (!isNaN(idx)) deleteTransaction(idx);
-                e.stopPropagation();
+
+        function copyOutput(mode) {
+            const output = document.getElementById(`output${mode.charAt(0).toUpperCase() + mode.slice(1)}`).textContent;
+            if (!output || output.includes('ERROR') || output.includes('STANDING BY')) { 
+                showToast('⚠️ NO DATA TO COPY!', 'warning'); 
+                return; 
+            }
+            navigator.clipboard.writeText(output).then(() => showToast('✓ DATA COPIED TO CLIPBOARD')).catch(() => {
+                const ta = document.createElement('textarea'); 
+                ta.value = output; 
+                document.body.appendChild(ta); 
+                ta.select();
+                document.execCommand('copy'); 
+                document.body.removeChild(ta); 
+                showToast('✓ DATA COPIED!');
             });
+        }
+
+        function clearTab(mode) {
+            const textarea = document.getElementById(`input${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+            textarea.value = '';
+            
+            const out = document.getElementById(`output${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+            out.classList.remove('processing', 'result-animate');
+            out.innerHTML = '<em style="color:#8892b0;">>> STANDING BY... PASTE DATA TO PROCESS</em>';
+            
+            const statsDiv = document.getElementById(`stats${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+            statsDiv.classList.add('hidden');
+            
+            const bar = document.getElementById(`bar${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+            bar.classList.remove('active');
+            
+            const prefix = mode === 'failed' ? 'failed' : 'pending';
+            document.getElementById(`${prefix}Total`).textContent = '0';
+            document.getElementById(`${prefix}Filtered`).textContent = '0';
+            document.getElementById(`${prefix}Processed`).textContent = '0';
+            
+            showToast('🗑️ DATA CLEARED!');
+        }
+
+        function showToast(message, type = 'success') {
+            const existing = document.querySelector('.toast'); 
+            if (existing) existing.remove();
+            const toast = document.createElement('div'); 
+            toast.className = 'toast';
+            toast.innerHTML = `<span>${type === 'warning' ? '⚠️' : '✓'}</span> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => { 
+                toast.classList.add('hide'); 
+                setTimeout(() => toast.remove(), 300); 
+            }, 2500);
+        }
+
+        // Event listeners
+        document.getElementById('inputFailed').addEventListener('input', () => debounceProcess('failed'));
+        document.getElementById('inputPending').addEventListener('input', () => debounceProcess('pending'));
+        
+        document.getElementById('inputFailed').addEventListener('keydown', e => { 
+            if(e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                autoProcess('failed');
+                showToast('🔄 REPROCESSING DATA...');
+            }
         });
-    }
-    
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
+        document.getElementById('inputPending').addEventListener('keydown', e => { 
+            if(e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                autoProcess('pending');
+                showToast('🔄 REPROCESSING DATA...');
+            }
         });
-    }
-    
-    // Event Listeners
-    document.getElementById('rawInput').addEventListener('input', autoProcessFromInput);
-    document.getElementById('rawInput').addEventListener('paste', autoProcessFromInput);
-    document.getElementById('clearInputBtn').addEventListener('click', clearInput);
-    document.getElementById('deleteAllBtn').addEventListener('click', deleteAll);
-    document.getElementById('searchFilter').addEventListener('input', () => renderTable());
-    document.getElementById('copyFilteredBtn').addEventListener('click', copyFilteredData);
-    document.getElementById('copyAllBtn').addEventListener('click', copyAllData);
-    
-    // MENGHAPUS SAMPLE DATA INITIAL — textarea kosong, transactions array kosong
-    // Tidak ada inisialisasi sample lagi. Halaman dimulai dengan data kosong.
-    // Memastikan textarea benar-benar kosong dan tabel menampilkan pesan 'Belum ada data'
-    document.getElementById('rawInput').value = '';
-    transactions = [];
-    renderTable();
-</script>
+        
+        console.log('🤖 TRANSFORMATTER X ONLINE - Auto Process Active');
+    </script>
 </body>
 </html>
