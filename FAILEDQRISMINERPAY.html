@@ -538,7 +538,7 @@
         function cleanPaymentMethod(method) { if (!method) return ''; return method.replace(/^Bank\s+/i, '').trim(); }
         function cleanAmount(amount) { if (!amount) return ''; return String(amount).replace('Rp', '').trim(); }
         
-        // FUNGSI BARU: Menambahkan prefix berdasarkan jenis bank
+        // FUNGSI: Menambahkan prefix berdasarkan jenis bank
         function addBankPrefix(bankName, phoneNumber) {
             if (!phoneNumber) return phoneNumber;
             
@@ -549,7 +549,9 @@
             const bankPrefixMap = {
                 'ovo': '39358',
                 'dana': '3901',
-                'gopay': '70001'
+                'gopay': '70001',
+                'linkaja': '09110',
+                'linkaja': '09110' // support ejaan yang berbeda
             };
             
             // Cari prefix yang sesuai (case insensitive)
