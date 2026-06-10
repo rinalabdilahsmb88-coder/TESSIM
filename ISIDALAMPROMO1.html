@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINETOGEL - Promo Terbesar di Website Kami</title>
+    <style>
+        :root {
+            --first-color: #000;
+            --second-color: #fff;
+            --third-color: #c400c4;
+            --fourth-color: #170149;
+        }
+
+        body {
+            background: url("https://cdn.areabermain.club/assets/cdn/az6/2025/04/01/20250401/5dc9d083e18085eef7c0cd7fcf52bd46/linetogel-bg-new.jpg") center/cover no-repeat fixed;
+            color: var(--second-color);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--first-color);
+            border: 2px solid var(--third-color);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+
+        .container img {
+            width: 100%;
+            border-bottom: 2px solid var(--third-color);
+        }
+
+        .teks-berjaalan {
+            border-bottom: 1px solid var(--third-color);
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            text-align: center;
+            background: var(--fourth-color);
+            color: var(--second-color);
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        @keyframes rgbShift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 0%; }
+            100% { background-position: 0% 100%; }
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 160px;
+            height: 80px;
+            background: linear-gradient(45deg, #4ce0d2, #EE82EE);
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .nav-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            .nav-item {
+                width: 80%;
+                height: 60px;
+                font-size: 14px;
+            }
+        }
+
+        .promo-block {
+            margin-bottom: 0rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .promo-block button {
+            border: none;
+            padding: 0;
+            background: none;
+            cursor: pointer;
+            margin-bottom: 0rem;
+        }
+
+        .promo-block button img {
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid var(--first-color);
+            border-radius: 0.5rem;
+            transition: border 0.3s;
+            margin-bottom: 0;
+        }
+
+        .promo-block button img:hover {
+            border: 1px solid var(--third-color);
+        }
+
+        .content {
+            display: none;
+            padding: 1rem;
+            background: var(--first-color);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .collapsible.active + .content {
+            display: block;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            .teks-berjaalan {
+                font-size: 1rem;
+            }
+            .menu-item li {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+            .promo-block button img {
+                width: 100%;
+            }
+            .content {
+                max-width: 100%;
+                padding: 1rem;
+            }
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        h1, h2, h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.4em;
+            margin-top: 20px;
+            border-bottom: 1px solid #007bff;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .item {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 24px;
+            color: #3498db;
+            line-height: 1.6;
+        }
+
+        .note {
+            font-style: italic;
+            color: #e5ff00;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        .level {
+            margin-bottom: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, #0056a0, #004e92);
+            border: 1px solid #004080;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+            font-size: 18px;
+            color: #f9f9f9;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+            transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease, color 0.4s ease;
+        }
+
+        .level:hover {
+            background: linear-gradient(135deg, #333333, #000000);
+            color: #ffffff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="container">
+        <img src="https://cdn.areabermain.club/assets/cdn/az6/2025/04/04/20250404/3075406027073f5ff75730227d871201/linetogel-gif-5.gif"
+            alt="promo header">
+        <marquee class="teks-berjaalan" direction="left" scrollamount="5">
+            SELAMAT DATANG DI LINETOGEL BANDAR TOGEL, LIVE CASINO SERTA SLOT TERBAIK DAN TERPERCAYA DI INDONESIA DENGAN BONUS YANG CUKUP BERAGAM UNTUK SEMUA JENIS PERMAINAN.
+        </marquee>
+        
+        <nav class="nav-menu">
+            <a href="https://linklist.bio/dRrWKE3fx9" class="nav-item">PREDIKSI</a>
+            <a href="https://linklist.bio/ZIF9gWbNpi" class="nav-item">DAFTAR</a>
+            <a href="https://lineblog997.com/category/cara-bermain-togel/" class="nav-item">CARA BERMAIN</a>
+        </nav>
+
+        <!-- ================= PROMO BARU: KPBI WORLD CUP PREDICTION CHAMPIONSHIP 2026 ================= -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/06/10/20260610/7c6536caebdb309a6390a8046fe379f2/promo1.jpg" alt="Promo World Cup 2026"></button>
+            <div class="content">
+                <!-- KONTEN WORLD CUP (sesuai yang diberikan) -->
+                <div style="background:linear-gradient(180deg,#2b0a57,#17052f); border-radius:12px; border:2px solid #b400ff; box-shadow:0 0 20px rgba(180,0,255,0.8); padding:20px; color:#ffffff;">
+                    <p style="text-align:center">
+                        <span style="color:#d56cff; font-size:28px; text-shadow:0 0 10px rgba(213,108,255,0.8);">
+                            <strong>🏆⚽ KPBI WORLD CUP PREDICTION CHAMPIONSHIP 2026 ⚽🏆</strong>
+                        </span><br>
+                        <span style="color:#ffffff; font-size:15px">
+                            Prediksi • Kumpulkan Poin • Menangkan Hadiah Miliaran Rupiah
+                        </span>
+                    </p>
+                    <hr style="border:1px solid #b400ff;">
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" style="display:inline-block; background:#8a2be2; color:#ffffff; padding:12px 18px; margin:5px; border-radius:8px; text-decoration:none; font-weight:bold; box-shadow:0 0 12px rgba(180,0,255,0.8);">
+                            📅 JADWAL PERTANDINGAN
+                        </a>
+                        <a href="https://www.fifa.com/en/match-centre?liveNow=true" target="_blank" style="display:inline-block; background:#6a0dad; color:#ffffff; padding:12px 18px; margin:5px; border-radius:8px; text-decoration:none; font-weight:bold; box-shadow:0 0 12px rgba(180,0,255,0.8);">
+                            ⚽ LIVE SCORE
+                        </a>
+                        <a href="https://qrfy.io/p/D3YKLpQqJP?utm_source=qrcode&utm_medium=link-list&utm_campaign=54712284" target="_blank" style="display:inline-block; background:#a100ff; color:#ffffff; padding:12px 18px; margin:5px; border-radius:8px; text-decoration:none; font-weight:bold; box-shadow:0 0 15px rgba(180,0,255,0.8);">
+                            📲 DOWNLOAD APLIKASI LINETOGEL
+                        </a>
+                        <a href="https://kpbi.org/" target="_blank" style="display:inline-block; background:#ff8c00; color:#ffffff; padding:12px 18px; margin:5px; border-radius:8px; text-decoration:none; font-weight:bold; box-shadow:0 0 15px rgba(255,140,0,0.8);">
+                            🏆 DAFTAR PEMENANG
+                        </a>
+                    </div>
+                    <table cellspacing="0" style="width:100%; border-collapse:collapse; color:#ffffff; overflow:hidden; border-radius:10px; box-shadow:0 0 15px rgba(180,0,255,0.5);">
+                        <thead>
+                            <tr style="background:#4a148c;">
+                                <th style="padding:12px; text-align:center;">TOTAL HADIAH</th>
+                                <th style="padding:12px; text-align:center;">TOTAL PEMENANG</th>
+                                <th style="padding:12px; text-align:center;">MIN. BET</th>
+                                <th style="padding:12px; text-align:center;">SISTEM</th>
+                                <th style="padding:12px; text-align:center;">EVENT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background:#311b92;">
+                                <td style="padding:12px; text-align:center;">Rp28.888.888.888</td>
+                                <td style="padding:12px; text-align:center;">8.000 ORANG</td>
+                                <td style="padding:12px; text-align:center;">Rp25.000</td>
+                                <td style="padding:12px; text-align:center;">LEADERBOARD</td>
+                                <td style="padding:12px; text-align:center;">WORLD CUP 2026</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="height:20px;"></div>
+                    <p><span style="color:#ffcc33;"><strong>⚽ CARA BERPARTISIPASI :</strong></span></p>
+                    <div style="border:1px dashed #d56cff; color:#ffffff; font-size:15px; line-height:1.9; margin:15px 20px; padding:18px 22px; border-radius:8px;">
+                        1. Wajib memiliki akun aktif di LINETOGEL.<br>
+                        2. Pilih pertandingan World Cup 2026 yang ingin diprediksi.<br>
+                        3. Pasang taruhan minimal Rp25.000 pada pertandingan yang sama.<br>
+                        4. Betting dibuka 20 jam sebelum pertandingan dan tutup 15 menit sebelum pertandingan dimulai.<br>
+                        5. Kirim prediksi pemenang dan skor pertandingan melalui Live Chat LINETOGEL.<br><br>
+                        <strong>Contoh :</strong><br><br>
+                        ID Member : ABC123<br>
+                        Pertandingan : Argentina vs Brazil<br>
+                        Prediksi Pemenang : Argentina<br>
+                        Prediksi Skor : 2 – 0<br><br>
+                        6. Kumpulkan poin sebanyak mungkin dan naikkan posisi Anda di leaderboard nasional.
+                    </div>
+                    <p><span style="color:#ffcc33;"><strong>🏆 MEKANISME EVENT :</strong></span></p>
+                    <div style="border:1px dashed #d56cff; color:#ffffff; font-size:15px; line-height:1.9; margin:15px 20px; padding:18px 22px; border-radius:8px;">
+                        <p>♦ Event berlaku untuk seluruh member LINETOGEL yang memiliki akun aktif.</p>
+                        <p>♦ Setiap prediksi wajib disertai taruhan minimal Rp25.000 pada pertandingan yang sama.</p>
+                        <p>♦ Prediksi pemenang pertandingan benar : 10 Poin.</p>
+                        <p>♦ Prediksi skor pertandingan tepat : 50 Poin.</p>
+                        <p>♦ Sebanyak 8.000 peserta dengan poin tertinggi berhak mendapatkan hadiah.</p>
+                        <p>♦ Total hadiah yang diperebutkan mencapai Rp28.888.888.888.</p>
+                        <p>♦ Ranking peserta akan diperbarui secara berkala selama event berlangsung.</p>
+                        <p>♦ Event berlangsung mulai 11 Juni 2026 hingga 19 Juli 2026.</p>
+                    </div>
+                    <p><span style="color:#ffcc33;"><strong>📋 KETENTUAN PENTING :</strong></span></p>
+                    <div style="border:1px dashed #d56cff; color:#ffffff; font-size:15px; line-height:1.9; margin:15px 20px; padding:18px 22px; border-radius:8px;">
+                        <p>♦ Setiap peserta hanya diperbolehkan mengikuti event melalui satu akun.</p>
+                        <p>♦ Peserta dilarang mengikuti event menggunakan lebih dari satu akun atau melalui beberapa mitra sekaligus.</p>
+                        <p>♦ Nama rekening dan nomor rekening wajib valid.</p>
+                        <p>♦ Akun ganda, manipulasi sistem, atau pelanggaran ketentuan akan didiskualifikasi permanen.</p>
+                        <p>♦ Seluruh peserta dianggap telah membaca dan menyetujui syarat dan ketentuan event.</p>
+                        <p>♦ Pihak LINETOGEL berhak mengubah syarat dan ketentuan sewaktu-waktu tanpa pemberitahuan sebelumnya.</p>
+                        <p>♦ Keputusan LINETOGEL bersifat mutlak, final, dan tidak dapat diganggu gugat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO 1: GATES OF OLYMPUS SUPER SCATTER -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/05/30/20260530/fab17f550626d1235d9a2bdeb24a7649/promosi1.jpg" alt="Promo 1"></button>
+            <div class="content">
+                <h1>GATES OF OLYMPUS SUPER SCATTER<br>BONUS SETIAP HARI DARI PUKUL 00.00 - 23.59 WIB</h1>
+                <h2>BONUS:</h2>
+                <p>BET 800 - 1.600</p>
+                <div class="list">
+                    <div class="item">1 Super scatter : 50.000</div>
+                    <div class="item">2 Super scatter : 100.000</div>
+                    <div class="item">3 Super scatter : 150.000</div>
+                    <div class="item">4 Super scatter : 250.000</div>
+                </div>
+                <p>BET 2.000 - 4.000</p>
+                <div class="list">
+                    <div class="item">1 Super scatter : 100.000</div>
+                    <div class="item">2 Super scatter : 200.000</div>
+                    <div class="item">3 Super scatter : 300.000</div>
+                    <div class="item">4 Super scatter : 500.000</div>
+                </div>
+                <p>BET 5.000 - 7.000</p>
+                <div class="list">
+                    <div class="item">1 Super scatter : 250.000</div>
+                    <div class="item">2 Super scatter : 500.000</div>
+                    <div class="item">3 Super scatter : 750.000</div>
+                    <div class="item">4 Super scatter : 1.000.000</div>
+                </div>
+
+                <h2>Syarat & Ketentuan:</h2>
+                <div class="list">
+                    <div class="item">Wajib membeli FreeSpin Super Scatter di GATES OF OLYMPUS SUPER SCATTER</div>
+                    <div class="item">Event ini berlaku untuk semua member LINETOGEL yang bermain slot GATES OF OLYMPUS SUPER SCATTER</div>
+                    <div class="item">Hadiah Akan Di Berikan Dari Total mendapatkan GATES OF OLYMPUS SUPER SCATTER.</div>
+                    <div class="item">Maksimal Bonus yang di berikan untuk Event ini adalah Rp.1.000.000 per Hari.</div>
+                    <div class="item">Maksimal Claim Bonus GATES OF OLYMPUS SUPER SCATTER 1 User ID per harinya yaitu 3x.</div>
+                    <div class="item">Maksimal Bonus per 1x claim Event gate olympus super scatter yaitu Rp.1.000.000.</div>
+                    <div class="item">Wajib melakukan proses Claim melalui livechat LINETOGEL</div>
+                    <div class="item">Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya.</div>
+                    <div class="item">Event ini tidak dapat digabungkan dengan event slot lainnya.</div>
+                    <div class="item">Semua keputusan LINETOGEL bersifat mutlak dan tidak dapat diganggu gugat.</div>
+                </div>
+
+                <h3>Catatan Tambahan:</h3>
+                <div class="list">
+                    <div class="item">Semua promo dan syarat ketentuan dapat berubah sewaktu-waktu tanpa pemberitahuan terlebih dahulu.</div>
+                    <div class="item">Keputusan LINETOGEL bersifat mutlak dan tidak dapat diganggu gugat.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO 2: EVENT SCATTER MAHJONG WAYS 1 & 2 -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/05/30/20260530/cd0d9784cab9b18839fefb17a37bb589/promo2.jpg" alt="Promo 2"></button>
+            <div class="content">
+                <h1>EVENT SCATTER MAHJONG WAYS 1 & 2 LINETOGEL</h1>
+                <div class="list">
+                    <div class="item">Mahjong Ways 1</div>
+                    <div class="item">Mahjong Ways 2</div>
+                </div>
+
+                <h2>Hadiah :</h2>
+                <p>BET 1.600 - 2.400 :</p>
+                <div class="list">
+                    <div class="item">3 - 5 SCATTER RP. 15.000,-</div>
+                </div>
+                <p>BET 2.800 - 8.000 :</p>
+                <div class="list">
+                    <div class="item">3 - 5 SCATTER RP. 25,000,-</div>
+                </div>
+                <p>BET 12.000 - 16.000 :</p>
+                <div class="list">
+                    <div class="item">3 - 5 SCATTER RP. 40.000,-</div>
+                </div>
+                <p>BET 20.000 - 1.000.000 :</p>
+                <div class="list">
+                    <div class="item">3 - 5 SCATTER RP. 50.000,-</div>
+                </div>
+
+                <h2>Syarat Klaim:</h2>
+                <div class="list">
+                    <div class="item">SS DAPAT SCATTER</div>
+                    <div class="item">SS KEMENANGAN AKHIR</div>
+                    <div class="item">SS HISTORY KEMENANGAN</div>
+                </div>
+
+                <h2>Syarat & Ketentuan</h2>
+                <div class="list">
+                    <div class="item">Event hanya berlaku pada permainan Slot PG SOFT: Mahjong Ways 1 dan Mahjong Ways 2.</div>
+                    <div class="item">Claim melalui LIVECHAT.</div>
+                    <div class="item">Nama Rekening dan Nomor Rekening wajib valid. Apabila tidak valid, bonus akan hangus.</div>
+                    <div class="item">Maksimal klaim per hari adalah 2 kali.</div>
+                    <div class="item">Batas klaim pada pukul 23:50 WIB dan akan di reset kembali pukul 00:01 setiap harinya.</div>
+                    <div class="item">Syarat dan ketentuan dapat berubah sewaktu-waktu.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO 3: Bonus Referral 0.5% LINETOGEL (Togel) -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/05/30/20260530/a919983214c8559fc7c9fc6a4b6d779a/promo3.jpg" alt="Promo 3"></button>
+            <div class="content">
+                <h2>Bonus Referral 0.5% LINETOGEL</h2>
+                <p>Sistem referral LINETOGEL adalah program peluang usaha tanpa modal untuk anda dan teman-teman anda. Caranya mudah: hanya cukup dengan menyebarkan link referral anda kepada teman-teman untuk bergabung dan melakukan transaksi maka anda akan memperoleh bonus referral, atau langsung mendaftarkan teman-teman anda menjadi member referral terlebih dahulu maka anda akan mendapatkan keuntungan dari setiap transaksi member referral anda.</p>
+
+                <h3>Berikut ini Persentase perhitungan bonus :</h3>
+                <div class="list">
+                    <div class="item">4D: 0.5%</div>
+                    <div class="item">3D: 0.5%</div>
+                    <div class="item">2D: 0.5%</div>
+                    <div class="item">Permainan colok / shio / 50-50: 0.1%</div>
+                </div>
+                <p>Komisi referral di atas berlaku untuk semua pasaran togel.</p>
+
+                <h3>Cara untuk mendapatkan Link Refferal :</h3>
+                <div class="list">
+                    <div class="item">Daftarkan diri anda sebagai member di LINETOGEL</div>
+                    <div class="item">Login kedalam akun anda dan kemudian pilih menu refferal untuk mendapatkan link refferal anda</div>
+                    <div class="item">Daftarkan teman / saudara / sahabat / rekan anda yang lainnya melalui link tersebut</div>
+                    <div class="item">Contoh Link Referral : <a href="https://line34990.com/link.php?member=HANYACONTOH" target="_blank" rel="noopener">https://line34990.com/link.php?member=HANYACONTOH</a></div>
+                    <div class="item">Silahkan diubah tulisan HANYACONTOH menjadi nama akun (username) anda sendiri</div>
+                    <div class="item">Apabila nama akun (username) anda linetest maka Link referral anda menjadi <a href="https://line34990.com/link.php?member=linetest" target="_blank" rel="noopener">https://line34990.com/link.php?member=linetest</a></div>
+                    <div class="item">Ayo dimulai saat ini juga, Peluang Usaha Tanpa Modal dengan cara daftarkan semua teman / rekan anda menjadi downline referral anda dan dapatkan bonus tanpa batas dari LINETOGEL - berlaku seumur hidup! setiap harinya.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO 4: BONUS REFERRAL 0.1% (SLOT GAMES & LIVE GAMES) -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/06/04/20260604/0dd9137231f2b30598ae1c16b1039663/promo4.png" alt="Promo 4"></button>
+            <div class="content">
+                <h2>BONUS REFERRAL 0.1% ( LIVEGAMES, PRAGMATIC PLAY, ARCADE, SLOT GAMES , E-LOTTERY, E-SPORT & SBOBET )</h2>
+
+                <h3>Syarat & Ketentuan :</h3>
+                <div class="list">
+                    <div class="item">Wajib memiliki akun (UserID) yang terdaftar pada LINETOGEL</div>
+                    <div class="item">Dapatkan link referral akun anda berfungsi untuk mendaftarkan bawahan anda</div>
+                    <div class="item">Anda juga bisa menyebarkan link referral anda di media sosial seperti : Facebook / Twitter / Blog / Forum dan lain sebagainya</div>
+                    <div class="item">Ketika pendaftaran member baru melalui link refferal anda, maka secara otomatis member tersebut menjadi bawahan referensi anda</div>
+                    <div class="item">Perhitungan Bonus Referral Livegames, Pragmatic play, Arcade, Slot games , E-lottery & E-sport dihitung berdasarkan Turnover Refferral anda pada pemainan tersebut.</div>
+                    <div class="item">Pembagian Bonus Referral dilakukan Setiap hari dan dibagikan secara otomatis :</div>
+                </div>
+
+                <h3>Cara untuk mendapatkan Link Refferal :</h3>
+                <div class="list">
+                    <div class="item">Daftarkan diri anda sebagai member di LINETOGEL</div>
+                    <div class="item">Login kedalam akun anda dan kemudian pilih menu refferal untuk mendapatkan link refferal anda</div>
+                    <div class="item">Daftarkan teman / saudara / sahabat / rekan anda yang lainnya melalui link tersebut</div>
+                    <div class="item">Contoh Link Referral : <a href="https://line34990.com/link.php?member=HANYACONTOH" target="_blank" rel="noopener">https://line34990.com/link.php?member=HANYACONTOH</a></div>
+                    <div class="item">Silahkan diubah tulisan HANYACONTOH menjadi nama akun (username) anda sendiri</div>
+                    <div class="item">Apabila nama akun (username) anda linetest maka Link referral anda menjadi <a href="https://line34990.com/link.php?member=linetest" target="_blank" rel="noopener">https://line34990.com/link.php?member=linetest</a></div>
+                    <div class="item">Ayo dimulai saat ini juga, Peluang Usaha Tanpa Modal dengan cara daftarkan semua teman / rekan anda menjadi downline referral anda dan dapatkan bonus tanpa batas dari LINETOGEL - berlaku seumur hidup!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO 5: BONUS CASHBACK KEKALAHAN 5% (E-LOTTERY) -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/05/30/20260530/28b18949d1e7f11c0d8162d245fad20a/promo5.jpg" alt="Promo 5"></button>
+            <div class="content">
+                <h2>BONUS CASHBACK KEKALAHAN 5% E-LOTTERY</h2>
+
+                <h3>Syarat & Ketentuan :</h3>
+                <div class="list">
+                    <div class="item">Bonus Kekalahan 5% hanya berlaku untuk permainan E-LOTTERY</div>
+                    <div class="item">Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000</div>
+                    <div class="item">Periode Hitungan cashback kekalahan dari hari Selasa s/d Senin</div>
+                    <div class="item">Minimal TURNOVER harus 3x dari nilai kalah ( contoh jika anda kalah 1 juta maka untuk mendapat bonus Turnover anda adalah 3,000,000 )</div>
+                    <div class="item">Cara Perhitungan Bonus Kekalahan :<br>Contoh : Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang didapatkan )</div>
+                    <div class="item">Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Selasa dan akan dibagikan secara otomatis tanpa perlu diklaim</div>
+                    <div class="item">Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.</div>
+                    <div class="item">Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO 6: BONUS CASHBACK KEKALAHAN 5% SLOT GAMES -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/05/30/20260530/cf598c5444ba3a2d78c0cc7dbc103649/promo6.jpg" alt="Promo 6"></button>
+            <div class="content">
+                <h2>BONUS CASHBACK KEKALAHAN 5% SLOT GAMES</h2>
+
+                <h3>Syarat & Ketentuan :</h3>
+                <div class="list">
+                    <div class="item">Bonus Kekalahan 5% hanya berlaku untuk permainan SLOT</div>
+                    <div class="item">Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000</div>
+                    <div class="item">Periode Hitungan cashback kekalahan dari hari Selasa s/d Senin</div>
+                    <div class="item">Cara Perhitungan Bonus Kekalahan :<br>Contoh : Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang didapatkan )</div>
+                    <div class="item">Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Selasa dan akan dibagikan secara otomatis tanpa perlu diklaim</div>
+                    <div class="item">Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.</div>
+                    <div class="item">Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO 7: EXTRA BONUS TURNOVER SLOT LINETOGEL -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/05/30/20260530/2881a3e0b43583243a6bcf624e3df34b/promo7.jpg" alt="Promo 7"></button>
+            <div class="content">
+                <h2>EXTRA BONUS TURNOVER SLOT UP TO Rp.10.000.000</h2>
+
+                <h3>Syarat & Ketentuan :</h3>
+                <div class="list">
+                    <div class="item">Wajib memiliki UserID yang terdaftar pada Line Togel</div>
+                    <div class="item">EXTRA BONUS TURNOVER SLOT diberikan dari jumlah Turnover permainan SLOT GAME anda selama 10 hari.</div>
+                    <div class="item">MINIMAL TURNOVER yang harus dicapai untuk mendapatkan bonus adalah sebesar 10.000.000</div>
+                    <div class="item">EXTRA BONUS TURNOVER SLOT akan dibagikan secara otomatis setiap tanggal 01, 11, & 21 setiap bulannya tanpa perlu melakukan klaim.</div>
+                </div>
+
+                <h3>Contoh perhitungan EXTRA BONUS TURNOVER SLOT :</h3>
+                <div class="list">
+                    <div class="item">LEVEL 1 Jumlah TO 10.000.000 - 24.999.999 = 25.000</div>
+                    <div class="item">LEVEL 2 Jumlah TO 25.000.000 - 49.999.999 = 100.000</div>
+                    <div class="item">LEVEL 3 Jumlah TO 50.000.000 - 99.999.999 = 250.000</div>
+                    <div class="item">LEVEL 4 Jumlah TO 100.000.000 - 299.999.999 = 500.000</div>
+                    <div class="item">LEVEL 5 Jumlah TO 300.000.000 - 499.999.999 = 1.000.000</div>
+                    <div class="item">LEVEL 6 Jumlah TO 500.000.000 - 999.999.999 = 2.000.000</div>
+                    <div class="item">LEVEL 7 Jumlah TO 1.000.000.000 - 2.999.999.999 = 5.000.000</div>
+                    <div class="item">LEVEL 8 Jumlah TO 3.000.000.000 - 999.999.999.999 = 10.000.000</div>
+                </div>
+
+                <p><strong>Note :</strong> Jika dalam 10 hari jumlah TurnOver anda pada permainan SLOT GAME mencapai Rp.3.000.000.000 maka bonus yang akan anda dapatkan sebesar Rp.10.000.000 ( BONUS LEVEL 8 )</p>
+
+                <div class="list">
+                    <div class="item">Selalu aktif bermain dan kumpulkan TURNOVER anda sebanyak - banyaknya.</div>
+                    <div class="item">Syarat dan ketentuan dapat berubah sewaktu - waktu tanpa harus ada pemberitahuan lebih lanjut.</div>
+                    <div class="item">Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO 8: BONUS CASHBACK TURNOVER 0.5% (SLOT & LIVEGAME & PRAGMATIC PLAY & ARCADE & E-LOTTERY & E-SPORT 0.5%) -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/06/04/20260604/d1ee6dd4fb217084d1f539a2cccfea99/promo8.png" alt="Promo 8"></button>
+            <div class="content">
+                <h2>BONUS CASHBACK TURNOVER SLOT & LIVEGAME & PRAGMATIC PLAY & ARCADE & E-LOTTERY & E-SPORT & SBOBET 0.5%</h2>
+ 
+                <h3>Syarat & Ketentuan :</h3>
+                <div class="list">
+                    <div class="item">Wajib memiliki akun (USER ID) yang terdaftar pada LINETOGEL</div>
+                    <div class="item">Bonus cashback 0.5% diberikan dari total turnover permainan SLOT & LIVEGAME & PRAGMATIC PLAY & ARCADE & E-LOTTERY & E-SPORT & SBOBET selama 1 minggu.</div>
+                    <div class="item">Turnover adalah total nominal yang sudah berhasil di betting / pasang dalam meja permainan ( Berapapun nominal yang dibetting dengan hasil menang atau kalah tetap dihitung sebagai Turnover )</div>
+                    <div class="item">Periode Hitungan Cashback Turn Over dari hari Kamis s/d Rabu</div>
+                    <div class="item">Cara Perhitungan Cashback Turnover :<br>Contoh : Jika dalam 1 minggu total turnover yang dikumpulkan sebesar Rp.100.000.000 x 0.5% = Rp.500.000 ( Total bonus yang didapatkan )</div>
+                    <div class="item">Pembagian Bonus Cashback TurnOver 0.5% hanya diberikan setiap hari kamis setelah maintenance selesai & akan dibagikan secara otomatis tanpa perlu diklaim</div>
+                    <div class="item">Selalu aktif bermain dan kumpulkan turnover sebanyak - banyaknya</div>
+                    <div class="item">Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.</div>
+                </div>
+            </div>
+        </div>
+        <!-- PROMO 9: BONUS CASHBACK KEKALAHAN UP TO 5% (LIVE GAMES) -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/05/30/20260530/de212455b295b4de15aa65122880328f/promo9.jpg" alt="Promo 9"></button>
+            <div class="content">
+                <h2>BONUS CASHBACK KEKALAHAN UP TO 5%</h2>
+
+                <h3>Syarat & Ketentuan :</h3>
+                <div class="list">
+                    <div class="item">Bonus Kekalahan hanya berlaku untuk permainan LIVEGAMES</div>
+                    <div class="item">Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000</div>
+                    <div class="item">Periode Hitungan cashback kekalahan dari hari Senin s/d Minggu</div>
+                    <div class="item">Untuk nominal 100,000 -249,999,999 =Bonus yang didapat 2,5% dari total kekalahan.</div>
+                    <div class="item">Untuk nominal 250,000,000 - 999,999,999,999 =Bonus yang didapat 5% dari total kekalahan.</div>
+                    <div class="item">Minimal TURNOVER harus 3x dari nilai kalah ( contoh jika anda kalah 1 juta maka untuk mendapat bonus Turnover anda adalah 3,000,000 )</div>
+                    <div class="item">Cara Perhitungan Bonus Kekalahan :<br>Contoh : Member A mengalami kekalahan Rp.1.000.000 x 2,5% = Rp.25.000 ( Total bonus yang didapatkan )<br>Member B mengalami kekalahan Rp. 250,000,000 x 5 % = Rp. 12.500.000 ( Total bonus yang didapatkan )</div>
+                    <div class="item">Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Senin dan akan dibagikan secara otomatis tanpa perlu diklaim</div>
+                    <div class="item">Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.</div>
+                    <div class="item">Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO 10: BONUS CASHBACK KEKALAHAN 5% (ARCADE GAMES) -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/05/30/20260530/b88cd8d1f147f26499c590f13be6a5a8/promo10.jpg" alt="Promo 10"></button>
+            <div class="content">
+                <h2>BONUS CASHBACK KEKALAHAN ARCADE 5%</h2>
+
+                <h3>Syarat & Ketentuan :</h3>
+                <div class="list">
+                    <div class="item">Bonus Kekalahan 5% hanya berlaku untuk permainan ARCADE</div>
+                    <div class="item">Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000</div>
+                    <div class="item">Periode Hitungan cashback kekalahan dari hari Senin s/d Minggu</div>
+                    <div class="item">Cara Perhitungan Bonus Kekalahan :<br>Jika dalam 1 minggu total kekalahan anda sebesar 10.000.000 maka bonus yang akan anda dapatkan sebesar 500.000  ( 10.000.000 x 5% = 500.000)</div>
+                    <div class="item">Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Senin dan akan dibagikan secara otomatis tanpa perlu diklaim</div>
+                    <div class="item">Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.</div>
+                    <div class="item">Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.</div>
+                </div>
+            </div>
+        </div>
+        <!-- PROMO 11: BONUS CASHBACK KEKALAHAN 5% (PRAGMATIC PLAY) -->
+        <div class="promo-block">
+            <button class="collapsible"><img src="https://cdn.areabermain.club/assets/cdn/az6/2026/05/30/20260530/0ad5894ee5566d62f91317ac5f70c9eb/promo11.jpg" alt="Promo 11"></button>
+            <div class="content">
+                <h2>BONUS CASHBACK KEKALAHAN PRAGMATIC PLAY 5%</h2>
+
+                <h3>Syarat & Ketentuan :</h3>
+                <div class="list">
+                    <div class="item">Bonus Kekalahan 5% hanya berlaku untuk permainan PRAGMATIC PLAY</div>
+                    <div class="item">Bonus Kekalahan ( Cashback ) dihitung dari total kekalahan pada permainan Live Casino PP ( PRAGMATIC PLAY ) selama 1 minggu & Minimal kekalahan harus mencapai Rp.100.000</div>
+                    <div class="item">Periode Hitungan cashback kekalahan dari hari Senin s/d Minggu</div>
+                    <div class="item">Minimal TURNOVER harus 3x dari nilai kalah ( contoh jika anda kalah 1 juta maka untuk mendapat bonus Turnover anda adalah 3,000,000 )</div>
+                    <div class="item">Cara Perhitungan Bonus Kekalahan :<br>Contoh : Member A mengalami kekalahan Rp.1.000.000 x 5% = Rp.50.000 ( Total bonus yang didapatkan )</div>
+                    <div class="item">Pembagian Bonus Kekalahan ( Cashback ) hanya diberikan setiap Hari Senin dan akan dibagikan secara otomatis tanpa perlu diklaim</div>
+                    <div class="item">Pihak LINETOGEL berhak untuk tidak memberikan bonus apabila member melakukan tindak kecurangan atau melanggar ketentuan yang telah ditetapkan.</div>
+                    <div class="item">Seluruh keputusan LINETOGEL adalah mutlak dan tidak dapat di ganggu-gugat.</div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- penutup container -->
+
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
