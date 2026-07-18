@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Order ID → User ID</title>
+<style>
+body{font-family:Arial;background:#111827;color:#fff;padding:20px}
+textarea{width:100%;height:160px;margin:10px 0;background:#1f2937;color:#fff;border:1px solid #374151;padding:10px}
+button{padding:10px 16px;background:#7c3aed;color:#fff;border:0;border-radius:8px;cursor:pointer;margin-right:8px}
+table{width:100%;border-collapse:collapse;margin-top:20px}
+th,td{border:1px solid #374151;padding:10px}
+th{background:#1f2937}
+#copied{color:#86efac;margin-top:10px;display:none}
+</style>
+</head>
+<body>
+<h2>Pencocokan Order ID → User ID</h2>
+
+<p>Data Zonamain</p>
+<textarea id="zone"></textarea>
+
+<p>Rekapan WD Pending</p>
+<textarea id="pending"></textarea>
+
+<button onclick="proses()">Cari User ID</button>
+<button onclick="copyAll()">Copy Semua User ID</button>
+
+<div id="copied">Semua User ID berhasil disalin.</div>
+
+<table>
+<thead>
+<tr>
+<th>Order ID</th>
+<th>User ID</th>
+</tr>
+</thead>
+<tbody id="hasil">
+<tr><td colspan="2">Belum diproses</td></tr>
+</tbody>
+</table>
+
+<script>
+const regex=/LIT-[A-Za-z0-9-]+/i;
+
+function proses(){
+ const zone=document.getElementById('zone').value.split(/\n/);
+ const pending=document.getElementById('pending').value.split(/\n/);
+ const map=new Map();
+
+ zone.forEach(line=>{
+   const m=line.match(regex);
+   if(!m) return;
+   const t=line.trim().split(/\s+/);
+   const idx=t.indexOf(m[0]);
+   map.set(m[0], t[idx+6] || "-");
+ });
+
+ let rows="";
+ pending.forEach(line=>{
+   const m=line.match(regex);
+   if(!m) return;
+   rows += `<tr>
+      <td>${m[0]}</td>
+      <td class="userid">${map.get(m[0]) || '-'}</td>
+   </tr>`;
+ });
+
+ document.getElementById("hasil").innerHTML = rows || '<tr><td colspan="2">Tidak ada data.</td></tr>';
+}
+
+function copyAll(){
+ const ids = [...document.querySelectorAll('.userid')]
+   .map(e => e.textContent)
+   .filter(v => v && v !== '-')
+   .join("\n");
+
+ if(!ids){
+   alert("Tidak ada User ID untuk disalin.");
+   return;
+ }
+
+ navigator.clipboard.writeText(ids);
+ const note=document.getElementById('copied');
+ note.style.display='block';
+ setTimeout(()=>note.style.display='none',2000);
+}
+</script>
+</body>
+</html>
