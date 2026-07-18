@@ -1,89 +1,259 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Order ID → User ID</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>QRIS X PAY Report Gabungan</title>
 <style>
-body{font-family:Arial;background:#111827;color:#fff;padding:20px}
-textarea{width:100%;height:160px;margin:10px 0;background:#1f2937;color:#fff;border:1px solid #374151;padding:10px}
-button{padding:10px 16px;background:#7c3aed;color:#fff;border:0;border-radius:8px;cursor:pointer;margin-right:8px}
-table{width:100%;border-collapse:collapse;margin-top:20px}
-th,td{border:1px solid #374151;padding:10px}
-th{background:#1f2937}
-#copied{color:#86efac;margin-top:10px;display:none}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#fff}
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.sidebar{background:#111827;padding:22px;border-right:1px solid #253047}
+.logo{font-weight:800;color:#c4b5fd;font-size:19px;margin-bottom:25px}
+.menu{width:100%;border:0;background:transparent;color:#cbd5e1;padding:12px 14px;text-align:left;border-radius:9px;cursor:pointer;margin-bottom:8px}
+.menu.active,.menu:hover{background:#7c3aed;color:#fff}
+main{padding:24px}
+.page{display:none}.page.active{display:block}
+.card{background:#172033;border:1px solid #2d3950;border-radius:14px;padding:18px;margin-bottom:18px}
+textarea{width:100%;min-height:210px;background:#0b1220;color:#fff;border:1px solid #334155;border-radius:10px;padding:12px;font:13px/1.5 Consolas,monospace;resize:vertical}
+button.action{background:#7c3aed;color:#fff;border:0;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer;margin:10px 8px 0 0}
+button.secondary{background:#334155}
+table{width:100%;border-collapse:collapse;margin-top:16px;min-width:650px}
+th,td{border:1px solid #334155;padding:10px;text-align:left}
+th{background:#1e293b}
+.table-wrap{overflow:auto}
+.report{background:#0b1220;border:1px solid #334155;border-radius:10px;padding:18px;margin-top:12px;white-space:pre-wrap;line-height:1.65}
+.notice{color:#86efac;margin-top:10px;display:none}
+small{color:#94a3b8}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #253047}}
 </style>
 </head>
 <body>
-<h2>Pencocokan Order ID → User ID</h2>
+<div class="layout">
+<aside class="sidebar">
+  <div class="logo">QRIS X PAY TOOLS</div>
+  <button class="menu active" data-page="matchPage">Order ID → User ID</button>
+  <button class="menu" data-page="reportPage">Report QRIS X PAY Pending</button>
+</aside>
 
-<p>Data Zonamain</p>
-<textarea id="zone"></textarea>
+<main>
+<section id="matchPage" class="page active">
+  <h2>Pencocokan Order ID → User ID</h2>
+  <div class="card">
+    <p>Data Zonamain</p>
+    <textarea id="zone"></textarea>
+    <p>Rekapan WD Pending</p>
+    <textarea id="pending"></textarea>
+    <button class="action" onclick="prosesMatch()">Cari User ID</button>
+    <button class="action secondary" onclick="copyUserIds()">Copy Semua User ID</button>
+    <div id="copyUserNotice" class="notice">Semua User ID berhasil disalin.</div>
+  </div>
+  <div class="card table-wrap">
+    <table>
+      <thead><tr><th>Order ID</th><th>User ID</th></tr></thead>
+      <tbody id="matchBody"><tr><td colspan="2">Belum diproses</td></tr></tbody>
+    </table>
+  </div>
+</section>
 
-<p>Rekapan WD Pending</p>
-<textarea id="pending"></textarea>
+<section id="reportPage" class="page">
+  <h2>Report QRIS X PAY Pending</h2>
+  <div class="card">
+    <p>Tempel banyak transaksi. Semua data akan digabung menjadi satu laporan.</p>
+    <textarea id="reportInput" placeholder="18/07/2026 16:23:08	LIT-803c7d69-3225-4194-b69b-d35892583529	900,000	1,500	PENDING		edi51	https://sleekshot.app/v/ioD7wRXcXYnV"></textarea>
+    <small>Bagian Info, Perihal, dan Tanggal hanya akan muncul satu kali.</small><br>
+    <button class="action" onclick="buatReport()">Buat Report Gabungan</button>
+    <button class="action secondary" onclick="copyReport()">Copy Semua Report</button>
+    <button class="action secondary" onclick="clearReport()">Bersihkan</button>
+    <div id="copyReportNotice" class="notice">Report gabungan berhasil disalin.</div>
+  </div>
 
-<button onclick="proses()">Cari User ID</button>
-<button onclick="copyAll()">Copy Semua User ID</button>
-
-<div id="copied">Semua User ID berhasil disalin.</div>
-
-<table>
-<thead>
-<tr>
-<th>Order ID</th>
-<th>User ID</th>
-</tr>
-</thead>
-<tbody id="hasil">
-<tr><td colspan="2">Belum diproses</td></tr>
-</tbody>
-</table>
+  <div id="reportOutput"></div>
+</section>
+</main>
+</div>
 
 <script>
-const regex=/LIT-[A-Za-z0-9-]+/i;
+document.querySelectorAll('.menu').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.menu').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.page).classList.add('active');
+  };
+});
 
-function proses(){
- const zone=document.getElementById('zone').value.split(/\n/);
- const pending=document.getElementById('pending').value.split(/\n/);
- const map=new Map();
+const orderRegex=/LIT-[A-Za-z0-9-]+/i;
 
- zone.forEach(line=>{
-   const m=line.match(regex);
-   if(!m) return;
-   const t=line.trim().split(/\s+/);
-   const idx=t.indexOf(m[0]);
-   map.set(m[0], t[idx+6] || "-");
- });
+function prosesMatch(){
+  const map=new Map();
+  document.getElementById('zone').value.split(/\r?\n/).forEach(line=>{
+    const m=line.match(orderRegex);
+    if(!m)return;
+    const t=line.trim().split(/\s+/);
+    const idx=t.findIndex(x=>x.toLowerCase()===m[0].toLowerCase());
+    map.set(m[0].toLowerCase(),t[idx+6]||'-');
+  });
 
- let rows="";
- pending.forEach(line=>{
-   const m=line.match(regex);
-   if(!m) return;
-   rows += `<tr>
-      <td>${m[0]}</td>
-      <td class="userid">${map.get(m[0]) || '-'}</td>
-   </tr>`;
- });
+  let rows='';
+  document.getElementById('pending').value.split(/\r?\n/).forEach(line=>{
+    const m=line.match(orderRegex);
+    if(!m)return;
+    rows+=`<tr><td>${m[0]}</td><td class="uid">${map.get(m[0].toLowerCase())||'-'}</td></tr>`;
+  });
 
- document.getElementById("hasil").innerHTML = rows || '<tr><td colspan="2">Tidak ada data.</td></tr>';
+  document.getElementById('matchBody').innerHTML=rows||'<tr><td colspan="2">Tidak ada data.</td></tr>';
 }
 
-function copyAll(){
- const ids = [...document.querySelectorAll('.userid')]
-   .map(e => e.textContent)
-   .filter(v => v && v !== '-')
-   .join("\n");
+function fallbackCopy(text){
+  const area=document.createElement('textarea');
+  area.value=text;
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand('copy');
+  area.remove();
+}
 
- if(!ids){
-   alert("Tidak ada User ID untuk disalin.");
-   return;
- }
+function copyText(text,noticeId){
+  if(!text){alert('Tidak ada data untuk disalin.');return;}
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text)
+      .then(()=>showNotice(noticeId))
+      .catch(()=>{fallbackCopy(text);showNotice(noticeId)});
+  }else{
+    fallbackCopy(text);
+    showNotice(noticeId);
+  }
+}
 
- navigator.clipboard.writeText(ids);
- const note=document.getElementById('copied');
- note.style.display='block';
- setTimeout(()=>note.style.display='none',2000);
+function showNotice(id){
+  const el=document.getElementById(id);
+  el.style.display='block';
+  setTimeout(()=>el.style.display='none',1800);
+}
+
+function copyUserIds(){
+  const text=[...document.querySelectorAll('.uid')]
+    .map(x=>x.textContent.trim())
+    .filter(x=>x&&x!=='-')
+    .join('\n');
+  copyText(text,'copyUserNotice');
+}
+
+const bulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+function formatTanggal(raw){
+  const m=raw.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+  if(!m){
+    const d=new Date();
+    return `${d.getDate()} ${bulan[d.getMonth()]} ${d.getFullYear()}`;
+  }
+  return `${parseInt(m[1],10)} ${bulan[parseInt(m[2],10)-1]} ${m[3]}`;
+}
+
+function parseLine(line){
+  let cols=line.split('\t');
+  if(cols.length<5){
+    cols=line.trim().split(/\s{2,}/);
+  }
+
+  const orderMatch=line.match(orderRegex);
+  const urlMatch=line.match(/https?:\/\/\S+/i);
+  if(!orderMatch)return null;
+
+  let userId='';
+  let nominal='';
+
+  if(cols.length>=7){
+    nominal=(cols[2]||'').trim();
+    userId=(cols[6]||'').trim();
+  }
+
+  if(!nominal){
+    const afterOrder=line.slice(line.indexOf(orderMatch[0])+orderMatch[0].length);
+    const amount=afterOrder.match(/\d[\d,.]*/);
+    nominal=amount?amount[0]:'-';
+  }
+
+  if(!userId){
+    const parts=line.trim().split(/\s+/);
+    const statusIndex=parts.findIndex(x=>x.toUpperCase()==='PENDING');
+    if(statusIndex>=0){
+      for(let i=statusIndex+1;i<parts.length;i++){
+        if(!/^https?:\/\//i.test(parts[i]) && !/^\d[\d,.]*$/.test(parts[i])){
+          userId=parts[i];
+          break;
+        }
+      }
+    }
+  }
+
+  return{
+    tanggal:formatTanggal(cols[0]||line),
+    orderId:orderMatch[0],
+    nominal:nominal||'-',
+    userId:userId||'-',
+    lampiran:urlMatch?urlMatch[0]:'-'
+  };
+}
+
+let combinedReport='';
+
+function buatReport(){
+  const lines=document.getElementById('reportInput').value
+    .split(/\r?\n/)
+    .map(x=>x.trim())
+    .filter(Boolean);
+
+  const data=lines.map(parseLine).filter(Boolean);
+
+  if(!data.length){
+    combinedReport='';
+    document.getElementById('reportOutput').innerHTML='<div class="card">Tidak ada data valid.</div>';
+    return;
+  }
+
+  const tanggal=data[0].tanggal;
+
+  const detail=data.map((d)=>
+`User ID : ${d.userId}
+Order ID : ${d.orderId}
+Nominal : ${d.nominal}
+Lampiran : ${d.lampiran}`
+  ).join('\n\n');
+
+  combinedReport=
+`Info : Linetogel
+Perihal : Transaksi Withdraw Pending Qris XPAY
+Tanggal : ${tanggal}
+
+${detail}`;
+
+  document.getElementById('reportOutput').innerHTML=
+    `<div class="card">
+      <strong>Report Gabungan (${data.length} transaksi)</strong>
+      <div class="report">${escapeHtml(combinedReport)}</div>
+    </div>`;
+}
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'
+  }[c]));
+}
+
+function copyReport(){
+  copyText(combinedReport,'copyReportNotice');
+}
+
+function clearReport(){
+  document.getElementById('reportInput').value='';
+  document.getElementById('reportOutput').innerHTML='';
+  combinedReport='';
 }
 </script>
 </body>
