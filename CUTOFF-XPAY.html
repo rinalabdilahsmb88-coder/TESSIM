@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Filter Transaksi 23:30+</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0e1b2d;
+      --panel2:#13243b;
+      --line:#263b58;
+      --text:#edf5ff;
+      --muted:#9fb2ca;
+      --accent:#5dd7ff;
+      --accent2:#7b6cff;
+      --success:#2dd4a7;
+      --danger:#ff6b81;
+      --warning:#ffc857;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,Segoe UI,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(93,215,255,.13), transparent 27%),
+        radial-gradient(circle at 90% 0%, rgba(123,108,255,.16), transparent 28%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    .wrap{max-width:1500px;margin:auto;padding:24px}
+    .hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;
+      margin-bottom:20px;
+    }
+    h1{font-size:28px;margin:0 0 8px}
+    .subtitle{color:var(--muted);line-height:1.5}
+    .badge{
+      padding:10px 14px;border:1px solid rgba(93,215,255,.4);
+      color:var(--accent);border-radius:999px;background:rgba(93,215,255,.08);
+      white-space:nowrap;font-weight:700
+    }
+    .panel{
+      background:linear-gradient(180deg,rgba(19,36,59,.96),rgba(14,27,45,.96));
+      border:1px solid var(--line);border-radius:18px;padding:18px;
+      box-shadow:0 18px 50px rgba(0,0,0,.24);margin-bottom:18px;
+    }
+    .grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}
+    label{display:block;color:var(--muted);font-size:13px;margin-bottom:7px}
+    textarea,input,select{
+      width:100%;border:1px solid var(--line);background:#081525;color:var(--text);
+      border-radius:12px;padding:12px 13px;outline:none;
+    }
+    textarea{min-height:230px;resize:vertical;font-family:Consolas,monospace;font-size:12px}
+    input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    button{
+      border:none;border-radius:11px;padding:11px 16px;font-weight:800;cursor:pointer;
+      color:white;background:linear-gradient(135deg,var(--accent2),#409fff);
+    }
+    button.secondary{background:#1d314d;border:1px solid var(--line)}
+    button.danger{background:#5b2633;border:1px solid #874052}
+    button:hover{filter:brightness(1.08)}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+    .stat{
+      background:rgba(14,27,45,.92);border:1px solid var(--line);
+      border-radius:15px;padding:16px
+    }
+    .stat span{display:block;color:var(--muted);font-size:12px;margin-bottom:8px}
+    .stat strong{font-size:23px}
+    .toolbar{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:14px}
+    .toolbar > div{min-width:180px;flex:1}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;max-height:580px}
+    table{width:100%;border-collapse:collapse;min-width:1450px;background:#091625}
+    th,td{padding:11px 12px;border-bottom:1px solid #1d3049;text-align:left;font-size:12px;white-space:nowrap}
+    th{position:sticky;top:0;background:#172a44;color:#bcd2ea;z-index:1}
+    tbody tr:hover{background:#10233a}
+    .status{
+      padding:4px 8px;border-radius:999px;font-weight:800;font-size:11px;
+      background:rgba(45,212,167,.13);color:var(--success)
+    }
+    .empty{text-align:center;color:var(--muted);padding:40px}
+    .note{
+      margin-top:12px;color:var(--muted);font-size:12px;line-height:1.5
+    }
+    .error{
+      display:none;margin-top:12px;padding:12px;border-radius:10px;
+      background:rgba(255,107,129,.1);border:1px solid rgba(255,107,129,.35);
+      color:#ff9aaa
+    }
+    @media(max-width:900px){
+      .grid,.stats{grid-template-columns:1fr}
+      .hero{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <h1>Dashboard Filter Transaksi 23:30+</h1>
+      <div class="subtitle">
+        Tempel data transaksi, lalu sistem hanya menampilkan data berdasarkan
+        <b>RECORD DATE</b> mulai pukul <b>23:30:00 sampai 23:59:59</b> pada tanggal yang sama.
+      </div>
+    </div>
+    <div class="badge">FILTER HARI YANG SAMA</div>
+  </div>
+
+  <div class="panel">
+    <div class="grid">
+      <div>
+        <label>Input Data TSV / CSV</label>
+        <textarea id="rawData" placeholder="Tempel data lengkap di sini. Baris judul MUTASI QRIS TRANSACTION boleh disertakan."></textarea>
+      </div>
+      <div>
+        <label>Tanggal yang difilter</label>
+        <input id="filterDate" type="date" />
+        <div style="height:12px"></div>
+        <label>Mulai waktu</label>
+        <input id="startTime" type="time" step="1" value="23:30:00" />
+        <div style="height:12px"></div>
+        <label>Sampai waktu</label>
+        <input id="endTime" type="time" step="1" value="23:59:59" />
+      </div>
+      <div>
+        <label>Kolom tanggal</label>
+        <select id="dateColumn">
+          <option value="RECORD DATE">RECORD DATE</option>
+          <option value="PAYMENT">PAYMENT</option>
+          <option value="APPROVE">APPROVE</option>
+          <option value="SETTLEMENT">SETTLEMENT</option>
+        </select>
+        <div style="height:12px"></div>
+        <label>Status</label>
+        <select id="statusFilter">
+          <option value="">Semua Status</option>
+          <option value="SUCCESS">SUCCESS</option>
+          <option value="PENDING">PENDING</option>
+          <option value="FAILED">FAILED</option>
+        </select>
+        <div style="height:12px"></div>
+        <label>Pencarian tambahan</label>
+        <input id="searchText" placeholder="ID, merchant, member, ticket..." />
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="filterBtn">Proses & Filter</button>
+      <button class="secondary" id="exampleBtn">Isi Contoh</button>
+      <button class="secondary" id="copyBtn">Salin Hasil</button>
+      <button class="secondary" id="downloadBtn">Unduh CSV</button>
+      <button class="danger" id="resetBtn">Reset</button>
+    </div>
+    <div class="error" id="errorBox"></div>
+    <div class="note">
+      Format waktu seperti <code>2026-07-18T23:45:12+07:00+007</code> tetap dapat dibaca.
+      Tanggal tidak akan bergeser ke hari berikutnya karena filter membandingkan bagian tanggal dan jam secara terpisah.
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span>Total data input</span><strong id="totalInput">0</strong></div>
+    <div class="stat"><span>Data hasil filter</span><strong id="totalFiltered">0</strong></div>
+    <div class="stat"><span>Total RECORD VALUE</span><strong id="totalValue">Rp 0</strong></div>
+    <div class="stat"><span>Total RECORD FEE</span><strong id="totalFee">Rp 0</strong></div>
+  </div>
+
+  <div class="panel">
+    <div class="toolbar">
+      <div>
+        <label>Urutkan berdasarkan</label>
+        <select id="sortBy">
+          <option value="dateAsc">Waktu terlama → terbaru</option>
+          <option value="dateDesc">Waktu terbaru → terlama</option>
+          <option value="valueDesc">Nominal terbesar</option>
+          <option value="valueAsc">Nominal terkecil</option>
+        </select>
+      </div>
+      <div>
+        <label>Merchant</label>
+        <select id="merchantFilter"><option value="">Semua Merchant</option></select>
+      </div>
+      <div>
+        <label>Jumlah baris tampil</label>
+        <select id="limitRows">
+          <option value="50">50</option>
+          <option value="100" selected>100</option>
+          <option value="250">250</option>
+          <option value="500">500</option>
+          <option value="999999">Semua</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead id="tableHead"></thead>
+        <tbody id="tableBody">
+          <tr><td class="empty">Belum ada data yang diproses.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_HEADERS = [
+  "ID","RECORD DATE","RECORD VALUE","RECORD FEE","MERCHANT","MEMBER",
+  "APPROVE","PAYMENT","SETTLEMENT","PARTNER ID","VENDOR ID","STATUS","TICKET","PG"
+];
+
+let parsedRows = [];
+let filteredRows = [];
+let headers = [...DEFAULT_HEADERS];
+
+const $ = id => document.getElementById(id);
+const rupiah = n => "Rp " + Number(n || 0).toLocaleString("id-ID");
+
+function showError(msg){
+  const box = $("errorBox");
+  box.textContent = msg;
+  box.style.display = msg ? "block" : "none";
+}
+
+function normalizeHeader(s){
+  return String(s || "").trim().replace(/\s+/g, " ").toUpperCase();
+}
+
+function detectDelimiter(line){
+  if (line.includes("\t")) return "\t";
+  if (line.includes(";")) return ";";
+  return ",";
+}
+
+function parseInput(text){
+  const lines = text.replace(/\r/g, "").split("\n").filter(x => x.trim() !== "");
+  if (!lines.length) return {headers:[], rows:[]};
+
+  let headerIndex = lines.findIndex(line => {
+    const up = line.toUpperCase();
+    return up.includes("RECORD DATE") && up.includes("RECORD VALUE");
+  });
+
+  if (headerIndex === -1) {
+    throw new Error("Header tidak ditemukan. Pastikan data memiliki kolom RECORD DATE dan RECORD VALUE.");
+  }
+
+  const delimiter = detectDelimiter(lines[headerIndex]);
+  const sourceHeaders = lines[headerIndex].split(delimiter).map(x => x.trim());
+  const normalized = sourceHeaders.map(normalizeHeader);
+
+  const rows = [];
+  for (let i = headerIndex + 1; i < lines.length; i++){
+    const cells = lines[i].split(delimiter);
+    if (cells.length < 2) continue;
+
+    const row = {};
+    normalized.forEach((h, idx) => row[h] = (cells[idx] ?? "").trim());
+
+    if (Object.values(row).some(Boolean)) rows.push(row);
+  }
+  return {headers: normalized, rows};
+}
+
+function extractDateTime(raw){
+  const value = String(raw || "").trim();
+  const match = value.match(/(\d{4}-\d{2}-\d{2})[T\s](\d{2}:\d{2}(?::\d{2})?)/);
+  if (!match) return null;
+  const time = match[2].length === 5 ? match[2] + ":00" : match[2];
+  return {date: match[1], time};
+}
+
+function timeToSeconds(t){
+  const p = String(t || "00:00:00").split(":").map(Number);
+  return (p[0] || 0) * 3600 + (p[1] || 0) * 60 + (p[2] || 0);
+}
+
+function numberValue(v){
+  const cleaned = String(v ?? "").replace(/[^\d-]/g, "");
+  return Number(cleaned || 0);
+}
+
+function rebuildMerchantOptions(rows){
+  const current = $("merchantFilter").value;
+  const merchants = [...new Set(rows.map(r => r["MERCHANT"]).filter(Boolean))].sort();
+  $("merchantFilter").innerHTML =
+    '<option value="">Semua Merchant</option>' +
+    merchants.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+  if (merchants.includes(current)) $("merchantFilter").value = current;
+}
+
+function getBaseFiltered(){
+  const dateCol = normalizeHeader($("dateColumn").value);
+  const dateWanted = $("filterDate").value;
+  const start = timeToSeconds($("startTime").value);
+  const end = timeToSeconds($("endTime").value || "23:59:59");
+  const status = $("statusFilter").value.toUpperCase();
+  const query = $("searchText").value.trim().toLowerCase();
+
+  if (!dateWanted) throw new Error("Silakan pilih tanggal yang ingin difilter.");
+  if (start > end) throw new Error("Waktu mulai tidak boleh lebih besar dari waktu selesai.");
+
+  return parsedRows.filter(row => {
+    const dt = extractDateTime(row[dateCol]);
+    if (!dt) return false;
+    const sec = timeToSeconds(dt.time);
+    if (dt.date !== dateWanted || sec < start || sec > end) return false;
+    if (status && String(row["STATUS"] || "").toUpperCase() !== status) return false;
+    if (query && !Object.values(row).join(" ").toLowerCase().includes(query)) return false;
+    return true;
+  });
+}
+
+function applySecondaryFilters(){
+  const merchant = $("merchantFilter").value;
+  let rows = getBaseFiltered();
+  if (merchant) rows = rows.filter(r => r["MERCHANT"] === merchant);
+
+  const dateCol = normalizeHeader($("dateColumn").value);
+  const sort = $("sortBy").value;
+
+  rows.sort((a,b) => {
+    const ad = extractDateTime(a[dateCol]);
+    const bd = extractDateTime(b[dateCol]);
+    const at = ad ? `${ad.date} ${ad.time}` : "";
+    const bt = bd ? `${bd.date} ${bd.time}` : "";
+    if (sort === "dateDesc") return bt.localeCompare(at);
+    if (sort === "valueDesc") return numberValue(b["RECORD VALUE"]) - numberValue(a["RECORD VALUE"]);
+    if (sort === "valueAsc") return numberValue(a["RECORD VALUE"]) - numberValue(b["RECORD VALUE"]);
+    return at.localeCompare(bt);
+  });
+
+  filteredRows = rows;
+  renderTable();
+  updateStats();
+}
+
+function processData(){
+  showError("");
+  try{
+    const result = parseInput($("rawData").value);
+    headers = result.headers;
+    parsedRows = result.rows;
+
+    if (!parsedRows.length) throw new Error("Tidak ada baris data yang berhasil dibaca.");
+
+    if (!$("filterDate").value){
+      const firstValid = parsedRows.map(r => extractDateTime(r["RECORD DATE"])).find(Boolean);
+      if (firstValid) $("filterDate").value = firstValid.date;
+    }
+
+    rebuildMerchantOptions(parsedRows);
+    applySecondaryFilters();
+  }catch(err){
+    parsedRows = [];
+    filteredRows = [];
+    renderTable();
+    updateStats();
+    showError(err.message);
+  }
+}
+
+function escapeHtml(v){
+  return String(v ?? "")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;")
+    .replaceAll(">","&gt;").replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function renderTable(){
+  const visibleHeaders = headers.length ? headers : DEFAULT_HEADERS;
+  $("tableHead").innerHTML = "<tr>" + visibleHeaders.map(h => `<th>${escapeHtml(h)}</th>`).join("") + "</tr>";
+
+  const limit = Number($("limitRows").value);
+  const rows = filteredRows.slice(0, limit);
+
+  if (!rows.length){
+    $("tableBody").innerHTML = `<tr><td colspan="${visibleHeaders.length}" class="empty">Tidak ada data pada rentang waktu yang dipilih.</td></tr>`;
+    return;
+  }
+
+  $("tableBody").innerHTML = rows.map(row =>
+    "<tr>" + visibleHeaders.map(h => {
+      let value = row[h] ?? "";
+      if (h === "RECORD VALUE" || h === "RECORD FEE") value = numberValue(value).toLocaleString("id-ID");
+      if (h === "STATUS" && value) return `<td><span class="status">${escapeHtml(value)}</span></td>`;
+      return `<td>${escapeHtml(value)}</td>`;
+    }).join("") + "</tr>"
+  ).join("");
+}
+
+function updateStats(){
+  $("totalInput").textContent = parsedRows.length.toLocaleString("id-ID");
+  $("totalFiltered").textContent = filteredRows.length.toLocaleString("id-ID");
+  $("totalValue").textContent = rupiah(filteredRows.reduce((s,r) => s + numberValue(r["RECORD VALUE"]), 0));
+  $("totalFee").textContent = rupiah(filteredRows.reduce((s,r) => s + numberValue(r["RECORD FEE"]), 0));
+}
+
+function toTSV(rows){
+  const cols = headers.length ? headers : DEFAULT_HEADERS;
+  return [
+    cols.join("\t"),
+    ...rows.map(r => cols.map(h => String(r[h] ?? "").replace(/\t/g," ")).join("\t"))
+  ].join("\n");
+}
+
+function toCSV(rows){
+  const cols = headers.length ? headers : DEFAULT_HEADERS;
+  const q = v => `"${String(v ?? "").replaceAll('"','""')}"`;
+  return [
+    cols.map(q).join(","),
+    ...rows.map(r => cols.map(h => q(r[h])).join(","))
+  ].join("\n");
+}
+
+$("filterBtn").addEventListener("click", processData);
+["sortBy","merchantFilter","limitRows"].forEach(id => $(id).addEventListener("change", () => {
+  if (parsedRows.length) {
+    try { applySecondaryFilters(); } catch(e) { showError(e.message); }
+  }
+}));
+["filterDate","startTime","endTime","dateColumn","statusFilter"].forEach(id => $(id).addEventListener("change", () => {
+  if (parsedRows.length) {
+    try {
+      rebuildMerchantOptions(getBaseFiltered());
+      applySecondaryFilters();
+      showError("");
+    } catch(e) { showError(e.message); }
+  }
+}));
+$("searchText").addEventListener("input", () => {
+  if (parsedRows.length) {
+    try {
+      rebuildMerchantOptions(getBaseFiltered());
+      applySecondaryFilters();
+      showError("");
+    } catch(e) { showError(e.message); }
+  }
+});
+
+$("copyBtn").addEventListener("click", async () => {
+  if (!filteredRows.length) return showError("Belum ada hasil filter untuk disalin.");
+  await navigator.clipboard.writeText(toTSV(filteredRows));
+  showError("");
+  alert("Hasil filter berhasil disalin.");
+});
+
+$("downloadBtn").addEventListener("click", () => {
+  if (!filteredRows.length) return showError("Belum ada hasil filter untuk diunduh.");
+  const blob = new Blob(["\uFEFF" + toCSV(filteredRows)], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `filter-23-30-${$("filterDate").value || "data"}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+$("resetBtn").addEventListener("click", () => {
+  $("rawData").value = "";
+  $("filterDate").value = "";
+  $("startTime").value = "23:30:00";
+  $("endTime").value = "23:59:59";
+  $("statusFilter").value = "";
+  $("searchText").value = "";
+  parsedRows = [];
+  filteredRows = [];
+  headers = [...DEFAULT_HEADERS];
+  rebuildMerchantOptions([]);
+  renderTable();
+  updateStats();
+  showError("");
+});
+
+$("exampleBtn").addEventListener("click", () => {
+  $("rawData").value = `MUTASI QRIS TRANSACTION
+ID\tRECORD DATE\tRECORD VALUE\tRECORD FEE\tMERCHANT\tMEMBER\tAPPROVE\tPAYMENT\tSETTLEMENT\tPARTNER ID\tVENDOR ID\tSTATUS\tTICKET\tPG
+1001\t2026-07-18T23:29:59+07:00+007\t50000\t600\tMERCHANT A\tuser01\t\t2026-07-18T23:30:10.000+07:00\t\tpartner-1\tvendor-1\tSUCCESS\tticket-1\t
+1002\t2026-07-18T23:30:00+07:00+007\t100000\t1200\tMERCHANT B\tuser02\t\t2026-07-18T23:30:30.000+07:00\t\tpartner-2\tvendor-2\tSUCCESS\tticket-2\t
+1003\t2026-07-18T23:45:15+07:00+007\t200000\t2400\tMERCHANT A\tuser03\t\t2026-07-18T23:46:00.000+07:00\t\tpartner-3\tvendor-3\tPENDING\tticket-3\t
+1004\t2026-07-19T00:00:01+07:00+007\t300000\t3600\tMERCHANT C\tuser04\t\t2026-07-19T00:00:20.000+07:00\t\tpartner-4\tvendor-4\tSUCCESS\tticket-4\t`;
+  $("filterDate").value = "2026-07-18";
+  processData();
+});
+
+renderTable();
+updateStats();
+</script>
+</body>
+</html>
