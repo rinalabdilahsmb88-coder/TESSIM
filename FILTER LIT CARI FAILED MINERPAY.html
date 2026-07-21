@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Filter Data LIT</title>
+  <style>
+    :root {
+      --bg: #0f1220;
+      --panel: rgba(25, 29, 50, 0.92);
+      --panel-2: #11162a;
+      --border: #303858;
+      --text: #f4f6ff;
+      --muted: #9da7c7;
+      --primary: #7c5cff;
+      --primary-hover: #9279ff;
+      --success: #2fd6a2;
+      --danger: #ff647c;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(124, 92, 255, 0.24), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(47, 214, 162, 0.15), transparent 30%),
+        var(--bg);
+      padding: 28px 18px;
+    }
+
+    .container {
+      width: min(1150px, 100%);
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 22px;
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(25px, 4vw, 40px);
+      letter-spacing: -0.8px;
+    }
+
+    .header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease, opacity .15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      color: white;
+      background: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-success {
+      color: #071b14;
+      background: var(--success);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: #28304d;
+    }
+
+    .btn-danger {
+      color: white;
+      background: #b83c54;
+    }
+
+    .option {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .option input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--primary);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+    }
+
+    .box {
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .box + .box {
+      border-left: 1px solid var(--border);
+    }
+
+    .box-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .box-title h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .counter {
+      color: var(--muted);
+      font-size: 13px;
+      background: #202742;
+      padding: 5px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    textarea {
+      width: 100%;
+      height: 430px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      color: var(--text);
+      background: var(--panel-2);
+      padding: 15px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 14px;
+      line-height: 1.65;
+      transition: border .15s ease, box-shadow .15s ease;
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.16);
+    }
+
+    textarea::placeholder {
+      color: #687394;
+    }
+
+    .status {
+      min-height: 24px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status.success {
+      color: var(--success);
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    @media (max-width: 800px) {
+      body {
+        padding: 18px 10px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .box + .box {
+        border-left: 0;
+        border-top: 1px solid var(--border);
+      }
+
+      .option {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      textarea {
+        height: 330px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Dashboard Filter LIT</h1>
+      <p>Tempel data campuran di sebelah kiri. Sistem hanya mengambil baris yang diawali dengan <strong>LIT-</strong>.</p>
+    </header>
+
+    <section class="panel">
+      <div class="toolbar">
+        <button class="btn-primary" id="filterBtn">Filter Data LIT</button>
+        <button class="btn-success" id="copyBtn">Salin Semua Hasil</button>
+        <button class="btn-secondary" id="downloadBtn">Unduh TXT</button>
+        <button class="btn-danger" id="clearBtn">Bersihkan</button>
+
+        <label class="option">
+          <input type="checkbox" id="uniqueOnly">
+          Hapus data duplikat
+        </label>
+      </div>
+
+      <div class="grid">
+        <div class="box">
+          <div class="box-title">
+            <h2>Data Mentah</h2>
+            <span class="counter" id="inputCount">0 baris</span>
+          </div>
+          <textarea id="inputData" spellcheck="false" placeholder="Tempel seluruh data di sini..."></textarea>
+          <div class="status" id="inputStatus">Data akan difilter otomatis ketika tombol ditekan.</div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">
+            <h2>Hasil Filter</h2>
+            <span class="counter" id="resultCount">0 data LIT</span>
+          </div>
+          <textarea id="outputData" spellcheck="false" readonly placeholder="Hasil LIT akan muncul di sini..."></textarea>
+          <div class="status" id="resultStatus"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const inputData = document.getElementById("inputData");
+      const outputData = document.getElementById("outputData");
+      const inputCount = document.getElementById("inputCount");
+      const resultCount = document.getElementById("resultCount");
+      const resultStatus = document.getElementById("resultStatus");
+      const uniqueOnly = document.getElementById("uniqueOnly");
+
+      function getNonEmptyLines(text) {
+        return text
+          .split(/\r?\n/)
+          .map(line => line.trim())
+          .filter(Boolean);
+      }
+
+      function filterLIT() {
+        const allLines = getNonEmptyLines(inputData.value);
+
+        // Hanya mengambil baris yang dimulai dengan LIT-
+        let results = allLines.filter(line => /^LIT-/i.test(line));
+
+        if (uniqueOnly.checked) {
+          const seen = new Set();
+          results = results.filter(item => {
+            const key = item.toUpperCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+          });
+        }
+
+        outputData.value = results.join("\n");
+        inputCount.textContent = `${allLines.length} baris`;
+        resultCount.textContent = `${results.length} data LIT`;
+
+        if (results.length > 0) {
+          resultStatus.className = "status success";
+          resultStatus.textContent = `Berhasil menemukan ${results.length} data yang diawali LIT-.`;
+        } else {
+          resultStatus.className = "status error";
+          resultStatus.textContent = "Tidak ada data yang diawali LIT-.";
+        }
+
+        return results;
+      }
+
+      async function copyResults() {
+        const results = filterLIT();
+
+        if (!results.length) {
+          alert("Tidak ada hasil LIT yang bisa disalin.");
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(outputData.value);
+          resultStatus.className = "status success";
+          resultStatus.textContent = `${results.length} data LIT berhasil disalin.`;
+        } catch (error) {
+          outputData.removeAttribute("readonly");
+          outputData.select();
+          document.execCommand("copy");
+          outputData.setAttribute("readonly", "");
+          resultStatus.className = "status success";
+          resultStatus.textContent = `${results.length} data LIT berhasil disalin.`;
+        }
+      }
+
+      function downloadResults() {
+        const results = filterLIT();
+
+        if (!results.length) {
+          alert("Tidak ada hasil LIT yang bisa diunduh.");
+          return;
+        }
+
+        const blob = new Blob([outputData.value], {
+          type: "text/plain;charset=utf-8"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `hasil-filter-LIT-${new Date().toISOString().slice(0, 10)}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function clearAll() {
+        inputData.value = "";
+        outputData.value = "";
+        inputCount.textContent = "0 baris";
+        resultCount.textContent = "0 data LIT";
+        resultStatus.className = "status";
+        resultStatus.textContent = "";
+        inputData.focus();
+      }
+
+      document.getElementById("filterBtn").addEventListener("click", filterLIT);
+      document.getElementById("copyBtn").addEventListener("click", copyResults);
+      document.getElementById("downloadBtn").addEventListener("click", downloadResults);
+      document.getElementById("clearBtn").addEventListener("click", clearAll);
+
+      uniqueOnly.addEventListener("change", filterLIT);
+
+      inputData.addEventListener("input", () => {
+        const lines = getNonEmptyLines(inputData.value);
+        inputCount.textContent = `${lines.length} baris`;
+      });
+
+      // Shortcut Ctrl+Enter untuk langsung filter
+      inputData.addEventListener("keydown", event => {
+        if (event.ctrlKey && event.key === "Enter") {
+          filterLIT();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
