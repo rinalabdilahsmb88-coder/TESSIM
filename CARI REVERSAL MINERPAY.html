@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Filter & Perbandingan LIT</title>
+  <style>
+    :root {
+      --bg: #0c1020;
+      --panel: rgba(22, 27, 48, 0.95);
+      --panel-2: #10162a;
+      --border: #303a5d;
+      --text: #f4f6ff;
+      --muted: #9ca8ca;
+      --primary: #795cff;
+      --primary-hover: #927bff;
+      --success: #2fd6a2;
+      --warning: #ffbf47;
+      --danger: #ff647c;
+      --blue: #58a6ff;
+      --shadow: 0 18px 55px rgba(0, 0, 0, 0.38);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 26px 16px;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(121, 92, 255, 0.25), transparent 30%),
+        radial-gradient(circle at 100% 100%, rgba(47, 214, 162, 0.15), transparent 28%),
+        var(--bg);
+    }
+
+    .container {
+      width: min(1450px, 100%);
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(26px, 4vw, 42px);
+      letter-spacing: -1px;
+    }
+
+    .header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 15px;
+      font-size: 14px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease, opacity .15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      color: white;
+      background: var(--primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-success {
+      color: #062018;
+      background: var(--success);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: #283150;
+    }
+
+    .btn-danger {
+      color: white;
+      background: #b83b53;
+    }
+
+    .option {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .option input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--primary);
+    }
+
+    .grid-input {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .input-box {
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .input-box + .input-box {
+      border-left: 1px solid var(--border);
+    }
+
+    .box-title,
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .box-title h2,
+    .section-title h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .counter {
+      color: var(--muted);
+      background: #202844;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 300px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      color: var(--text);
+      background: var(--panel-2);
+      padding: 14px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 13.5px;
+      line-height: 1.65;
+      transition: border .15s ease, box-shadow .15s ease;
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(121, 92, 255, 0.16);
+    }
+
+    textarea::placeholder {
+      color: #687394;
+    }
+
+    .hint {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(12, 16, 32, 0.38);
+    }
+
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #12192e;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .stat-value {
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .stat.success .stat-value { color: var(--success); }
+    .stat.warning .stat-value { color: var(--warning); }
+    .stat.blue .stat-value { color: var(--blue); }
+    .stat.danger .stat-value { color: var(--danger); }
+
+    .results {
+      padding: 18px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .result-card {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #11172b;
+      overflow: hidden;
+    }
+
+    .result-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .result-head strong {
+      font-size: 14px;
+    }
+
+    .result-card textarea {
+      border: 0;
+      border-radius: 0;
+      min-height: 230px;
+      background: #0e1426;
+    }
+
+    .status {
+      min-height: 22px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status.success { color: var(--success); }
+    .status.warning { color: var(--warning); }
+    .status.error { color: var(--danger); }
+
+    .empty-ok {
+      color: var(--success);
+      font-weight: 700;
+      padding: 16px 0 0;
+      display: none;
+    }
+
+    @media (max-width: 950px) {
+      .summary {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 780px) {
+      body {
+        padding: 16px 9px;
+      }
+
+      .grid-input,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .input-box + .input-box {
+        border-left: 0;
+        border-top: 1px solid var(--border);
+      }
+
+      .option {
+        width: 100%;
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Dashboard Filter & Perbandingan LIT</h1>
+      <p>
+        Input 1 untuk data campuran biasa. Input 2 untuk data transaksi seperti tanggal, status,
+        akun, LIT, metode pembayaran, nomor, dan nominal. Sistem mengambil kode <strong>LIT-</strong>
+        dari posisi mana pun lalu menampilkan perbedaannya.
+      </p>
+    </header>
+
+    <section class="panel">
+      <div class="toolbar">
+        <button class="btn-primary" id="compareBtn">Filter & Bandingkan</button>
+        <button class="btn-success" id="copyDiffBtn">Salin Semua Perbedaan</button>
+        <button class="btn-secondary" id="downloadBtn">Unduh Perbedaan TXT</button>
+        <button class="btn-danger" id="clearBtn">Bersihkan Semua</button>
+
+        <label class="option">
+          <input type="checkbox" id="uniqueOnly" checked>
+          Hapus data LIT duplikat
+        </label>
+      </div>
+
+      <div class="grid-input">
+        <div class="input-box">
+          <div class="box-title">
+            <h2>Input 1 — Data LIT Utama</h2>
+            <span class="counter" id="input1Count">0 LIT</span>
+          </div>
+          <textarea id="input1" spellcheck="false" placeholder="Contoh:
+07:46:19
+LIT-925f0e76-19e7-4117-9312-bb457f0c50da
+10:29:13
+LIT-75af6f0d-1f6f-4f89-9d6d-b10a1ab4d978"></textarea>
+          <div class="hint">
+            Hanya kode yang diawali <strong>LIT-</strong> yang akan diambil.
+          </div>
+        </div>
+
+        <div class="input-box">
+          <div class="box-title">
+            <h2>Input 2 — Data Transaksi</h2>
+            <span class="counter" id="input2Count">0 LIT</span>
+          </div>
+          <textarea id="input2" spellcheck="false" placeholder="Contoh:
+18/07/2026 16:02:09	failed	SMB5 (togelqrissline@gmail.com)	LIT-1bca5646-5688-49b0-84fd-10e5a2e97a2e	Dana	083800300933		Rp1,506,000	Rp1,600	(-Rp1,507,600)"></textarea>
+          <div class="hint">
+            Boleh tempel banyak baris. Kode LIT akan diambil meskipun berada di tengah data transaksi.
+          </div>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="stat blue">
+          <div class="stat-label">Total LIT Input 1</div>
+          <div class="stat-value" id="statInput1">0</div>
+        </div>
+        <div class="stat success">
+          <div class="stat-label">Total LIT Input 2</div>
+          <div class="stat-value" id="statInput2">0</div>
+        </div>
+        <div class="stat warning">
+          <div class="stat-label">Hanya di Input 1</div>
+          <div class="stat-value" id="statOnly1">0</div>
+        </div>
+        <div class="stat danger">
+          <div class="stat-label">Hanya di Input 2</div>
+          <div class="stat-value" id="statOnly2">0</div>
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="section-title">
+          <h2>Hasil Perbedaan LIT</h2>
+          <span class="counter" id="differenceCount">0 perbedaan</span>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-card">
+            <div class="result-head">
+              <strong>Ada di Input 1, Tidak Ada di Input 2</strong>
+              <span class="counter" id="only1Count">0 data</span>
+            </div>
+            <textarea id="only1Output" readonly spellcheck="false" placeholder="Perbedaan dari Input 1 akan tampil di sini..."></textarea>
+          </div>
+
+          <div class="result-card">
+            <div class="result-head">
+              <strong>Ada di Input 2, Tidak Ada di Input 1</strong>
+              <span class="counter" id="only2Count">0 data</span>
+            </div>
+            <textarea id="only2Output" readonly spellcheck="false" placeholder="Perbedaan dari Input 2 akan tampil di sini..."></textarea>
+          </div>
+        </div>
+
+        <div class="empty-ok" id="matchMessage">
+          ✓ Semua data LIT sama. Tidak ditemukan perbedaan.
+        </div>
+
+        <div class="status" id="statusMessage">
+          Tempel data pada kedua input, lalu klik “Filter & Bandingkan”.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const input1 = document.getElementById("input1");
+      const input2 = document.getElementById("input2");
+      const only1Output = document.getElementById("only1Output");
+      const only2Output = document.getElementById("only2Output");
+      const uniqueOnly = document.getElementById("uniqueOnly");
+      const statusMessage = document.getElementById("statusMessage");
+      const matchMessage = document.getElementById("matchMessage");
+
+      const LIT_PATTERN = /LIT-[A-Za-z0-9-]+/gi;
+
+      function extractLIT(text) {
+        const matches = text.match(LIT_PATTERN) || [];
+        const cleaned = matches.map(item => item.trim());
+
+        if (!uniqueOnly.checked) {
+          return cleaned;
+        }
+
+        const seen = new Set();
+        return cleaned.filter(item => {
+          const key = item.toUpperCase();
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+      }
+
+      function toKey(value) {
+        return value.toUpperCase();
+      }
+
+      function compareData() {
+        const list1 = extractLIT(input1.value);
+        const list2 = extractLIT(input2.value);
+
+        const set1 = new Set(list1.map(toKey));
+        const set2 = new Set(list2.map(toKey));
+
+        const only1 = list1.filter(item => !set2.has(toKey(item)));
+        const only2 = list2.filter(item => !set1.has(toKey(item)));
+
+        only1Output.value = only1.join("\n");
+        only2Output.value = only2.join("\n");
+
+        document.getElementById("input1Count").textContent = `${list1.length} LIT`;
+        document.getElementById("input2Count").textContent = `${list2.length} LIT`;
+        document.getElementById("statInput1").textContent = list1.length;
+        document.getElementById("statInput2").textContent = list2.length;
+        document.getElementById("statOnly1").textContent = only1.length;
+        document.getElementById("statOnly2").textContent = only2.length;
+        document.getElementById("only1Count").textContent = `${only1.length} data`;
+        document.getElementById("only2Count").textContent = `${only2.length} data`;
+
+        const totalDifference = only1.length + only2.length;
+        document.getElementById("differenceCount").textContent = `${totalDifference} perbedaan`;
+
+        matchMessage.style.display = totalDifference === 0 && (list1.length || list2.length)
+          ? "block"
+          : "none";
+
+        if (!list1.length && !list2.length) {
+          statusMessage.className = "status error";
+          statusMessage.textContent = "Belum ditemukan data LIT pada kedua input.";
+        } else if (totalDifference === 0) {
+          statusMessage.className = "status success";
+          statusMessage.textContent = `Semua ${list1.length} data LIT cocok.`;
+        } else {
+          statusMessage.className = "status warning";
+          statusMessage.textContent =
+            `Ditemukan ${totalDifference} perbedaan: ${only1.length} hanya di Input 1 dan ${only2.length} hanya di Input 2.`;
+        }
+
+        return { list1, list2, only1, only2 };
+      }
+
+      async function copyDifferences() {
+        const { only1, only2 } = compareData();
+
+        if (!only1.length && !only2.length) {
+          alert("Tidak ada perbedaan LIT yang bisa disalin.");
+          return;
+        }
+
+        const text = [
+          "ADA DI INPUT 1, TIDAK ADA DI INPUT 2",
+          ...only1,
+          "",
+          "ADA DI INPUT 2, TIDAK ADA DI INPUT 1",
+          ...only2
+        ].join("\n");
+
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch (error) {
+          const temp = document.createElement("textarea");
+          temp.value = text;
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand("copy");
+          temp.remove();
+        }
+
+        statusMessage.className = "status success";
+        statusMessage.textContent = "Semua data perbedaan berhasil disalin.";
+      }
+
+      function downloadDifferences() {
+        const { only1, only2 } = compareData();
+
+        if (!only1.length && !only2.length) {
+          alert("Tidak ada perbedaan LIT yang bisa diunduh.");
+          return;
+        }
+
+        const text = [
+          "ADA DI INPUT 1, TIDAK ADA DI INPUT 2",
+          ...only1,
+          "",
+          "ADA DI INPUT 2, TIDAK ADA DI INPUT 1",
+          ...only2
+        ].join("\n");
+
+        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = `perbedaan-LIT-${new Date().toISOString().slice(0, 10)}.txt`;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function clearAll() {
+        input1.value = "";
+        input2.value = "";
+        only1Output.value = "";
+        only2Output.value = "";
+
+        document.getElementById("input1Count").textContent = "0 LIT";
+        document.getElementById("input2Count").textContent = "0 LIT";
+        document.getElementById("statInput1").textContent = "0";
+        document.getElementById("statInput2").textContent = "0";
+        document.getElementById("statOnly1").textContent = "0";
+        document.getElementById("statOnly2").textContent = "0";
+        document.getElementById("only1Count").textContent = "0 data";
+        document.getElementById("only2Count").textContent = "0 data";
+        document.getElementById("differenceCount").textContent = "0 perbedaan";
+
+        matchMessage.style.display = "none";
+        statusMessage.className = "status";
+        statusMessage.textContent = "Tempel data pada kedua input, lalu klik “Filter & Bandingkan”.";
+
+        input1.focus();
+      }
+
+      function updateLiveCounters() {
+        document.getElementById("input1Count").textContent = `${extractLIT(input1.value).length} LIT`;
+        document.getElementById("input2Count").textContent = `${extractLIT(input2.value).length} LIT`;
+      }
+
+      document.getElementById("compareBtn").addEventListener("click", compareData);
+      document.getElementById("copyDiffBtn").addEventListener("click", copyDifferences);
+      document.getElementById("downloadBtn").addEventListener("click", downloadDifferences);
+      document.getElementById("clearBtn").addEventListener("click", clearAll);
+
+      uniqueOnly.addEventListener("change", compareData);
+      input1.addEventListener("input", updateLiveCounters);
+      input2.addEventListener("input", updateLiveCounters);
+
+      [input1, input2].forEach(element => {
+        element.addEventListener("keydown", event => {
+          if (event.ctrlKey && event.key === "Enter") {
+            compareData();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
