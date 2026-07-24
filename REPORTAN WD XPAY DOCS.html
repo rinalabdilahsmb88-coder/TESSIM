@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard REFF ID & Vendor ID</title>
+  <style>
+    :root {
+      --bg: #09090b;
+      --panel: rgba(24, 24, 27, 0.92);
+      --panel-2: rgba(39, 39, 42, 0.78);
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #fafafa;
+      --muted: #a1a1aa;
+      --red: #ef4444;
+      --red-dark: #991b1b;
+      --red-soft: rgba(239, 68, 68, 0.14);
+      --green: #22c55e;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(239, 68, 68, 0.19), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(127, 29, 29, 0.28), transparent 38%),
+        linear-gradient(135deg, #050505 0%, #111114 50%, #050505 100%);
+      padding: 32px 18px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent 88%);
+    }
+
+    .container {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(24,24,27,.94), rgba(9,9,11,.90));
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      right: -90px;
+      top: -130px;
+      background: rgba(239, 68, 68, .18);
+      filter: blur(6px);
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      color: #fecaca;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--red);
+      box-shadow: 0 0 18px rgba(239, 68, 68, .95);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(25px, 4vw, 42px);
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 700px;
+      line-height: 1.7;
+    }
+
+    .badge {
+      position: relative;
+      z-index: 1;
+      min-width: 118px;
+      text-align: center;
+      padding: 13px 16px;
+      border-radius: 16px;
+      background: var(--red-soft);
+      border: 1px solid rgba(248, 113, 113, .24);
+      color: #fecaca;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 19px 20px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.025), transparent);
+    }
+
+    .card-head h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .card-head small {
+      color: var(--muted);
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 410px;
+      resize: vertical;
+      border: 1px solid rgba(255,255,255,.11);
+      outline: none;
+      border-radius: 16px;
+      background: #0b0b0e;
+      color: #f4f4f5;
+      padding: 17px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      transition: .2s ease;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+    }
+
+    textarea:focus {
+      border-color: rgba(248, 113, 113, .55);
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, .10);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 13px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .18s ease, filter .18s ease, border-color .18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.07);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, #ef4444, #991b1b);
+      box-shadow: 0 10px 26px rgba(239, 68, 68, .25);
+    }
+
+    .btn-secondary {
+      color: #e4e4e7;
+      background: #27272a;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .btn-copy {
+      color: #fecaca;
+      background: rgba(239, 68, 68, .11);
+      border: 1px solid rgba(239, 68, 68, .20);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat {
+      padding: 15px;
+      border-radius: 16px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .stat strong {
+      font-size: 22px;
+    }
+
+    .result-list {
+      max-height: 475px;
+      overflow: auto;
+      border-radius: 16px;
+    }
+
+    .result-table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: separate;
+      border-spacing: 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(12, 12, 15, .72);
+      animation: appear .25s ease both;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(7px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-table th,
+    .result-table td {
+      width: 50%;
+      padding: 13px 14px;
+      text-align: left;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-table th:last-child,
+    .result-table td:last-child {
+      border-right: 0;
+    }
+
+    .result-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .result-table th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      color: #fecaca;
+      background: linear-gradient(135deg, #7f1d1d, #450a0a);
+      font-size: 12px;
+      letter-spacing: .08em;
+      font-weight: 900;
+    }
+
+    .result-table td {
+      color: #fafafa;
+      background: rgba(24, 24, 27, .82);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+      user-select: all;
+    }
+
+    .result-table tbody tr:nth-child(even) td {
+      background: rgba(39, 39, 42, .72);
+    }
+
+    .result-table tbody tr:hover td {
+      background: rgba(239, 68, 68, .10);
+    }
+
+    .empty-state {
+      border: 1px dashed rgba(255,255,255,.12);
+      border-radius: 18px;
+      padding: 45px 20px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255,255,255,.018);
+    }
+
+    .empty-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 14px;
+      border-radius: 17px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      background: var(--red-soft);
+      border: 1px solid rgba(239,68,68,.20);
+    }
+
+    .message {
+      display: none;
+      margin-top: 12px;
+      padding: 11px 13px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      color: #bbf7d0;
+      background: rgba(34,197,94,.10);
+      border: 1px solid rgba(34,197,94,.20);
+    }
+
+    .message.error {
+      color: #fecaca;
+      background: rgba(239,68,68,.10);
+      border: 1px solid rgba(239,68,68,.20);
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      text-align: center;
+      color: #71717a;
+      font-size: 12px;
+    }
+
+    @media (max-width: 850px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      textarea {
+        min-height: 330px;
+      }
+
+      .hero {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .badge {
+        min-width: auto;
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 18px 12px;
+      }
+
+      .hero,
+      .card {
+        border-radius: 18px;
+      }
+
+      .hero,
+      .card-body,
+      .card-head {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      .actions button {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <div class="hero-text">
+        <div class="eyebrow">Data Extractor</div>
+        <h1>Dashboard REFF ID & Vendor ID</h1>
+        <p>Tempel data transaksi mentah, lalu sistem akan mengambil semua REFF ID yang diawali <strong>LIT-</strong> beserta VENDOR ID yang diawali <strong>check-LIT-</strong>.</p>
+      </div>
+      <div class="badge">HTML Offline</div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-head">
+          <h2>Input Data</h2>
+          <small>Bisa banyak transaksi sekaligus</small>
+        </div>
+        <div class="card-body">
+          <textarea id="rawInput" spellcheck="false" placeholder="Tempel data di sini..."></textarea>
+
+          <div class="actions">
+            <button class="btn-primary" id="processBtn">Proses Data</button>
+            <button class="btn-secondary" id="clearBtn">Bersihkan</button>
+          </div>
+
+          <div id="message" class="message"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Hasil Ekstraksi</h2>
+          <button class="btn-copy" id="copyBtn">Salin Dua Kolom</button>
+        </div>
+        <div class="card-body">
+          <div class="summary">
+            <div class="stat">
+              <span>Total Data Ditemukan</span>
+              <strong id="totalFound">0</strong>
+            </div>
+            <div class="stat">
+              <span>Status</span>
+              <strong id="statusText" style="font-size:16px;">Belum diproses</strong>
+            </div>
+          </div>
+
+          <div id="resultList" class="result-list">
+            <div class="empty-state">
+              <div class="empty-icon">⌕</div>
+              <strong>Belum ada hasil</strong>
+              <p>Masukkan data, lalu klik tombol “Proses Data”.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note">Semua proses dilakukan langsung di browser dan tidak mengirim data ke server.</div>
+  </main>
+
+  <script>
+    const rawInput = document.getElementById("rawInput");
+    const processBtn = document.getElementById("processBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const copyBtn = document.getElementById("copyBtn");
+    const resultList = document.getElementById("resultList");
+    const totalFound = document.getElementById("totalFound");
+    const statusText = document.getElementById("statusText");
+    const message = document.getElementById("message");
+
+    let extractedData = [];
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function showMessage(text, type) {
+      message.textContent = text;
+      message.className = `message show ${type}`;
+    }
+
+    function hideMessage() {
+      message.className = "message";
+      message.textContent = "";
+    }
+
+    function extractPairs(text) {
+      const lines = text
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(Boolean);
+
+      const pairs = [];
+      const reffPattern = /^LIT-[A-Za-z0-9-]+$/i;
+      const vendorPattern = /^check-LIT-[A-Za-z0-9-]+$/i;
+
+      for (let i = 0; i < lines.length; i++) {
+        if (!reffPattern.test(lines[i])) continue;
+
+        const reffId = lines[i];
+        let vendorId = "";
+
+        // Cari VENDOR ID setelah REFF ID dengan toleransi beberapa baris.
+        for (let j = i + 1; j < Math.min(i + 6, lines.length); j++) {
+          if (vendorPattern.test(lines[j])) {
+            vendorId = lines[j];
+            break;
+          }
+          // Berhenti bila menemukan REFF ID berikutnya.
+          if (reffPattern.test(lines[j])) break;
+        }
+
+        // Cadangan otomatis: vendor dibuat dari REFF ID bila baris check-LIT tidak ditemukan.
+        if (!vendorId) {
+          const expectedVendor = `check-${reffId}`;
+          const exactMatch = lines.find(line => line.toLowerCase() === expectedVendor.toLowerCase());
+          vendorId = exactMatch || "";
+        }
+
+        pairs.push({ reffId, vendorId });
+      }
+
+      // Hapus data duplikat.
+      return pairs.filter((item, index, arr) =>
+        index === arr.findIndex(other =>
+          other.reffId.toLowerCase() === item.reffId.toLowerCase() &&
+          other.vendorId.toLowerCase() === item.vendorId.toLowerCase()
+        )
+      );
+    }
+
+    function renderResults(data) {
+      totalFound.textContent = data.length;
+      statusText.textContent = data.length ? "Berhasil" : "Tidak ditemukan";
+      statusText.style.color = data.length ? "#86efac" : "#fca5a5";
+
+      if (!data.length) {
+        resultList.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">!</div>
+            <strong>Data tidak ditemukan</strong>
+            <p>Pastikan terdapat baris yang diawali LIT- dan check-LIT-.</p>
+          </div>`;
+        return;
+      }
+
+      resultList.innerHTML = `
+        <table class="result-table">
+          <thead>
+            <tr>
+              <th>REFF ID</th>
+              <th>VENDOR ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.map(item => `
+              <tr>
+                <td>${escapeHtml(item.reffId)}</td>
+                <td>${escapeHtml(item.vendorId || "Tidak ditemukan")}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>`;
+    }
+
+    function processData() {
+      hideMessage();
+      const text = rawInput.value.trim();
+
+      if (!text) {
+        extractedData = [];
+        renderResults([]);
+        showMessage("Silakan masukkan data terlebih dahulu.", "error");
+        return;
+      }
+
+      // Balik urutan: data terakhir pada input tampil sebagai urutan pertama.
+      extractedData = extractPairs(text).reverse();
+      renderResults(extractedData);
+
+      if (extractedData.length) {
+        showMessage(`${extractedData.length} data berhasil diproses.`, "success");
+      } else {
+        showMessage("REFF ID dan VENDOR ID tidak ditemukan pada data tersebut.", "error");
+      }
+    }
+
+    processBtn.addEventListener("click", processData);
+
+    clearBtn.addEventListener("click", () => {
+      rawInput.value = "";
+      extractedData = [];
+      totalFound.textContent = "0";
+      statusText.textContent = "Belum diproses";
+      statusText.style.color = "";
+      hideMessage();
+      resultList.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">⌕</div>
+          <strong>Belum ada hasil</strong>
+          <p>Masukkan data, lalu klik tombol “Proses Data”.</p>
+        </div>`;
+      rawInput.focus();
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      if (!extractedData.length) {
+        showMessage("Belum ada hasil yang dapat disalin.", "error");
+        return;
+      }
+
+      // Format TAB agar ketika ditempel ke Excel/Google Sheets
+      // REFF ID dan VENDOR ID langsung masuk ke kolom yang berbeda.
+      const text = extractedData.map(item =>
+        `${item.reffId}\t${item.vendorId || "Tidak ditemukan"}`
+      ).join("\n");
+
+      try {
+        await navigator.clipboard.writeText(text);
+        showMessage("Hasil dua kolom berhasil disalin.", "success");
+      } catch {
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        temp.remove();
+        showMessage("Hasil dua kolom berhasil disalin.", "success");
+      }
+    });
+</script>
+</body>
+</html>
