@@ -440,7 +440,7 @@
       <div class="hero-text">
         <div class="eyebrow">Data Extractor</div>
         <h1>Dashboard REFF ID & Vendor ID</h1>
-        <p>Tempel data transaksi mentah, lalu sistem akan mengambil semua REFF ID yang diawali <strong>LIT-</strong> beserta VENDOR ID yang diawali <strong>check-LIT-</strong>.</p>
+        <p>Tempel data transaksi mentah, lalu sistem akan mengambil REFF ID yang diawali <strong>LIT-</strong> dan membaca <strong>apa pun isi pada kolom VENDOR ID</strong> tanpa syarat awalan tertentu.</p>
       </div>
       <div class="badge">HTML Offline</div>
     </section>
@@ -526,42 +526,130 @@
     }
 
     function extractPairs(text) {
-      const lines = text
-        .split(/\r?\n/)
+      const rawLines = text.split(/\r?\n/);
+      const lines = rawLines
         .map(line => line.trim())
         .filter(Boolean);
 
       const pairs = [];
-      const reffPattern = /^LIT-[A-Za-z0-9-]+$/i;
-      const vendorPattern = /^check-LIT-[A-Za-z0-9-]+$/i;
+      const reffPattern = /^LIT-[^\s]+$/i;
 
-      for (let i = 0; i < lines.length; i++) {
-        if (!reffPattern.test(lines[i])) continue;
+      const normalizeLabel = value => String(value)
+        .trim()
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, "");
 
-        const reffId = lines[i];
-        let vendorId = "";
+      const isReffLabel = value => normalizeLabel(value) === "REFFID";
+      const isVendorLabel = value => normalizeLabel(value) === "VENDORID";
+      const isKnownLabel = value => isReffLabel(value) || isVendorLabel(value);
 
-        // Cari VENDOR ID setelah REFF ID dengan toleransi beberapa baris.
-        for (let j = i + 1; j < Math.min(i + 6, lines.length); j++) {
-          if (vendorPattern.test(lines[j])) {
-            vendorId = lines[j];
-            break;
-          }
-          // Berhenti bila menemukan REFF ID berikutnya.
-          if (reffPattern.test(lines[j])) break;
-        }
+      function addPair(reffId, vendorId) {
+        const cleanReff = String(reffId || "").trim();
+        const cleanVendor = String(vendorId || "").trim();
 
-        // Cadangan otomatis: vendor dibuat dari REFF ID bila baris check-LIT tidak ditemukan.
-        if (!vendorId) {
-          const expectedVendor = `check-${reffId}`;
-          const exactMatch = lines.find(line => line.toLowerCase() === expectedVendor.toLowerCase());
-          vendorId = exactMatch || "";
-        }
+        if (!reffPattern.test(cleanReff)) return;
+        if (!cleanVendor || isKnownLabel(cleanVendor)) return;
 
-        pairs.push({ reffId, vendorId });
+        pairs.push({ reffId: cleanReff, vendorId: cleanVendor });
       }
 
-      // Hapus data duplikat.
+      function splitColumns(line) {
+        if (line.includes("\t")) {
+          return line.split("\t").map(cell => cell.trim());
+        }
+        if (line.includes("|")) {
+          return line.split("|").map(cell => cell.trim()).filter(Boolean);
+        }
+        return null;
+      }
+
+      // 1. Membaca data tabel: REFF ID dan VENDOR ID dapat dipisahkan TAB atau tanda |.
+      // Isi VENDOR ID diterima apa adanya, tanpa harus diawali check-LIT-.
+      let reffColumn = -1;
+      let vendorColumn = -1;
+
+      for (const rawLine of rawLines) {
+        const columns = splitColumns(rawLine);
+        if (!columns || columns.length < 2) continue;
+
+        const foundReffHeader = columns.findIndex(isReffLabel);
+        const foundVendorHeader = columns.findIndex(isVendorLabel);
+
+        if (foundReffHeader !== -1 && foundVendorHeader !== -1) {
+          reffColumn = foundReffHeader;
+          vendorColumn = foundVendorHeader;
+          continue;
+        }
+
+        if (reffColumn !== -1 && vendorColumn !== -1) {
+          addPair(columns[reffColumn], columns[vendorColumn]);
+          continue;
+        }
+
+        // Cadangan untuk tabel tanpa header: kolom pertama REFF ID,
+        // kolom kedua langsung dianggap sebagai VENDOR ID.
+        const directReffIndex = columns.findIndex(cell => reffPattern.test(cell));
+        if (directReffIndex !== -1 && columns[directReffIndex + 1] !== undefined) {
+          addPair(columns[directReffIndex], columns[directReffIndex + 1]);
+        }
+      }
+
+      // 2. Membaca format vertikal/hasil salin halaman:
+      // REFFID -> nilainya -> VENDOR ID -> nilainya.
+      let pendingReff = "";
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Mendukung format satu baris seperti "REFF ID: LIT-...".
+        const inlineReff = line.match(/^\s*REFF\s*ID\s*[:=]\s*(.+)$/i);
+        if (inlineReff) {
+          pendingReff = inlineReff[1].trim();
+          continue;
+        }
+
+        // Mendukung format satu baris seperti "VENDOR ID: isi apa pun".
+        const inlineVendor = line.match(/^\s*VENDOR\s*ID\s*[:=]\s*(.+)$/i);
+        if (inlineVendor) {
+          addPair(pendingReff, inlineVendor[1]);
+          pendingReff = "";
+          continue;
+        }
+
+        if (isReffLabel(line)) {
+          const nextValue = lines[i + 1] || "";
+          if (reffPattern.test(nextValue)) {
+            pendingReff = nextValue;
+            i++;
+          }
+          continue;
+        }
+
+        if (isVendorLabel(line)) {
+          const vendorValue = lines[i + 1] || "";
+          if (pendingReff && vendorValue && !isKnownLabel(vendorValue)) {
+            addPair(pendingReff, vendorValue);
+            pendingReff = "";
+            i++;
+          }
+          continue;
+        }
+
+        if (reffPattern.test(line)) {
+          pendingReff = line;
+
+          // Bila nilai VENDOR ID memang berada tepat di bawah REFF ID,
+          // ambil baris berikutnya apa adanya tanpa memeriksa pola tertentu.
+          const nextValue = lines[i + 1] || "";
+          if (nextValue && !isKnownLabel(nextValue) && !reffPattern.test(nextValue)) {
+            addPair(pendingReff, nextValue);
+            pendingReff = "";
+            i++;
+          }
+        }
+      }
+
+      // Hapus duplikat yang sama persis.
       return pairs.filter((item, index, arr) =>
         index === arr.findIndex(other =>
           other.reffId.toLowerCase() === item.reffId.toLowerCase() &&
@@ -580,7 +668,7 @@
           <div class="empty-state">
             <div class="empty-icon">!</div>
             <strong>Data tidak ditemukan</strong>
-            <p>Pastikan terdapat baris yang diawali LIT- dan check-LIT-.</p>
+            <p>Pastikan terdapat REFF ID yang diawali LIT- serta nilai pada kolom VENDOR ID.</p>
           </div>`;
         return;
       }
@@ -622,7 +710,7 @@
       if (extractedData.length) {
         showMessage(`${extractedData.length} data berhasil diproses.`, "success");
       } else {
-        showMessage("REFF ID dan VENDOR ID tidak ditemukan pada data tersebut.", "error");
+        showMessage("Pasangan REFF ID dan isi kolom VENDOR ID tidak ditemukan pada data tersebut.", "error");
       }
     }
 
