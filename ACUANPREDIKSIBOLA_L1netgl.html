@@ -967,25 +967,15 @@
 
     function buildPlainText(state) {
       const matches = getFilteredMatches(state);
-      const groups = groupMatches(matches);
-      const lines = [
-        `PREDIKSI BOLA ${formatDisplayDate(state.date)}`,
-        `Sumber Jadwal: ESPN | Waktu: ${DISPLAY_ZONE_LABEL}`,
-        ""
-      ];
+      const [, month = "", day = ""] = String(state.date || "").split("-");
+      const copyDate = day && month ? `${day}/${month}` : formatDisplayDate(state.date);
+      const lines = [];
 
-      for (const [league, leagueMatches] of groups.entries()) {
-        lines.push(league.toUpperCase());
-        for (const match of leagueMatches) {
-          lines.push(`${formatDisplayDate(state.date)} ${match.time} ${DISPLAY_ZONE_LABEL}`);
-          lines.push(`${match.home.name} VS ${match.away.name}`);
-          lines.push(`PREDIKSI SKOR: ${match.predHome} - ${match.predAway}`);
-          if (match.location) lines.push(`LOKASI: ${match.location}`);
-          lines.push("");
-        }
+      for (const match of matches) {
+        lines.push(`${copyDate} ${match.time} ${DISPLAY_ZONE_LABEL}`);
+        lines.push(`${match.home.name} VS ${match.away.name} ${match.predHome} : ${match.predAway}`);
       }
 
-      while (lines.at(-1) === "") lines.pop();
       return lines.join("\n");
     }
 
@@ -1051,7 +1041,7 @@
       document.getElementById("copyBothBtn").addEventListener("click", async () => {
         const available = Object.values(states).filter(state => state.matches.length);
         if (!available.length) return showToast("Belum ada jadwal untuk dicopy.");
-        await copyText(available.map(buildPlainText).join("\n\n==============================\n\n"));
+        await copyText(available.map(buildPlainText).filter(Boolean).join("\n"));
         showToast("Jadwal dua tanggal berhasil disalin.");
       });
       document.getElementById("todayTomorrowBtn").addEventListener("click", setTodayTomorrow);
