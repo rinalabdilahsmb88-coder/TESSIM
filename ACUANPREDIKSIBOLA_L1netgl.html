@@ -1049,5 +1049,31 @@
       loadBoth();
     });
   </script>
+
+
+  <script>
+    // Redirect ke Google ketika Ctrl+U atau F12 ditekan.
+    (() => {
+      const GOOGLE_URL = "https://www.google.com/";
+
+      function redirectToGoogle(event) {
+        const key = String(event.key || "").toLowerCase();
+        const isCtrlU = event.ctrlKey && key === "u";
+        const isF12 = key === "f12" || event.keyCode === 123;
+
+        if (!isCtrlU && !isF12) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        window.location.replace(GOOGLE_URL);
+        return false;
+      }
+
+      window.addEventListener("keydown", redirectToGoogle, true);
+      document.addEventListener("keydown", redirectToGoogle, true);
+    })();
+  </script>
+
 </body>
 </html>
