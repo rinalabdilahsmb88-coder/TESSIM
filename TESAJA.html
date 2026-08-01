@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Beranda - NASUTION Dashboard</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/favicon.png" type="image/png">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tema Utama CSS -->
+    <link rel="stylesheet" href="style.css?v=1785493568">
+    
+    <!-- Mobile CSS -->
+    <link rel="stylesheet" href="mobile.css" media="screen and (max-width: 768px)">
+    
+    <style>
+        /* ===== BERANDA ENHANCED STYLES ===== */
+        .beranda-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: rgba(10,10,10,0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,51,51,0.3);
+            border-radius: 32px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -10px rgba(255,51,51,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .welcome-banner:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 50px -10px rgba(255,51,51,0.5);
+        }
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,51,51,0.15) 0%, transparent 70%);
+            animation: rotateSlow 20s linear infinite;
+            z-index: 0;
+        }
+        .banner-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+            flex-wrap: wrap;
+        }
+        .banner-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(145deg, #ff3333, #cc0000);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 30px -8px rgba(255,51,51,0.6);
+            animation: float 3s ease-in-out infinite;
+        }
+        .banner-icon i {
+            font-size: 3rem;
+            color: white;
+        }
+        .banner-text {
+            flex: 1;
+        }
+        .banner-text h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #ffb3b3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .banner-text p {
+            color: #aaa;
+            font-size: 1rem;
+        }
+        .banner-stats {
+            display: flex;
+            gap: 1rem;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 0.5rem 1.2rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            border: 1px solid rgba(255,51,51,0.3);
+            min-width: 100px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        .stat-item:hover {
+            background: rgba(255,51,51,0.15);
+            border-color: #ff3333;
+            transform: scale(1.05);
+        }
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ff9999;
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Top Up Banner */
+        .topup-banner {
+            background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(0,0,0,0.9));
+            border: 1px solid rgba(255,51,51,0.3);
+            border-radius: 24px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .topup-banner:hover {
+            border-color: #ff3333;
+            box-shadow: 0 15px 30px -5px rgba(255,51,51,0.3);
+            transform: translateY(-2px);
+        }
+        .topup-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .topup-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #ff3333, #cc0000);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .topup-icon i {
+            font-size: 1.8rem;
+            color: white;
+        }
+        .topup-text {
+            flex: 1;
+        }
+        .topup-text h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.2rem;
+        }
+        .topup-text p {
+            font-size: 0.95rem;
+            color: #aaa;
+        }
+        .topup-text a {
+            color: #ff9999;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px dashed rgba(255,51,51,0.4);
+            transition: all 0.3s ease;
+        }
+        .topup-text a:hover {
+            color: #ff3333;
+            border-bottom-color: #ff3333;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Schedule & Announcement Cards */
+        .schedule-section, .announcement-section {
+            background: rgba(15,15,15,0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,51,51,0.2);
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px -10px rgba(0,0,0,0.8);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .schedule-section::before, .announcement-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff3333, #ff9999, #ff3333, transparent);
+            animation: borderFlow 3s linear infinite;
+        }
+        @keyframes borderFlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .schedule-section:hover, .announcement-section:hover {
+            border-color: #ff3333;
+            box-shadow: 0 15px 35px -10px rgba(255,51,51,0.4);
+            transform: translateY(-2px);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255,51,51,0.2);
+        }
+        .section-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .section-header h2 i {
+            color: #ff3333;
+            font-size: 1.3rem;
+        }
+        .view-all {
+            color: #ff9999;
+            font-size: 0.8rem;
+            background: rgba(255,51,51,0.1);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid rgba(255,51,51,0.2);
+            transition: all 0.3s ease;
+        }
+        .view-all:hover {
+            background: rgba(255,51,51,0.2);
+            border-color: #ff3333;
+            gap: 0.8rem;
+        }
+
+        /* Schedule Table */
+        .schedule-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 6px;
+        }
+        .schedule-table thead th {
+            padding: 0.8rem 0.5rem;
+            color: #888;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255,51,51,0.2);
+            text-align: left;
+        }
+        .schedule-table tbody tr {
+            background: rgba(0,0,0,0.4);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .schedule-table tbody tr:hover {
+            background: rgba(255,51,51,0.1);
+            border-color: #ff3333;
+            transform: translateX(5px) scale(1.01);
+            box-shadow: 0 10px 20px -8px rgba(255,51,51,0.3);
+        }
+        .schedule-table td {
+            padding: 0.8rem 0.5rem;
+            font-size: 0.9rem;
+            border: none;
+        }
+        .market-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #ff9999;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .time-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #aaa;
+            font-family: 'Courier New', monospace;
+        }
+        .countdown {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #ff9999;
+            transition: color 0.3s ease;
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Announcement List */
+        .announcement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.3rem;
+        }
+        .announcement-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 1.2rem;
+            background: rgba(0,0,0,0.4);
+            border-left: 4px solid #ff3333;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .announcement-item:hover {
+            background: rgba(255,51,51,0.15);
+            transform: translateX(5px);
+            border-left-width: 6px;
+        }
+        .announcement-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,51,51,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .announcement-icon i {
+            font-size: 1.2rem;
+            color: #ff9999;
+        }
+        .announcement-content {
+            flex: 1;
+        }
+        .announcement-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .announcement-desc {
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.5;
+        }
+        .announcement-badge {
+            padding: 4px 12px;
+            background: rgba(255,51,51,0.2);
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #ff9999;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,51,51,0.3);
+            white-space: nowrap;
+            align-self: center;
+        }
+        .announcement-item.extra-slot {
+            border-left-color: #f39c12;
+            background: rgba(243,156,18,0.1);
+        }
+        .announcement-item.extra-slot .announcement-icon i {
+            color: #ffbb33;
+        }
+        .announcement-item.extra-slot .announcement-badge {
+            background: rgba(243,156,18,0.2);
+            color: #ffbb33;
+            border-color: rgba(243,156,18,0.3);
+        }
+
+        /* Nawala Checker */
+        .nawala-section {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .nawala-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .nawala-card {
+            background: rgba(15,15,15,0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,51,51,0.2);
+            border-radius: 24px;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            color: #ff9999;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .nawala-card:hover {
+            border-color: #ff3333;
+            background: rgba(255,51,51,0.1);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px -8px rgba(255,51,51,0.4);
+        }
+        .nawala-card i {
+            font-size: 1.4rem;
+            color: #ff3333;
+            transition: transform 0.3s ease;
+        }
+        .nawala-card:hover i {
+            transform: rotate(10deg) scale(1.2);
+        }
+
+        /* Quote Card */
+        .quote-card {
+            background: linear-gradient(135deg, rgba(20,20,20,0.8), rgba(0,0,0,0.95));
+            border: 1px solid rgba(255,51,51,0.3);
+            border-radius: 32px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px -10px rgba(255,51,51,0.2);
+        }
+        .quote-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,51,51,0.1) 0%, transparent 70%);
+            animation: rotateSlow 20s linear infinite;
+        }
+        .quote-icon {
+            font-size: 4rem;
+            color: rgba(255,51,51,0.2);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+            animation: float 3s ease-in-out infinite;
+        }
+        .quote-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            line-height: 1.6;
+            color: white;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 0 2px 10px rgba(255,51,51,0.3);
+        }
+        .quote-author {
+            font-size: 1.1rem;
+            color: #888;
+            position: relative;
+            z-index: 2;
+        }
+        .quote-author span {
+            color: #ff9999;
+            font-weight: 600;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .banner-content { flex-direction: column; text-align: center; }
+            .banner-stats { justify-content: center; }
+        }
+        @media (max-width: 768px) {
+            .banner-stats { flex-direction: column; width: 100%; }
+            .stat-item { width: 100%; }
+            .quote-text { font-size: 1.3rem; }
+            .topup-content { flex-direction: column; text-align: center; gap: 0.8rem; }
+            .nawala-grid { grid-template-columns: 1fr; }
+            .schedule-table { display: block; overflow-x: auto; white-space: nowrap; }
+            .announcement-item { flex-wrap: wrap; }
+            .announcement-badge { margin-left: auto; }
+            .banner-text h2 { font-size: 1.6rem; }
+        }
+        @media (max-width: 576px) {
+            .welcome-banner { padding: 1rem; }
+            .banner-icon { width: 60px; height: 60px; }
+            .banner-icon i { font-size: 2rem; }
+            .banner-text h2 { font-size: 1.3rem; }
+            .quote-text { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="mainSidebar">
+    <div class="sidebar-accent"></div>
+    <div class="sidebar-header">
+        <div class="logo-wrapper">
+            <div class="logo-icon"><i class="fas fa-crown"></i></div>
+            <div class="brand-text"><h3>Nasution</h3><span class="brand-tagline">DASHBOARD</span></div>
+        </div>
+        <div class="header-glow"></div>
+    </div>
+
+    <!-- User Info dengan Foto Profil - Klik menuju Profil -->
+    <a href="profile" class="sidebar-user-link">
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>            </div>
+            <div class="user-info">
+                <span class="user-name">wecaadaniel91</span>
+                <span class="user-role">
+                    CS                </span>
+            </div>
+            <div class="user-status"></div>
+        </div>
+    </a>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section"><span class="nav-section-title">MAIN MENU</span></div>
+        <ul class="sidebar-menu">
+            <li class="menu-item active">
+                <a href="beranda"><div class="menu-icon"><i class="fas fa-home"></i><span class="icon-badge"></span></div><span class="menu-text">Beranda</span><span class="menu-arrow"><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <li class="menu-item ">
+                <a href="shortcut_cs"><div class="menu-icon"><i class="fas fa-link"></i></div><span class="menu-text">Shortcut Cs</span><span class="menu-arrow"><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <li class="menu-item ">
+                <a href="jadwal_pasaran"><div class="menu-icon"><i class="fas fa-calendar-alt"></i></div><span class="menu-text">Jadwal Pasaran</span><span class="menu-arrow"><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <li class="menu-item ">
+                <a href="prediksi_togel"><div class="menu-icon"><i class="fas fa-chart-line"></i></div><span class="menu-text">Prediksi Togel</span><span class="menu-arrow"><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <!-- MENU GENERATE PASSWORD (BARU) -->
+            <li class="menu-item ">
+                <a href="generate_password"><div class="menu-icon"><i class="fas fa-key"></i></div><span class="menu-text">Generate Password</span><span class="menu-arrow"><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+            <li class="menu-item ">
+                <a href="gambar_cs_livechat"><div class="menu-icon"><i class="fas fa-image"></i></div><span class="menu-text">Gambar CS</span><span class="menu-arrow"><i class="fas fa-chevron-right"></i></span></a>
+            </li>
+        </ul>
+        <div class="nav-divider"></div>
+        <div class="nav-section"><span class="nav-section-title">LAINNYA</span></div>
+        <ul class="sidebar-menu">
+            <li class="menu-item ">
+                <a href="setting"><div class="menu-icon"><i class="fas fa-cogs"></i></div><span class="menu-text">Settings</span></a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="footer-bottom">
+            <div class="system-info"><i class="fas fa-circle" style="color: #2ecc71; font-size: 0.5rem;"></i><span>System Online</span></div>
+            <div class="copyright"><span>© 2026 NASUTION</span></div>
+        </div>
+    </div>
+
+    <div class="sidebar-glow"></div>
+    <div class="sidebar-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+</aside>
+
+<style>
+    .sidebar-user-link { text-decoration: none; display: block; color: inherit; }
+    .sidebar-user-link:hover .sidebar-user { background: rgba(255,51,51,0.15); border-color: #ff3333; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,51,51,0.3); }
+    .user-avatar { width: 35px; height: 35px; background: linear-gradient(145deg, #ff3333, #cc0000); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .user-avatar i { font-size: 1.4rem; color: white; }
+    .user-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+    @media (max-width: 768px) {
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 85% !important;
+            max-width: 300px;
+            height: 100vh;
+            z-index: 1050;
+            transition: left 0.3s ease;
+            border-right: none;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.5);
+        }
+        .sidebar.active {
+            left: 0;
+        }
+    }
+</style>        
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Header -->
+            <div class="content-header">
+    <div class="header-bg-pattern"></div>
+    <div class="header-glow-effect"></div>
+    
+    <div class="header-content">
+        <div class="header-left">
+            <!-- Tombol Hamburger untuk Mobile -->
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <div class="header-icon-wrapper">
+                <div class="header-icon-inner"><i class="fas fa-home"></i></div>
+                <div class="icon-ring"></div>
+                <div class="icon-dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="title-section">
+                <div class="title-wrapper">
+                    <h1>BERANDA</h1>
+                    <div class="title-underline"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="date-card">
+                <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+                <div class="card-info"><span class="info-value" id="currentDate">-</span></div>
+                <div class="card-glow"></div>
+            </div>
+            <div class="header-divider">
+                <div class="divider-line"></div>
+                <div class="divider-dot"></div>
+                <div class="divider-line"></div>
+            </div>
+            <div class="time-card">
+                <div class="card-icon"><i class="fas fa-clock"></i></div>
+                <div class="card-info">
+                    <div class="time-display"><span id="liveClock">--:--:--</span><span class="time-format">WIB</span></div>
+                </div>
+                <div class="time-pulse"></div>
+            </div>
+            <div class="quick-actions">
+                <!-- Tombol Chat dengan badge notifikasi -->
+                <button class="action-btn" id="chatBtn" title="Chat">
+                    <i class="fas fa-comment-dots"></i>
+                    <span id="chatNotifBadge" class="notif-badge" style="display: none;">0</span>
+                </button>
+                <button class="action-btn" id="fullscreenBtn" title="Fullscreen"><i class="fas fa-expand"></i></button>
+                <a href="logout" class="action-btn logout-header" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Overlay untuk sidebar saat mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- MODAL CHAT -->
+<div id="chatModal" class="chat-modal">
+    <div class="chat-modal-content">
+        <div class="chat-modal-header">
+            <h3><i class="fas fa-comments"></i> Live Chat CS</h3>
+            <button class="chat-modal-close">&times;</button>
+        </div>
+        <div class="chat-container">
+            <div class="chat-contacts">
+                <div class="chat-contacts-header">Kontak</div>
+                <div class="chat-contacts-list" id="chatContactsList">Memuat...</div>
+            </div>
+            <div class="chat-area" id="chatArea">
+                <div class="chat-header" id="chatHeader">Pilih kontak untuk memulai chat</div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-area">
+                    <div class="chat-input-wrapper">
+                        <div id="imagePreviewContainer" style="display: none; margin-bottom: 8px;">
+                            <div style="position: relative; display: inline-block;">
+                                <img id="pendingImagePreview" style="max-height: 80px; border-radius: 8px; border: 2px solid #ff3333;">
+                                <button id="cancelImageBtn" style="position: absolute; top: -8px; right: -8px; background: #ff3333; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer;">×</button>
+                            </div>
+                            <span style="font-size: 0.7rem; color: #ff9999; margin-left: 8px;">Gambar siap dikirim. Klik Kirim.</span>
+                        </div>
+                        <input type="text" id="chatMessageInput" placeholder="Ketik pesan atau paste gambar (Ctrl+V)" autocomplete="off">
+                    </div>
+                    <div class="chat-buttons">
+                        <button id="chatSendBtn"><i class="fas fa-paper-plane"></i> Kirim</button>
+                        <button id="deleteRoomBtn" class="delete-room-btn" title="Hapus semua pesan dengan kontak ini"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PREVIEW GAMBAR BESAR -->
+<div id="imagePopupModal" class="image-popup-modal" style="display: none;">
+    <div class="image-popup-content">
+        <button class="image-popup-close">&times;</button>
+        <img id="popupImage" src="" alt="Preview">
+    </div>
+</div>
+
+<style>
+    /* ===== CSS UNTUK HEADER DAN CHAT (lengkap) ===== */
+    .logout-header { background: rgba(255,51,51,0.15) !important; border-color: rgba(255,51,51,0.4) !important; color: #ff9999 !important; }
+    .logout-header:hover { background: rgba(255,51,51,0.3) !important; color: #ff3333 !important; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,51,51,0.4); }
+    .action-btn { position: relative; }
+    .notif-badge { position: absolute; top: -6px; right: -8px; background: linear-gradient(135deg, #ff3333, #cc0000); color: white; font-size: 0.65rem; font-weight: bold; min-width: 18px; height: 18px; border-radius: 30px; padding: 0 5px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 6px rgba(255,51,51,0.8); }
+    .notif-badge.pulse { animation: notifPulse 1s infinite; }
+    @keyframes notifPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+    .chat-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center; }
+    .chat-modal.active { display: flex; }
+    .chat-modal-content { width: 90%; max-width: 1000px; height: 80vh; background: #0a0a0a; border: 1px solid rgba(255,51,51,0.3); border-radius: 24px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(255,51,51,0.4); }
+    .chat-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background: rgba(0,0,0,0.5); border-bottom: 1px solid rgba(255,51,51,0.2); }
+    .chat-modal-header h3 { margin: 0; color: #ff9999; font-family: 'Poppins', sans-serif; }
+    .chat-modal-close { background: none; border: none; font-size: 1.8rem; color: #aaa; cursor: pointer; }
+    .chat-modal-close:hover { color: #ff3333; }
+    .chat-container { display: flex; flex: 1; overflow: hidden; }
+    .chat-contacts { width: 260px; border-right: 1px solid rgba(255,51,51,0.2); display: flex; flex-direction: column; background: rgba(0,0,0,0.3); }
+    .chat-contacts-header { padding: 0.8rem 1rem; font-weight: 600; color: #ff9999; border-bottom: 1px solid rgba(255,51,51,0.2); }
+    .chat-contacts-list { flex: 1; overflow-y: auto; }
+    .chat-contact-item { padding: 0.7rem 1rem; display: flex; align-items: center; gap: 10px; cursor: pointer; border-bottom: 1px solid rgba(255,51,51,0.1); transition: 0.2s; position: relative; }
+    .chat-contact-item:hover { background: rgba(255,51,51,0.1); }
+    .chat-contact-item.active { background: rgba(255,51,51,0.2); border-left: 3px solid #ff3333; }
+    .contact-avatar { width: 35px; height: 35px; background: rgba(255,51,51,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .contact-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+    .contact-avatar i { font-size: 1.2rem; color: #ff9999; }
+    .contact-info { flex: 1; min-width: 0; }
+    .contact-name { font-weight: 600; font-size: 0.9rem; color: white; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .contact-role { font-size: 0.7rem; color: #ff9999; }
+    .unread-badge { background: #ff3333; color: white; border-radius: 20px; padding: 2px 8px; font-size: 0.7rem; margin-left: 5px; }
+    .online-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2ecc71; box-shadow: 0 0 5px #2ecc71; animation: onlinePulse 1.5s infinite; }
+    .offline-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #7f8c8d; }
+    @keyframes onlinePulse { 0% { opacity: 0.5; } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.5; } }
+    .chat-area { flex: 1; display: flex; flex-direction: column; }
+    .chat-header { padding: 0.8rem 1rem; background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,51,51,0.2); font-weight: bold; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 10px; }
+    .message { max-width: 70%; padding: 0.5rem 1rem; border-radius: 18px; word-wrap: break-word; }
+    .message.sent { align-self: flex-end; background: linear-gradient(145deg, #ff3333, #cc0000); color: white; border-bottom-right-radius: 4px; }
+    .message.received { align-self: flex-start; background: rgba(255,255,255,0.1); color: #ddd; border-bottom-left-radius: 4px; }
+    .message-time { font-size: 0.6rem; opacity: 0.7; margin-top: 4px; text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+    .message-read { font-size: 0.6rem; color: #2ecc71; }
+    .chat-image { max-width: 200px; max-height: 150px; border-radius: 12px; cursor: pointer; margin-top: 5px; }
+    .chat-input-area { display: flex; flex-direction: column; padding: 0.8rem; border-top: 1px solid rgba(255,51,51,0.2); background: rgba(0,0,0,0.3); }
+    .chat-input-wrapper { display: flex; flex-direction: column; gap: 8px; }
+    .chat-input-wrapper input { width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 30px; padding: 0.6rem 1rem; color: white; outline: none; }
+    .chat-input-wrapper input:focus { border-color: #ff3333; }
+    .chat-buttons { display: flex; gap: 10px; margin-top: 8px; }
+    .chat-buttons button { background: linear-gradient(145deg, #ff3333, #cc0000); border: none; border-radius: 30px; padding: 0.5rem 1.2rem; color: white; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .chat-buttons button:hover { transform: scale(1.02); box-shadow: 0 0 8px rgba(255,51,51,0.5); }
+    .delete-room-btn { background: rgba(231,76,60,0.2) !important; border: 1px solid #e74c3c !important; color: #e74c3c !important; margin-left: 0; }
+    .delete-room-btn:hover { background: rgba(231,76,60,0.4) !important; }
+    #imagePreviewContainer { display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.5); padding: 5px; border-radius: 12px; }
+    .image-popup-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+    .image-popup-content { position: relative; max-width: 90vw; max-height: 90vh; }
+    .image-popup-content img { max-width: 100%; max-height: 90vh; border-radius: 12px; border: 2px solid #ff3333; }
+    .image-popup-close { position: absolute; top: -40px; right: 0; background: none; border: none; font-size: 2rem; color: white; cursor: pointer; opacity: 0.7; }
+    .image-popup-close:hover { opacity: 1; }
+    
+    /* Tombol hamburger untuk mobile */
+    .mobile-menu-btn {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,51,51,0.15);
+        border: 1px solid rgba(255,51,51,0.3);
+        border-radius: 12px;
+        color: #ff9999;
+        font-size: 1.4rem;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    @media (max-width: 768px) {
+        .mobile-menu-btn { display: flex; }
+        .chat-modal .chat-modal-content { width: 95%; height: 90vh; }
+        .chat-contacts { width: 85px; }
+        .contact-info, .contact-name, .contact-role { display: none; }
+        .unread-badge { position: absolute; top: 5px; right: 5px; }
+    }
+    
+    /* Overlay sidebar mobile */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(4px);
+        z-index: 1040;
+        display: none;
+    }
+    .sidebar-overlay.active {
+        display: block;
+    }
+</style>
+
+<script>
+// ==================== CSRF TOKEN UNTUK CHAT ====================
+const csrfToken = 'b378adf0a761930148891e6741d5b62172db2c81473bde1ff96de1847ff36138';
+
+// ==================== FUNGSI HEADER (JAM, FULLSCREEN, MOBILE SIDEBAR) ====================
+function updateDateTime() {
+    const now = new Date();
+    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    const dateEl = document.getElementById('currentDate');
+    if (dateEl) dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    const clockEl = document.getElementById('liveClock');
+    if (clockEl) clockEl.textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', function() {
+            if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); this.innerHTML = '<i class="fas fa-compress"></i>'; }
+            else { document.exitFullscreen(); this.innerHTML = '<i class="fas fa-expand"></i>'; }
+        });
+        document.addEventListener('fullscreenchange', function() {
+            fullscreenBtn.innerHTML = document.fullscreenElement ? '<i class="fas fa-compress"></i>' : '<i class="fas fa-expand"></i>';
+        });
+    }
+    
+    // ==================== MOBILE SIDEBAR TOGGLE ====================
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (menuBtn && sidebar && overlay) {
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        function openSidebar() {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        menuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (sidebar.classList.contains('active')) closeSidebar();
+            else openSidebar();
+        });
+        overlay.addEventListener('click', closeSidebar);
+        sidebar.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeSidebar);
+        });
+    }
+});
+
+// ==================== CHAT GLOBAL (untuk modal chat) ====================
+let currentChatId = null;
+let lastMessageId = 0;
+let chatPollInterval = null;
+let pendingImageFile = null;
+
+// Elemen DOM
+const chatModal = document.getElementById('chatModal');
+const chatBtn = document.getElementById('chatBtn');
+const closeModalBtn = document.querySelector('.chat-modal-close');
+const chatContactsList = document.getElementById('chatContactsList');
+const chatHeader = document.getElementById('chatHeader');
+const chatMessagesDiv = document.getElementById('chatMessages');
+const chatMessageInput = document.getElementById('chatMessageInput');
+const chatSendBtn = document.getElementById('chatSendBtn');
+const deleteRoomBtn = document.getElementById('deleteRoomBtn');
+const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+const pendingImagePreview = document.getElementById('pendingImagePreview');
+const cancelImageBtn = document.getElementById('cancelImageBtn');
+const popupModal = document.getElementById('imagePopupModal');
+const popupImage = document.getElementById('popupImage');
+const popupClose = document.querySelector('.image-popup-close');
+
+function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+
+// ==================== NOTIFIKASI BADGE ====================
+let lastTotalUnread = 0;
+function updateHeaderBadge(total) {
+    const badge = document.getElementById('chatNotifBadge');
+    if (!badge) return;
+    if (total > 0) {
+        badge.style.display = 'inline-flex';
+        badge.textContent = total > 9 ? '9+' : total;
+        if (total > lastTotalUnread) {
+            badge.classList.add('pulse');
+            setTimeout(() => badge.classList.remove('pulse'), 1000);
+        }
+    } else {
+        badge.style.display = 'none';
+    }
+    lastTotalUnread = total;
+}
+
+// ==================== LOAD KONTAK & UPDATE BADGE ====================
+function loadContacts() {
+    fetch('get_contacts_ajax.php')
+        .then(res => res.json())
+        .then(data => {
+            if (!chatContactsList) return;
+            if (data.success) {
+                let totalUnread = 0;
+                let html = '';
+                data.contacts.forEach(contact => {
+                    const unread = parseInt(contact.unread_count) || 0;
+                    totalUnread += unread;
+                    const activeClass = (currentChatId == contact.id) ? 'active' : '';
+                    const onlineIcon = contact.is_online ? '<span class="online-dot" title="Online"></span>' : '<span class="offline-dot" title="Offline"></span>';
+                    const unreadBadge = unread > 0 ? `<span class="unread-badge">${unread}</span>` : '';
+                    let avatarHtml = contact.profile_picture ? `<img src="${escapeHtml(contact.profile_picture)}" alt="foto">` : `<i class="fas fa-user"></i>`;
+                    html += `<div class="chat-contact-item ${activeClass}" data-id="${contact.id}" data-name="${escapeHtml(contact.username)}" data-role="${contact.role}" data-photo="${escapeHtml(contact.profile_picture ?? '')}">
+                                <div class="contact-avatar">${avatarHtml}</div>
+                                <div class="contact-info">
+                                    <div class="contact-name">${escapeHtml(contact.username)} ${onlineIcon}</div>
+                                    <div class="contact-role">${contact.role}</div>
+                                </div>
+                                ${unreadBadge}
+                            </div>`;
+                });
+                chatContactsList.innerHTML = html;
+                updateHeaderBadge(totalUnread);
+                document.querySelectorAll('.chat-contact-item').forEach(el => {
+                    el.addEventListener('click', () => {
+                        const id = el.dataset.id;
+                        const name = el.dataset.name;
+                        const role = el.dataset.role;
+                        const photo = el.dataset.photo;
+                        openChat(id, name, role, photo);
+                        clearPendingImage();
+                    });
+                });
+            } else {
+                chatContactsList.innerHTML = '<div style="padding:1rem;text-align:center;color:#e74c3c;">Gagal memuat kontak</div>';
+            }
+        }).catch(err => console.error('Load contacts error:', err));
+}
+
+function openChat(userId, userName, userRole, userPhoto) {
+    if (!userId) return;
+    if (chatPollInterval) clearInterval(chatPollInterval);
+    currentChatId = userId;
+    clearPendingImage();
+    document.querySelectorAll('.chat-contact-item').forEach(el => {
+        if (el.dataset.id == userId) el.classList.add('active');
+        else el.classList.remove('active');
+    });
+    let avatarHtml = userPhoto ? `<img src="${escapeHtml(userPhoto)}" style="width:35px; height:35px; border-radius:10px; object-fit:cover;">` : `<i class="fas fa-user" style="font-size:1.2rem;"></i>`;
+    if (chatHeader) chatHeader.innerHTML = `
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div class="contact-avatar" style="width:35px; height:35px; background:rgba(255,51,51,0.2); display:flex; align-items:center; justify-content:center; border-radius:10px;">${avatarHtml}</div>
+            <div><strong>${escapeHtml(userName)}</strong> <span style="color:#ff9999;">(${userRole})</span></div>
+        </div>
+    `;
+    if (chatMessagesDiv) chatMessagesDiv.innerHTML = '<div style="text-align:center; padding:1rem;">Memuat pesan...</div>';
+    lastMessageId = 0;
+    loadMessages();
+    chatPollInterval = setInterval(loadMessages, 2000);
+}
+
+function loadMessages() {
+    if (!currentChatId) return;
+    fetch(`get_messages_ajax.php?other_id=${currentChatId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                if (lastMessageId === 0) {
+                    if (chatMessagesDiv) chatMessagesDiv.innerHTML = '';
+                    if (data.messages && data.messages.length > 0) {
+                        data.messages.forEach(msg => appendMessage(msg));
+                        lastMessageId = data.messages[data.messages.length-1].id;
+                    } else {
+                        if (chatMessagesDiv && chatMessagesDiv.innerHTML === '')
+                            chatMessagesDiv.innerHTML = '<div style="text-align:center; padding:1rem; color:#888;">Belum ada pesan. Kirim pesan pertama!</div>';
+                    }
+                    scrollChatToBottom();
+                } else {
+                    const newMessages = data.messages ? data.messages.filter(msg => msg.id > lastMessageId) : [];
+                    if (newMessages.length > 0) {
+                        newMessages.forEach(msg => appendMessage(msg));
+                        lastMessageId = newMessages[newMessages.length-1].id;
+                        scrollChatToBottom();
+                    }
+                    const existingSent = chatMessagesDiv.querySelectorAll('.message.sent');
+                    existingSent.forEach(div => {
+                        const msgId = div.dataset.msgId;
+                        if (msgId) {
+                            const found = data.messages.find(m => m.id == msgId);
+                            if (found && found.is_read) {
+                                const timeDiv = div.querySelector('.message-time');
+                                if (timeDiv) {
+                                    let readSpan = timeDiv.querySelector('.message-read');
+                                    if (!readSpan) {
+                                        readSpan = document.createElement('span');
+                                        readSpan.className = 'message-read';
+                                        timeDiv.appendChild(readSpan);
+                                    }
+                                    if (readSpan.innerHTML.indexOf('fa-check-double') === -1) {
+                                        readSpan.innerHTML = '<i class="fas fa-check-double"></i>';
+                                        readSpan.title = "Dibaca";
+                                        readSpan.style.color = "#2ecc71";
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                loadContacts();
+            } else {
+                console.error('Load messages error:', data.error);
+                if (chatMessagesDiv && chatMessagesDiv.innerHTML === 'Memuat pesan...')
+                    chatMessagesDiv.innerHTML = '<div style="text-align:center; padding:1rem; color:#e74c3c;">Gagal memuat pesan</div>';
+            }
+        }).catch(err => console.error(err));
+}
+
+function appendMessage(msg) {
+    if (!chatMessagesDiv) return;
+    const isSent = (parseInt(msg.sender_id) === parseInt(14));
+    const div = document.createElement('div');
+    div.className = `message ${isSent ? 'sent' : 'received'}`;
+    div.setAttribute('data-msg-id', msg.id);
+    let content = '';
+    if (msg.message && msg.message !== '[Gambar]') content += `<div>${escapeHtml(msg.message)}</div>`;
+    if (msg.image_url) content += `<img src="${escapeHtml(msg.image_url)}" class="chat-image" data-img-src="${escapeHtml(msg.image_url)}">`;
+    const time = new Date(msg.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+    let readStatus = '';
+    if (isSent && msg.is_read) readStatus = `<span class="message-read" title="Dibaca"><i class="fas fa-check-double"></i></span>`;
+    else if (isSent && !msg.is_read) readStatus = `<span class="message-read" style="color:#aaa;" title="Terkirim"><i class="fas fa-check"></i></span>`;
+    div.innerHTML = content + `<div class="message-time">${time} ${readStatus}</div>`;
+    chatMessagesDiv.appendChild(div);
+    const imgElem = div.querySelector('.chat-image');
+    if (imgElem) imgElem.addEventListener('click', (e) => { e.stopPropagation(); openImagePopup(imgElem.src); });
+}
+
+function scrollChatToBottom() { if (chatMessagesDiv) chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight; }
+
+function clearPendingImage() {
+    pendingImageFile = null;
+    if (imagePreviewContainer) imagePreviewContainer.style.display = 'none';
+    if (pendingImagePreview) pendingImagePreview.src = '';
+}
+function cancelPendingImage() { clearPendingImage(); }
+if (cancelImageBtn) cancelImageBtn.addEventListener('click', cancelPendingImage);
+
+function handlePasteImage(event) {
+    const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+    for (let item of items) {
+        if (item.type.indexOf('image') !== -1) {
+            event.preventDefault();
+            const file = item.getAsFile();
+            if (!currentChatId) { alert('Pilih kontak terlebih dahulu.'); return; }
+            pendingImageFile = file;
+            const reader = new FileReader();
+            reader.onload = function(e) { pendingImagePreview.src = e.target.result; imagePreviewContainer.style.display = 'flex'; };
+            reader.readAsDataURL(file);
+            break;
+        }
+    }
+}
+if (chatMessageInput) chatMessageInput.addEventListener('paste', handlePasteImage);
+
+function sendChatMessage() {
+    if (!currentChatId) { alert('Pilih kontak terlebih dahulu.'); return; }
+    const message = chatMessageInput.value.trim();
+
+    // Fungsi untuk mengirim pesan teks dengan CSRF
+    function sendTextOnly(msg) {
+        fetch('send_message_ajax.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-Token': csrfToken
+            },
+            body: `receiver_id=${currentChatId}&message=${encodeURIComponent(msg)}&csrf_token=${csrfToken}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                chatMessageInput.value = '';
+                loadMessages();
+            } else {
+                alert('Gagal mengirim: ' + (data.error || 'Unknown error'));
+            }
+        })
+        .catch(err => { alert('Gagal terhubung ke server.'); });
+    }
+
+    if (pendingImageFile) {
+        const formData = new FormData();
+        formData.append('receiver_id', currentChatId);
+        formData.append('image', pendingImageFile);
+        formData.append('csrf_token', csrfToken);
+        const tempLoader = document.createElement('div');
+        tempLoader.className = 'message sent';
+        tempLoader.innerHTML = '<div style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Mengirim gambar...</div>';
+        if (chatMessagesDiv) chatMessagesDiv.appendChild(tempLoader);
+        scrollChatToBottom();
+        fetch('upload_chat_image.php', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-Token': csrfToken
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (tempLoader) tempLoader.remove();
+            if (data.success) {
+                clearPendingImage();
+                if (message !== '') {
+                    sendTextOnly(message);
+                } else {
+                    loadMessages();
+                }
+                chatMessageInput.value = '';
+            } else {
+                alert('Gagal mengirim gambar: ' + (data.error || 'Unknown error'));
+            }
+        })
+        .catch(err => { if (tempLoader) tempLoader.remove(); alert('Gagal mengirim gambar.'); });
+    } else if (message !== '') {
+        chatSendBtn.disabled = true;
+        sendTextOnly(message);
+        chatSendBtn.disabled = false;
+    }
+}
+if (chatSendBtn) chatSendBtn.addEventListener('click', sendChatMessage);
+if (chatMessageInput) chatMessageInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') sendChatMessage(); });
+
+function deleteChatRoom() {
+    if (!currentChatId) { alert('Pilih kontak.'); return; }
+    if (!confirm('Hapus semua pesan dengan kontak ini? Tidak dapat dibatalkan.')) return;
+    fetch('delete_chat_room.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-Token': csrfToken
+        },
+        body: `other_id=${currentChatId}&csrf_token=${csrfToken}`
+    })
+    .then(response => response.text())
+    .then(text => {
+        try {
+            const data = JSON.parse(text);
+            if (data.success) {
+                alert('Room chat dihapus.');
+                if (chatMessagesDiv) chatMessagesDiv.innerHTML = '<div style="text-align:center; padding:1rem; color:#888;">Room chat kosong. Kirim pesan baru.</div>';
+                lastMessageId = 0;
+                loadContacts();
+            } else {
+                alert('Gagal: ' + (data.error || 'Unknown error'));
+            }
+        } catch(e) {
+            console.error('JSON parse error. Raw response:', text);
+            alert('Terjadi kesalahan server. Lihat console untuk detail.');
+        }
+    }).catch(err => { console.error(err); alert('Error: ' + err); });
+}
+if (deleteRoomBtn) deleteRoomBtn.addEventListener('click', deleteChatRoom);
+
+function openImagePopup(src) { if (popupModal && popupImage) { popupImage.src = src; popupModal.style.display = 'flex'; } }
+function closeImagePopup() { if (popupModal) popupModal.style.display = 'none'; }
+if (popupClose) popupClose.addEventListener('click', closeImagePopup);
+window.addEventListener('click', (e) => { if (e.target === popupModal) closeImagePopup(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && popupModal && popupModal.style.display === 'flex') closeImagePopup(); });
+document.addEventListener('click', (e) => { if (e.target.classList && e.target.classList.contains('chat-image')) openImagePopup(e.target.src); });
+
+function openChatModal() { if (chatModal) { chatModal.classList.add('active'); loadContacts(); if (currentChatId) openChat(currentChatId); } }
+function closeChatModal() { chatModal.classList.remove('active'); if (chatPollInterval) clearInterval(chatPollInterval); clearPendingImage(); }
+if (chatBtn) chatBtn.addEventListener('click', openChatModal);
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeChatModal);
+window.addEventListener('click', (e) => { if (e.target === chatModal) closeChatModal(); });
+
+setInterval(loadContacts, 2000);
+</script>            
+            <!-- Content Body -->
+            <div class="content-body">
+                <div class="beranda-content">
+                    
+                    <!-- Welcome Banner -->
+                    <div class="welcome-banner">
+                        <div class="banner-content">
+                            <div class="banner-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="banner-text">
+                                <h2>Selamat Datang, wecaadaniel91!</h2>
+                                <p>Semoga harimu menyenangkan dan penuh keberuntungan</p>
+                            </div>
+                            <div class="banner-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="online-count">1</div>
+                                    <div class="stat-label">Online</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">6</div>
+                                    <div class="stat-label">Promo</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Up Game Banner -->
+                    <div class="topup-banner">
+                        <div class="topup-content">
+                            <div class="topup-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <div class="topup-text">
+                                <h3>Top Up Game Murah</h3>
+                                <p>Kunjungi <a href="https://batakstore.my.id" target="_blank">BatakStore</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Grid -->
+                    <div class="dashboard-grid">
+                        <!-- Jadwal Result Terdekat -->
+                        <div class="schedule-section">
+                            <div class="section-header">
+                                <h2><i class="fas fa-clock"></i> Jadwal Result Terdekat</h2>
+                                <span class="view-all"><i class="fas fa-hourglass-half"></i> 5 Pasaran</span>
+                            </div>
+
+                                                            <table class="schedule-table" id="jadwalTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Pasaran</th>
+                                            <th>Result</th>
+                                            <th>Sisa Waktu</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="jadwal-body">
+                                                                                <tr data-seconds="1131" data-index="0">
+                                            <td>
+                                                <div class="market-name">
+                                                                                                            <a href="https://www.singaporepools.com.sg/landing/en/Pages/index.html" target="_blank" style="color: #ff9999; text-decoration: none;">
+                                                            SINGAPORE                                                        </a>
+                                                                                                    </div>
+                                            </div>
+                                            <td>
+                                                <div class="time-info">
+                                                    <i class="fas fa-clock" style="color: #ff3333;"></i>
+                                                    17:45 WIB                                                </div>
+                                            </div>
+                                            <td>
+                                                <span class="countdown" id="countdown-0">00:18:51</span>
+                                            </div>
+                                            <td>
+                                                <span class="status-badge" id="status-0" style="background: rgba(46,204,113,0.15); color: #2ecc71; border:1px solid rgba(46,204,113,0.3);">Jadwal</span>
+                                            </div>
+                                        </tr>
+                                                                                <tr data-seconds="2031" data-index="1">
+                                            <td>
+                                                <div class="market-name">
+                                                                                                            <a href="https://hokidraw.com/" target="_blank" style="color: #ff9999; text-decoration: none;">
+                                                            HOKIDRAW                                                        </a>
+                                                                                                    </div>
+                                            </div>
+                                            <td>
+                                                <div class="time-info">
+                                                    <i class="fas fa-clock" style="color: #ff3333;"></i>
+                                                    18:00 WIB                                                </div>
+                                            </div>
+                                            <td>
+                                                <span class="countdown" id="countdown-1">00:33:51</span>
+                                            </div>
+                                            <td>
+                                                <span class="status-badge" id="status-1" style="background: rgba(46,204,113,0.15); color: #2ecc71; border:1px solid rgba(46,204,113,0.3);">Jadwal</span>
+                                            </div>
+                                        </tr>
+                                                                                <tr data-seconds="4431" data-index="2">
+                                            <td>
+                                                <div class="market-name">
+                                                                                                            <a href="https://www.magnum4d.my/en/" target="_blank" style="color: #ff9999; text-decoration: none;">
+                                                            MAGNUM4D                                                        </a>
+                                                                                                    </div>
+                                            </div>
+                                            <td>
+                                                <div class="time-info">
+                                                    <i class="fas fa-clock" style="color: #ff3333;"></i>
+                                                    18:40 WIB                                                </div>
+                                            </div>
+                                            <td>
+                                                <span class="countdown" id="countdown-2">01:13:51</span>
+                                            </div>
+                                            <td>
+                                                <span class="status-badge" id="status-2" style="background: rgba(46,204,113,0.15); color: #2ecc71; border:1px solid rgba(46,204,113,0.3);">Jadwal</span>
+                                            </div>
+                                        </tr>
+                                                                                <tr data-seconds="6531" data-index="3">
+                                            <td>
+                                                <div class="market-name">
+                                                                                                            <a href="https://chelseapools.co.uk/" target="_blank" style="color: #ff9999; text-decoration: none;">
+                                                            CHELSEA 19                                                        </a>
+                                                                                                    </div>
+                                            </div>
+                                            <td>
+                                                <div class="time-info">
+                                                    <i class="fas fa-clock" style="color: #ff3333;"></i>
+                                                    19:15 WIB                                                </div>
+                                            </div>
+                                            <td>
+                                                <span class="countdown" id="countdown-3">01:48:51</span>
+                                            </div>
+                                            <td>
+                                                <span class="status-badge" id="status-3" style="background: rgba(46,204,113,0.15); color: #2ecc71; border:1px solid rgba(46,204,113,0.3);">Jadwal</span>
+                                            </div>
+                                        </tr>
+                                                                                <tr data-seconds="6531" data-index="4">
+                                            <td>
+                                                <div class="market-name">
+                                                                                                            <a href="https://totomacaunew.us/" target="_blank" style="color: #ff9999; text-decoration: none;">
+                                                            TOTOMACAU MALAM I                                                        </a>
+                                                                                                    </div>
+                                            </div>
+                                            <td>
+                                                <div class="time-info">
+                                                    <i class="fas fa-clock" style="color: #ff3333;"></i>
+                                                    19:15 WIB                                                </div>
+                                            </div>
+                                            <td>
+                                                <span class="countdown" id="countdown-4">01:48:51</span>
+                                            </div>
+                                            <td>
+                                                <span class="status-badge" id="status-4" style="background: rgba(46,204,113,0.15); color: #2ecc71; border:1px solid rgba(46,204,113,0.3);">Jadwal</span>
+                                            </div>
+                                        </tr>
+                                                                            </tbody>
+                                </table>
+                                                    </div>
+
+                        <!-- Informasi & Pengumuman -->
+                        <div class="announcement-section">
+                            <div class="section-header">
+                                <h2><i class="fas fa-bullhorn"></i> Informasi & Pengumuman</h2>
+                                <span class="view-all"><i class="fas fa-calendar-day"></i> Jumat</span>
+                            </div>
+
+                            <div class="announcement-list">
+                                
+                                
+                                                                <div class="empty-state">
+                                    <i class="fas fa-inbox"></i>
+                                    <p>Tidak ada informasi hari ini</p>
+                                </div>
+                                                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Link Nawala Checker -->
+                    <div class="nawala-section">
+                        <div class="section-header">
+                            <h2><i class="fas fa-shield-alt"></i> Cek Link Nawala</h2>
+                        </div>
+                        <div class="nawala-grid">
+                            <a href="https://www.nawala.asia" target="_blank" class="nawala-card">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span>Nawala Asia</span>
+                            </a>
+                            <a href="https://trustpositif.smbgroup.io/" target="_blank" class="nawala-card">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span>Trust Positif SMB</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Kutipan Motivasi -->
+                    <div class="quote-card">
+                        <div class="quote-icon"><i class="fas fa-quote-right"></i></div>
+                        <div class="quote-text">"Keberuntungan berpihak pada yang berani mengambil langkah pertama."</div>
+                        <div class="quote-author">— <span>Confucius</span></div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ==================== REAL-TIME UPDATES ====================
+        function updateCountdowns() {
+            const rows = document.querySelectorAll('#jadwal-body tr[data-seconds]');
+            
+            rows.forEach(row => {
+                let seconds = parseInt(row.getAttribute('data-seconds'), 10);
+                const index = row.getAttribute('data-index');
+                
+                if (seconds > 0) {
+                    seconds--;
+                    row.setAttribute('data-seconds', seconds);
+                    
+                    const hours = Math.floor(seconds / 3600);
+                    const minutes = Math.floor((seconds % 3600) / 60);
+                    const secs = seconds % 60;
+                    const formatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    
+                    const countdownEl = document.getElementById(`countdown-${index}`);
+                    if (countdownEl) {
+                        countdownEl.textContent = formatted;
+                        
+                        if (seconds < 60) {
+                            countdownEl.style.color = '#ff3333';
+                            countdownEl.style.animation = 'pulse 0.5s ease-in-out infinite';
+                        } else if (seconds < 300) {
+                            countdownEl.style.color = '#ff9999';
+                        }
+                    }
+                    
+                    const statusEl = document.getElementById(`status-${index}`);
+                    if (statusEl) {
+                        if (seconds < 60) {
+                            statusEl.textContent = 'Segera!';
+                            statusEl.style.background = 'rgba(231,76,60,0.15)';
+                            statusEl.style.color = '#e74c3c';
+                        } else if (seconds < 300) {
+                            statusEl.textContent = 'Menunggu';
+                            statusEl.style.background = 'rgba(243,156,18,0.15)';
+                            statusEl.style.color = '#f39c12';
+                        } else if (seconds <= 900) {
+                            statusEl.textContent = 'Menunggu';
+                            statusEl.style.background = 'rgba(243,156,18,0.15)';
+                            statusEl.style.color = '#f39c12';
+                        } else {
+                            statusEl.textContent = 'Jadwal';
+                            statusEl.style.background = 'rgba(46,204,113,0.15)';
+                            statusEl.style.color = '#2ecc71';
+                        }
+                    }
+                } else {
+                    setTimeout(() => location.reload(), 1000);
+                }
+            });
+        }
+
+        function updateOnlineCount() {
+            fetch('get_online_count.php')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.online !== undefined) {
+                        const onlineEl = document.getElementById('online-count');
+                        if (onlineEl) onlineEl.textContent = data.online;
+                    }
+                })
+                .catch(() => {});
+        }
+
+        // ==================== PROTECTION SYSTEM ====================
+        (function() {
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
+                if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
+                if (e.ctrlKey && e.shiftKey && e.key === 'I') { e.preventDefault(); return false; }
+                if (e.ctrlKey && e.shiftKey && e.key === 'J') { e.preventDefault(); return false; }
+                if (e.ctrlKey && e.shiftKey && e.key === 'C') { e.preventDefault(); return false; }
+                if (e.ctrlKey && e.key === 's') { e.preventDefault(); return false; }
+                if (e.ctrlKey && e.key === 'p') { e.preventDefault(); return false; }
+            }, true);
+            document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; }, true);
+            let devtools = /./;
+            devtools.toString = function() {
+                console.log('%c🔒 DevTools Terdeteksi!', 'color: #ff3333; font-size: 16px; font-weight: bold;');
+                return '';
+            };
+            console.log(devtools);
+        })();
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            setInterval(updateCountdowns, 1000);
+            setInterval(updateOnlineCount, 2000);
+            updateOnlineCount();
+        });
+    </script>
+</body>
+</html>
